@@ -24,37 +24,44 @@
 
             <nav class="flex-1 p-4 space-y-2">
 
-                <a href="/dashboard"
+                <a href="/admin/dashboard"
                     class="block px-4 py-3 rounded-xl transition
                     {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Dashboard
                 </a>
-                <a href="/perfil"
+                <a href="/admin/talentos"
                     class="block px-4 py-3 rounded-xl transition
-                    {{ request()->routeIs('perfil') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Perfil
-                </a>
-                <a href="/talentos"
-                    class="block px-4 py-3 rounded-xl transition
-                    {{ request()->routeIs('talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+    {{ request()->routeIs('admin.talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Talentos
                 </a>
-                <a href="/empresas"
+
+                <a href="/admin/empresas"
                     class="block px-4 py-3 rounded-xl transition
-                    {{ request()->routeIs('empresas') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+    {{ request()->routeIs('admin.empresas') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Empresas
                 </a>
-                <a href="/postulaciones"
+
+                <a href="/admin/validaciones"
                     class="block px-4 py-3 rounded-xl transition
-                    {{ request()->routeIs('postulaciones') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Postulaciones
+    {{ request()->routeIs('admin.validaciones') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Validaciones
                 </a>
 
-
-
-                <a href="/configuracion"
+                <a href="/admin/solicitudes"
                     class="block px-4 py-3 rounded-xl transition
-                    {{ request()->routeIs('configuracion') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+    {{ request()->routeIs('admin.solicitudes') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Solicitudes
+                </a>
+
+                <a href="/admin/seguimiento"
+                    class="block px-4 py-3 rounded-xl transition
+    {{ request()->routeIs('admin.seguimiento') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Seguimiento
+                </a>
+
+                <a href="/admin/configuracion"
+                    class="block px-4 py-3 rounded-xl transition
+    {{ request()->routeIs('admin.configuracion') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Configuración
                 </a>
 

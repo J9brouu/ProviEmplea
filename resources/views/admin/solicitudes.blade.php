@@ -8,17 +8,17 @@
             <div>
 
                 <h1 class="text-5xl font-bold text-gray-800">
-                    Postulaciones
+                    Solicitudes Empresariales
                 </h1>
 
                 <p class="text-gray-500 mt-2">
-                    Gestión de postulaciones realizadas por talentos.
+                    Gestión de solicitudes de contacto entre empresas y talentos.
                 </p>
 
             </div>
             <button
                 class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition shadow">
-                Nueva Postulación
+                Nueva Solicitud
             </button>
 
         </div>
@@ -29,7 +29,7 @@
             <div class="bg-white p-6 rounded-2xl shadow">
 
                 <p class="text-gray-500">
-                    Total Postulaciones
+                    Total Solicitudes
                 </p>
 
                 <h2 class="text-4xl font-bold text-blue-600 mt-4">
@@ -41,7 +41,7 @@
             <div class="bg-white p-6 rounded-2xl shadow">
 
                 <p class="text-gray-500">
-                    En Revisión
+                    Pendiente
                 </p>
 
                 <h2 class="text-4xl font-bold text-yellow-500 mt-4">
@@ -53,7 +53,7 @@
             <div class="bg-white p-6 rounded-2xl shadow">
 
                 <p class="text-gray-500">
-                    Aprobadas
+                    Contactado
                 </p>
 
                 <h2 class="text-4xl font-bold text-green-600 mt-4">
@@ -65,7 +65,7 @@
             <div class="bg-white p-6 rounded-2xl shadow">
 
                 <p class="text-gray-500">
-                    Rechazadas
+                    Finalizado
                 </p>
 
                 <h2 class="text-4xl font-bold text-red-500 mt-4">

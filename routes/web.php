@@ -7,9 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -19,16 +17,23 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     // Rutas para el administrador
-    Route::view('/perfil', 'admin.perfil')->name('perfil');
-    Route::view('/empresas', 'admin.empresas')->name('empresas');
-    Route::view('/postulaciones', 'admin.postulaciones')->name('postulaciones');
-    Route::view('/configuracion', 'admin.configuracion')->name('configuracion');
-    Route::view('/talentos', 'admin.talentos')->name('talentos');
+    Route::get('admin/dashboard', function () {return view('admin.dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('admin/perfil', function () {return view('admin.perfil');})->name('admin.perfil');
+    Route::get('admin/empresas', function () {return view('admin.empresas');})->name('admin.empresas');
+    Route::get('admin/configuracion', function () {return view('admin.configuracion');})->name('admin.configuracion');
+    Route::get('admin/talentos', function () {return view('admin.talentos');})->name('admin.talentos');
+    Route::get('admin/validaciones', function () {return view('admin.validaciones');})->name('admin.validaciones');
+    Route::get('admin/solicitudes', function () {return view('admin.solicitudes');})->name('admin.solicitudes');
+    Route::get('admin/seguimiento', function () {return view('admin.seguimiento');})->name('admin.seguimiento');
 
     // Rutas para el talento
-    Route::view('/talento/dashboard', 'talento.dashboard')->name('talento.dashboard');
+    Route::get('talento/dashboard', function () {return view('talento.dashboard');})->name('talento.dashboard');
+    Route::get('talento/perfil', function () {return view('talento.perfil');})->name('talento.perfil');
+    Route::get('talento/postulaciones', function () {return view('talento.postulaciones');})->name('talento.postulaciones');
+    Route::get('talento/vacantes', function () {return view('talento.vacantes');})->name('talento.vacantes');
+    Route::get('talento/configuracion', function () {return view('talento.configuracion');})->name('talento.configuracion');
     // Rutas para la empresa
-     Route::view('/empresa/dashboard', 'empresa.dashboard')->name('empresa.dashboard');
+     Route::get('empresa/dashboard', function () {return view('empresa.dashboard');})->name('empresa.dashboard');
 });
 
 require __DIR__ . '/auth.php';
