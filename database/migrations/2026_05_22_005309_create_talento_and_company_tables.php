@@ -13,96 +13,98 @@ return new class extends Migration
     {
         Schema::create('talento', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('edad');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->unsignedTinyInteger('edad');
             $table->string('genero', 20);
-            $table->bigInteger('telefono');
+            $table->string('telefono', 50);
             $table->string('direccion', 200);
-            $table->string('resumen', 1000);
-            $table->bigInteger('condicion_renta');
+            $table->text('resumen');
+            $table->unsignedBigInteger('renta_desde');
+            $table->unsignedBigInteger('renta_hasta');
             $table->string('condicion_jornada', 20);
             $table->string('condicion_modalidad', 20);
-            $table->bigInteger('discapacidad');
-            $table->boolean('calidacion');
-            $table->foreign('id')->references('id')->on('users');
+            $table->unsignedTinyInteger('discapacidad');
+            $table->boolean('validacion');
         });
 
         Schema::create('antecedentes_educacionales', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
             $table->string('nombre_institucion');
             $table->date('ingreso');
             $table->date('egreso');
             $table->boolean('completo');
             $table->string('titulo', 100);
-            $table->foreign('id')->references('id')->on('talento');
         });
 
         Schema::create('antecedentes_laborales', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
             $table->string('institucion_o_empresa', 100);
             $table->date('ingreso');
             $table->date('egreso');
             $table->string('cargo');
-            $table->string('funciones', 1000);
+            $table->text('funciones');
             $table->string('referencia_nombre', 100);
-            $table->bigInteger('referencia_telefono');
-            $table->bigInteger('referencia_correo');
-            $table->bigInteger('referencia_cargo');
-            $table->foreign('id')->references('id')->on('talento');
+            $table->string('referencia_telefono', 50);
+            $table->string('referencia_correo', 255);
+            $table->string('referencia_cargo', 255);
         });
 
         Schema::create('perfeccionamiento', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
             $table->string('tipo');
             $table->string('institucion');
-            $table->bigInteger('nombre_curso');
+            $table->string('nombre_curso');
             $table->date('ingreso');
             $table->date('egreso');
-            $table->foreign('id')->references('id')->on('talento');
         });
 
         Schema::create('competencias_tecnicas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
             $table->string('nombre_competencia');
-            $table->foreign('id')->references('id')->on('talento');
         });
 
         Schema::create('datos_empresa', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('rut_empresa');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('rut_empresa', 20);
             $table->string('rubro_empresa');
             $table->string('tipo_empresa');
-            $table->string('presentacion_empresa', 2000);
-            $table->string('beneficios_empresa', 2000);
+            $table->text('presentacion_empresa');
+            $table->text('beneficios_empresa');
             $table->boolean('validacion');
-            $table->foreign('id')->references('id')->on('users');
         });
 
         Schema::create('usuarios_empresa', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('empresa_asociada', 255);
-            $table->bigInteger('telefono');
-            $table->foreign('id')->references('id')->on('users');
+            $table->string('telefono', 50);
         });
 
         Schema::create('interacciones', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_talento');
-            $table->bigInteger('estado');
-            $table->foreign('id')->references('id')->on('datos_empresa');
+            $table->foreignId('datos_empresa_id')->constrained('datos_empresa')->onDelete('cascade');
+            $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
+            $table->unsignedTinyInteger('estado');
+            $table->timestamps();
         });
 
         Schema::create('talento_archivo', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
             $table->string('tipo_archivo', 20);
-            $table->bigInteger('url_archivo');
-            $table->foreign('id')->references('id')->on('talento');
+            $table->text('url_archivo');
         });
 
         Schema::create('archivo_empresa', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('datos_empresa_id')->constrained('datos_empresa')->onDelete('cascade');
             $table->string('tipo_archivo', 20);
-            $table->bigInteger('url_archivo');
-            $table->foreign('id')->references('id')->on('datos_empresa');
+            $table->text('url_archivo');
         });
     }
 
