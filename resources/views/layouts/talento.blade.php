@@ -24,62 +24,55 @@
 
             <nav class="flex-1 p-4 space-y-2">
 
-                <a href="/admin/dashboard"
+                <a href="/talento/dashboard"
                     class="block px-4 py-3 rounded-xl transition
-                    {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+        {{ request()->routeIs('talento.dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Dashboard
                 </a>
-                <a href="/admin/talentos"
+
+                <a href="/talento/perfil"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Talentos
+        {{ request()->routeIs('talento.perfil') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Mi Perfil
                 </a>
 
-                <a href="/admin/empresas"
+                <a href="/talento/experiencia"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.empresas') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Empresas
+        {{ request()->routeIs('talento.experiencia') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Experiencia
                 </a>
 
-                <a href="/admin/validaciones"
+                <a href="/talento/educacion"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.validaciones') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Validaciones
+        {{ request()->routeIs('talento.educacion') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Educación
                 </a>
 
-                <a href="/admin/solicitudes"
+                <a href="/talento/documentos"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.solicitudes') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Solicitudes
+        {{ request()->routeIs('talento.documentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Documentos
                 </a>
 
-                <a href="/admin/seguimiento"
+                <a href="/talento/procesos"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.seguimiento') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Seguimiento
-                </a>
-
-                <a href="/admin/configuracion"
-                    class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.configuracion') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Configuración
+        {{ request()->routeIs('talento.procesos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Procesos
                 </a>
 
             </nav>
 
         </aside>
 
-        <!-- Main Content -->
+        <!-- Main -->
         <div class="flex-1 flex flex-col">
 
             <!-- Topbar -->
             <header class="bg-white shadow px-8 py-4 flex justify-between items-center">
 
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800">
-                        Panel Interno
-                    </h1>
-                </div>
+                <h1 class="text-2xl font-bold text-gray-800">
+                    Portal Talento
+                </h1>
 
                 <div class="flex items-center gap-4">
 

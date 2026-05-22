@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
 
     <h1 class="text-5xl font-bold text-slate-900">
         Seguimiento
@@ -168,4 +168,4 @@
 
     </div>
 
-</x-app-layout>
+</x-admin-layout>

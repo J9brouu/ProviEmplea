@@ -2,16 +2,14 @@
 
     <div class="space-y-8">
 
-        <!-- Header -->
-
         <div>
 
             <h1 class="text-5xl font-bold text-gray-800">
-                Dashboard Talento
+                Procesos de Selección
             </h1>
 
             <p class="text-gray-500 mt-2">
-                Resumen general de perfil y procesos activos.
+                Seguimiento de procesos y solicitudes empresariales.
             </p>
 
         </div>
@@ -20,26 +18,10 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
-            <!-- Perfil -->
-
             <div class="bg-white rounded-2xl shadow p-6">
 
                 <p class="text-gray-500">
-                    Perfil Completado
-                </p>
-
-                <h2 class="text-5xl font-bold text-purple-600 mt-4">
-                    92%
-                </h2>
-
-            </div>
-
-            <!-- Procesos -->
-
-            <div class="bg-white rounded-2xl shadow p-6">
-
-                <p class="text-gray-500">
-                    Procesos Activos
+                    Contactados
                 </p>
 
                 <h2 class="text-5xl font-bold text-blue-600 mt-4">
@@ -48,52 +30,47 @@
 
             </div>
 
-            <!-- Empresas -->
-
             <div class="bg-white rounded-2xl shadow p-6">
 
                 <p class="text-gray-500">
-                    Empresas Interesadas
+                    Entrevistas
                 </p>
 
-                <h2 class="text-5xl font-bold text-green-600 mt-4">
-                    3
+                <h2 class="text-5xl font-bold text-yellow-500 mt-4">
+                    2
                 </h2>
 
             </div>
 
-            <!-- Documentos -->
+            <div class="bg-white rounded-2xl shadow p-6">
+
+                <p class="text-gray-500">
+                    Seleccionados
+                </p>
+
+                <h2 class="text-5xl font-bold text-green-600 mt-4">
+                    1
+                </h2>
+
+            </div>
 
             <div class="bg-white rounded-2xl shadow p-6">
 
                 <p class="text-gray-500">
-                    Documentos Validados
+                    No Seleccionados
                 </p>
 
-                <h2 class="text-5xl font-bold text-yellow-500 mt-4">
-                    5
+                <h2 class="text-5xl font-bold text-red-500 mt-4">
+                    3
                 </h2>
 
             </div>
 
         </div>
 
-        <!-- Últimos procesos -->
+        <!-- Tabla -->
 
         <div class="bg-white rounded-2xl shadow p-8">
-
-            <div class="flex items-center justify-between mb-6">
-
-                <h2 class="text-3xl font-bold text-gray-800">
-                    Últimos Procesos
-                </h2>
-
-                <a href="/talento/procesos"
-                    class="text-blue-600 hover:text-blue-700 font-semibold">
-                    Ver todos
-                </a>
-
-            </div>
 
             <div class="overflow-x-auto">
 
@@ -112,6 +89,14 @@
                             </th>
 
                             <th class="pb-4">
+                                Modalidad
+                            </th>
+
+                            <th class="pb-4">
+                                Etapa
+                            </th>
+
+                            <th class="pb-4">
                                 Estado
                             </th>
 
@@ -119,11 +104,17 @@
                                 Fecha
                             </th>
 
+                            <th class="pb-4 text-center">
+                                Acción
+                            </th>
+
                         </tr>
 
                     </thead>
 
                     <tbody class="text-gray-700">
+
+                        <!-- Proceso -->
 
                         <tr class="border-b">
 
@@ -133,6 +124,14 @@
 
                             <td class="py-5">
                                 Desarrollador Frontend
+                            </td>
+
+                            <td class="py-5">
+                                Remoto
+                            </td>
+
+                            <td class="py-5">
+                                Revisión CV
                             </td>
 
                             <td class="py-5">
@@ -147,7 +146,20 @@
                                 18/05/2026
                             </td>
 
+                            <td class="py-5 text-center">
+
+                                <button
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+
+                                    Ver Proceso
+
+                                </button>
+
+                            </td>
+
                         </tr>
+
+                        <!-- Proceso -->
 
                         <tr class="border-b">
 
@@ -157,6 +169,14 @@
 
                             <td class="py-5">
                                 Diseñador UX/UI
+                            </td>
+
+                            <td class="py-5">
+                                Híbrido
+                            </td>
+
+                            <td class="py-5">
+                                Entrevista Técnica
                             </td>
 
                             <td class="py-5">
@@ -171,7 +191,20 @@
                                 10/05/2026
                             </td>
 
+                            <td class="py-5 text-center">
+
+                                <button
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+
+                                    Ver Proceso
+
+                                </button>
+
+                            </td>
+
                         </tr>
+
+                        <!-- Proceso -->
 
                         <tr>
 
@@ -184,6 +217,14 @@
                             </td>
 
                             <td class="py-5">
+                                Presencial
+                            </td>
+
+                            <td class="py-5">
+                                Evaluación Final
+                            </td>
+
+                            <td class="py-5">
 
                                 <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm">
                                     Seleccionado
@@ -193,6 +234,17 @@
 
                             <td class="py-5">
                                 02/05/2026
+                            </td>
+
+                            <td class="py-5 text-center">
+
+                                <button
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+
+                                    Ver Proceso
+
+                                </button>
+
                             </td>
 
                         </tr>

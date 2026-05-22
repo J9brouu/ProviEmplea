@@ -29,9 +29,10 @@ Route::middleware('auth')->group(function () {
     // Rutas para el talento
     Route::get('talento/dashboard', function () {return view('talento.dashboard');})->name('talento.dashboard');
     Route::get('talento/perfil', function () {return view('talento.perfil');})->name('talento.perfil');
-    Route::get('talento/postulaciones', function () {return view('talento.postulaciones');})->name('talento.postulaciones');
-    Route::get('talento/vacantes', function () {return view('talento.vacantes');})->name('talento.vacantes');
-    Route::get('talento/configuracion', function () {return view('talento.configuracion');})->name('talento.configuracion');
+    Route::get('talento/experiencia', function () {return view('talento.experiencia');})->name('talento.experiencia');
+    Route::get('talento/educacion', function () {return view('talento.educacion');})->name('talento.educacion');
+    Route::get('talento/documentos', function () {return view('talento.documentos');})->name('talento.documentos');
+    Route::get('talento/procesos', function () {return view('talento.procesos');})->name('talento.procesos');
     // Rutas para la empresa
      Route::get('empresa/dashboard', function () {return view('empresa.dashboard');})->name('empresa.dashboard');
 });

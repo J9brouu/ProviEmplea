@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
 
     <div class="space-y-8">
 
@@ -258,4 +258,4 @@
 
     </div>
 
-</x-app-layout>
+</x-admin-layout>

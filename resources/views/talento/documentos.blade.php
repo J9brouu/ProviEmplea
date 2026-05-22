@@ -1,16 +1,27 @@
-<x-app-layout>
+<x-talento-layout>
 
     <div class="space-y-8">
 
-        <div>
+        <div class="flex items-center justify-between">
 
-            <h1 class="text-5xl font-bold text-gray-800">
-                Mis Postulaciones
-            </h1>
+            <div>
 
-            <p class="text-gray-500 mt-2">
-                Seguimiento de ofertas laborales postuladas.
-            </p>
+                <h1 class="text-5xl font-bold text-gray-800">
+                    Documentos
+                </h1>
+
+                <p class="text-gray-500 mt-2">
+                    Gestión de documentos y archivos del talento.
+                </p>
+
+            </div>
+
+            <button
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition shadow">
+
+                Subir Documento
+
+            </button>
 
         </div>
 
@@ -25,23 +36,19 @@
                         <tr class="border-b text-left text-gray-500">
 
                             <th class="pb-4">
-                                Empresa
+                                Documento
                             </th>
 
                             <th class="pb-4">
-                                Cargo
-                            </th>
-
-                            <th class="pb-4">
-                                Modalidad
-                            </th>
-
-                            <th class="pb-4">
-                                Estado
+                                Tipo
                             </th>
 
                             <th class="pb-4">
                                 Fecha
+                            </th>
+
+                            <th class="pb-4">
+                                Estado
                             </th>
 
                             <th class="pb-4 text-center">
@@ -57,33 +64,29 @@
                         <tr class="border-b">
 
                             <td class="py-5">
-                                TechSolutions
+                                CV_Jonathan_Ortiz.pdf
                             </td>
 
                             <td class="py-5">
-                                Desarrollador Frontend
-                            </td>
-
-                            <td class="py-5">
-                                Remoto
-                            </td>
-
-                            <td class="py-5">
-
-                                <span class="bg-yellow-100 text-yellow-700 px-4 py-1 rounded-full text-sm">
-                                    En revisión
-                                </span>
-
+                                Curriculum Vitae
                             </td>
 
                             <td class="py-5">
                                 18/05/2026
                             </td>
 
+                            <td class="py-5">
+
+                                <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm">
+                                    Validado
+                                </span>
+
+                            </td>
+
                             <td class="py-5 text-center">
 
                                 <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-                                    Ver Oferta
+                                    Descargar
                                 </button>
 
                             </td>
@@ -93,33 +96,29 @@
                         <tr class="border-b">
 
                             <td class="py-5">
-                                InnovaTech
+                                Certificado_Residencia.pdf
                             </td>
 
                             <td class="py-5">
-                                Diseñador UX/UI
+                                Certificado
                             </td>
 
                             <td class="py-5">
-                                Híbrido
+                                15/05/2026
                             </td>
 
                             <td class="py-5">
 
-                                <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm">
-                                    Aprobado
+                                <span class="bg-yellow-100 text-yellow-700 px-4 py-1 rounded-full text-sm">
+                                    Pendiente
                                 </span>
 
-                            </td>
-
-                            <td class="py-5">
-                                10/05/2026
                             </td>
 
                             <td class="py-5 text-center">
 
                                 <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-                                    Ver Oferta
+                                    Descargar
                                 </button>
 
                             </td>
@@ -129,33 +128,29 @@
                         <tr>
 
                             <td class="py-5">
-                                Logística S.A.
+                                Portafolio_UI.pdf
                             </td>
 
                             <td class="py-5">
-                                Soporte TI
+                                Portafolio
                             </td>
 
                             <td class="py-5">
-                                Presencial
+                                10/05/2026
                             </td>
 
                             <td class="py-5">
 
-                                <span class="bg-red-100 text-red-700 px-4 py-1 rounded-full text-sm">
-                                    Rechazado
+                                <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm">
+                                    Validado
                                 </span>
 
-                            </td>
-
-                            <td class="py-5">
-                                02/05/2026
                             </td>
 
                             <td class="py-5 text-center">
 
                                 <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-                                    Ver Oferta
+                                    Descargar
                                 </button>
 
                             </td>
@@ -172,4 +167,4 @@
 
     </div>
 
-</x-app-layout>
+</x-talento-layout>
