@@ -33,8 +33,15 @@ Route::middleware('auth')->group(function () {
     Route::get('talento/educacion', function () {return view('talento.educacion');})->name('talento.educacion');
     Route::get('talento/documentos', function () {return view('talento.documentos');})->name('talento.documentos');
     Route::get('talento/procesos', function () {return view('talento.procesos');})->name('talento.procesos');
+
     // Rutas para la empresa
-     Route::get('empresa/dashboard', function () {return view('empresa.dashboard');})->name('empresa.dashboard');
+    Route::get('empresa/dashboard', function () {return view('empresa.dashboard');})->name('empresa.dashboard');
+    Route::get('empresa/perfil', function () {return view('empresa.perfil');})->name('empresa.perfil');
+    Route::get('empresa/talentos', function () {return view('empresa.talentos');})->name('empresa.talentos');
+    Route::get('empresa/procesos', function () {return view('empresa.procesos');})->name('empresa.procesos');
+    Route::get('empresa/usuarios', function () {return view('empresa.usuarios');})->name('empresa.usuarios');
+    Route::get('empresa/documentos', function () {return view('empresa.documentos');})->name('empresa.documentos');
+    Route::get('empresa/configuracion', function () {return view('empresa.configuracion');})->name('empresa.configuracion');
 });
 
 require __DIR__ . '/auth.php';

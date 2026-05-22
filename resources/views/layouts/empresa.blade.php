@@ -24,44 +24,42 @@
 
             <nav class="flex-1 p-4 space-y-2">
 
-                <a href="/admin/dashboard"
+                <a href="/empresa/dashboard"
                     class="block px-4 py-3 rounded-xl transition
-                    {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    {{ request()->routeIs('empresa.dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Dashboard
                 </a>
-                <a href="/admin/talentos"
+                <a href="/empresa/perfil"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                {{ request()->routeIs('empresa.perfil') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Perfil Empresa
+                </a>
+                <a href="/empresa/talentos"
+                    class="block px-4 py-3 rounded-xl transition
+                {{ request()->routeIs('empresa.talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Talentos
                 </a>
-
-                <a href="/admin/empresas"
+                <a href="/empresa/procesos"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.empresas') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Empresas
+                        {{ request()->routeIs('empresa.procesos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Procesos
                 </a>
 
-                <a href="/admin/validaciones"
+                <a href="/empresa/usuarios"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.validaciones') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Validaciones
+                        {{ request()->routeIs('empresa.usuarios') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Usuarios Asociados
                 </a>
 
-                <a href="/admin/solicitudes"
+                <a href="/empresa/documentos"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.solicitudes') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Solicitudes
+                        {{ request()->routeIs('empresa.documentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Documentos
                 </a>
 
-                <a href="/admin/seguimiento"
+                <a href="/empresa/configuracion"
                     class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.seguimiento') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Seguimiento
-                </a>
-
-                <a href="/admin/configuracion"
-                    class="block px-4 py-3 rounded-xl transition
-                        {{ request()->routeIs('admin.configuracion') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                        {{ request()->routeIs('empresa.configuracion') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Configuración
                 </a>
 
@@ -77,7 +75,7 @@
 
                 <div>
                     <h1 class="text-2xl font-bold text-gray-800">
-                        Panel Interno
+                        Portal Empresa
                     </h1>
                 </div>
 
