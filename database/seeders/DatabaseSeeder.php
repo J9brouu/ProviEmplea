@@ -2,6 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\ArchivoEmpresa;
+use App\Models\AntecedentesEducacionales;
+use App\Models\AntecedentesLaborales;
+use App\Models\CompetenciasTecnicas;
+use App\Models\DatosEmpresa;
+use App\Models\Perfeccionamiento;
+use App\Models\Talento;
+use App\Models\TalentoArchivo;
+use App\Models\UsuariosEmpresa;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +24,54 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'rol' => 'talento',
+            'estado' => 'activo',
         ]);
+
+        $talentoUsers = User::factory()->count(10)->talento()->create();
+
+        foreach ($talentoUsers as $user) {
+            $talento = Talento::factory()->create([ 'user_id' => $user->id ]);
+
+            AntecedentesEducacionales::factory()->count(1)->create([
+                'talento_id' => $talento->id,
+            ]);
+
+            AntecedentesLaborales::factory()->count(1)->create([
+                'talento_id' => $talento->id,
+            ]);
+
+            CompetenciasTecnicas::factory()->count(2)->create([
+                'talento_id' => $talento->id,
+            ]);
+
+            Perfeccionamiento::factory()->count(1)->create([
+                'talento_id' => $talento->id,
+            ]);
+
+            TalentoArchivo::factory()->count(1)->create([
+                'talento_id' => $talento->id,
+            ]);
+        }
+
+        $empresaUsers = User::factory()->count(10)->empresa()->create();
+
+        foreach ($empresaUsers as $user) {
+            $datosEmpresa = DatosEmpresa::factory()->create([
+                'user_id' => $user->id,
+            ]);
+
+            UsuariosEmpresa::factory()->create([
+                'datos_empresa_id' => $datosEmpresa->id,
+                'user_id' => $user->id,
+            ]);
+
+            ArchivoEmpresa::factory()->create([
+                'datos_empresa_id' => $datosEmpresa->id,
+            ]);
+        }
     }
 }
