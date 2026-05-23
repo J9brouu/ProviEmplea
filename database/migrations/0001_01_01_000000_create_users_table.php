@@ -1,5 +1,5 @@
 <?php
-
+//seba: crear estructura de tablas para usuarios, tokens de restablecimiento de contraseña y sesiones
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('rol', 20);
             $table->rememberToken();
             $table->timestamps();
         });
