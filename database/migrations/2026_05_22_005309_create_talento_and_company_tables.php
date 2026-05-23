@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('condicion_modalidad', 20);
             $table->unsignedTinyInteger('discapacidad');
             $table->boolean('validacion');
+            $table->timestamps();
         });
 
         Schema::create('antecedentes_educacionales', function (Blueprint $table) {
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->date('egreso');
             $table->boolean('completo');
             $table->string('titulo', 100);
+            $table->timestamps();
         });
 
         Schema::create('antecedentes_laborales', function (Blueprint $table) {
@@ -49,6 +51,7 @@ return new class extends Migration
             $table->string('referencia_telefono', 50);
             $table->string('referencia_correo', 255);
             $table->string('referencia_cargo', 255);
+            $table->timestamps();
         });
 
         Schema::create('perfeccionamiento', function (Blueprint $table) {
@@ -59,12 +62,14 @@ return new class extends Migration
             $table->string('nombre_curso');
             $table->date('ingreso');
             $table->date('egreso');
+            $table->timestamps();
         });
 
         Schema::create('competencias_tecnicas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
             $table->string('nombre_competencia');
+            $table->timestamps();
         });
 
         Schema::create('datos_empresa', function (Blueprint $table) {
@@ -76,20 +81,23 @@ return new class extends Migration
             $table->text('presentacion_empresa');
             $table->text('beneficios_empresa');
             $table->boolean('validacion');
+            $table->timestamps();
         });
 
         Schema::create('usuarios_empresa', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('empresa_asociada', 255);
+            $table->foreignId('datos_empresa_id')->constrained('datos_empresa')->onDelete('cascade');
             $table->string('telefono', 50);
+            $table->timestamps();
         });
 
         Schema::create('interacciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('datos_empresa_id')->constrained('datos_empresa')->onDelete('cascade');
             $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
-            $table->unsignedTinyInteger('estado');
+            $table->string('estado', 50);
+            $table->text('notas')->nullable();
+            $table->timestamp('fecha_contacto')->nullable();
             $table->timestamps();
         });
 
@@ -98,6 +106,7 @@ return new class extends Migration
             $table->foreignId('talento_id')->constrained('talento')->onDelete('cascade');
             $table->string('tipo_archivo', 20);
             $table->text('url_archivo');
+            $table->timestamps();
         });
 
         Schema::create('archivo_empresa', function (Blueprint $table) {
@@ -105,6 +114,7 @@ return new class extends Migration
             $table->foreignId('datos_empresa_id')->constrained('datos_empresa')->onDelete('cascade');
             $table->string('tipo_archivo', 20);
             $table->text('url_archivo');
+            $table->timestamps();
         });
     }
 
