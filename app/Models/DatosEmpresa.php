@@ -15,6 +15,8 @@ class DatosEmpresa extends Model
 
     protected $fillable = [
         'user_id',
+        'rut',
+        'telefono',
         'rut_empresa',
         'rubro_empresa',
         'tipo_empresa',

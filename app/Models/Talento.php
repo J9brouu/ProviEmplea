@@ -66,4 +66,6 @@ class Talento extends Model
     {
         return $this->hasMany(Interacciones::class, 'talento_id');
     }
+
+    
 }

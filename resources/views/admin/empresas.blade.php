@@ -2,115 +2,108 @@
 
     <div class="space-y-8">
 
-        <!-- Header -->
+        <!-- HEADER -->
         <div class="flex justify-between items-center">
 
             <div>
 
-                <h1 class="text-5xl font-bold text-gray-800">
-                    Empresas
+                <h1 class="text-5xl font-bold text-slate-800">
+                    Gestión de Empresas
                 </h1>
 
                 <p class="text-gray-500 mt-2">
-                    Gestión de empresas registradas en ProviEmplea.
+                    Administración de empresas registradas.
                 </p>
 
             </div>
-
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition shadow">
-
-                Nueva Empresa
-
-            </button>
 
         </div>
 
-        <!-- Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- CARDS -->
+        <div class="flex gap-4">
 
-            <div class="bg-white p-6 rounded-2xl shadow">
+            <!-- TOTAL -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border w-48">
 
-                <p class="text-gray-500">
-                    Empresas Activas
+                <p class="text-gray-500 text-sm">
+                    Empresas
                 </p>
 
-                <h2 class="text-4xl font-bold text-green-600 mt-4">
-                    72
+                <h2 class="text-2xl font-bold text-slate-800 mt-1">
+                    {{ $empresas->count() }}
                 </h2>
 
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow">
+            <!-- ACTIVAS -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border w-48">
 
-                <p class="text-gray-500">
-                    Pendientes
+                <p class="text-gray-500 text-sm">
+                    Activas
                 </p>
 
-                <h2 class="text-4xl font-bold text-yellow-500 mt-4">
-                    14
-                </h2>
-
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow">
-
-                <p class="text-gray-500">
-                    Suspendidas
-                </p>
-
-                <h2 class="text-4xl font-bold text-red-500 mt-4">
-                    3
-                </h2>
-
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow">
-
-                <p class="text-gray-500">
-                    Nuevas este mes
-                </p>
-
-                <h2 class="text-4xl font-bold text-blue-600 mt-4">
-                    9
+                <h2 class="text-2xl font-bold text-green-600 mt-1">
+                    {{ $empresas->where('user.estado', 'activo')->count() }}
                 </h2>
 
             </div>
 
         </div>
 
-        <!-- Tabla -->
-        <div class="bg-white rounded-2xl shadow p-6">
+        <!-- BUSCADOR -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm border">
 
-            <div class="flex justify-between items-center mb-6">
+            <form method="GET" action="{{ route('admin.empresas') }}">
 
-                <h2 class="text-3xl font-bold text-gray-800">
-                    Empresas Registradas
-                </h2>
+                <div class="flex gap-4">
 
-                <input type="text" placeholder="Buscar empresa..."
-                    class="border border-gray-300 rounded-xl px-4 py-3">
+                    <input
+                        type="text"
+                        name="buscar"
+                        value="{{ request('buscar') }}"
+                        placeholder="Buscar empresa..."
+                        class="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
 
-            </div>
+                    <button
+                        type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 rounded-xl">
 
-            <table class="w-full table-auto">
+                        Buscar
 
-                <thead>
+                    </button>
 
-                    <tr class="border-b text-gray-500 text-center">
+                </div>
 
-                        <th class="pb-4">
+            </form>
+
+        </div>
+
+        <!-- TABLA -->
+        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+
+            <table class="w-full">
+
+                <thead class="bg-gray-50">
+
+                    <tr>
+
+                        <th class="px-6 py-4 text-left w-[25%]">
                             Empresa
                         </th>
 
-                        <th class="pb-4">
+                        <th class="px-6 py-4 text-left w-[20%]">
+                            Rubro
+                        </th>
+
+                        <th class="px-6 py-4 text-left w-[20%]">
+                            Tipo
+                        </th>
+
+                        <th class="px-6 py-4 text-center w-[15%]">
                             Estado
                         </th>
 
-                        <th class="pb-4">
-                            Vacantes
-                        </th>
-
-                        <th class="pb-4">
+                        <th class="px-6 py-4 text-center w-[20%]">
                             Acciones
                         </th>
 
@@ -118,141 +111,398 @@
 
                 </thead>
 
-                <tbody class="text-gray-700 text-center">
+                <tbody>
 
-                    <!-- Empresa 1 -->
-                    <tr class="border-b hover:bg-gray-50 transition">
+                    @foreach ($empresas as $empresa)
 
-                        <td class="py-5 font-medium">
-                            TechSolutions
-                        </td>
+                        <tr class="border-b hover:bg-gray-50 transition">
 
-                        <td>
+                            <!-- EMPRESA -->
+                            <td class="px-6 py-4 font-medium">
 
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                                {{ $empresa->user->name }}
 
-                                Verificada
+                            </td>
 
-                            </span>
+                            <!-- RUBRO -->
+                            <td class="px-6 py-4">
 
-                        </td>
+                                {{ $empresa->rubro_empresa }}
 
-                        <td>
-                            12
-                        </td>
-                        <td class="py-5">
+                            </td>
 
-                            <div class="flex justify-center gap-2">
+                            <!-- TIPO -->
+                            <td class="px-6 py-4">
 
-                                <button
-                                    class="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition shadow-md">
+                                {{ $empresa->tipo_empresa }}
 
-                                    Editar
+                            </td>
 
-                                </button>
+                            <!-- ESTADO -->
+                            <td class="px-6 py-4 text-center">
 
-                                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                                <span
+                                    class="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-semibold
 
-                                    Eliminar
+                                    @if ($empresa->user->estado == 'activo')
+                                        bg-green-100 text-green-700
 
-                                </button>
+                                    @elseif($empresa->user->estado == 'pendiente')
+                                        bg-yellow-100 text-yellow-700
 
-                            </div>
+                                    @elseif($empresa->user->estado == 'bloqueado')
+                                        bg-red-100 text-red-700
 
-                        </td>
+                                    @elseif($empresa->user->estado == 'rechazado')
+                                        bg-gray-200 text-gray-700
+                                    @endif
+                                ">
 
-                    </tr>
+                                    {{ ucfirst($empresa->user->estado) }}
 
-                    <!-- Empresa 2 -->
-                    <tr class="border-b hover:bg-gray-50 transition">
+                                </span>
 
-                        <td class="py-5 font-medium">
-                            Innovatech
-                        </td>
+                            </td>
 
-                        <td>
+                            <!-- ACCIONES -->
+                            <td class="px-6 py-4">
 
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                                <div class="flex justify-center gap-2">
 
-                                Pendiente
+                                    <!-- MODAL VER -->
+                                    <div x-data="{ open: false }">
 
-                            </span>
+                                        <button
+                                            @click="open = true"
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
 
-                        </td>
+                                            Ver
 
-                        <td>
-                            5
-                        </td>
+                                        </button>
 
-                        <td class="py-5">
+                                        <!-- MODAL -->
+                                        <div
+                                            x-show="open"
+                                            x-transition.opacity
+                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                                            style="display: none;">
 
-                            <div class="flex justify-center gap-2">
+                                            <div
+                                                @click.away="open = false"
+                                                class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden">
 
-                                <button
-                                    class="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition shadow-md">
+                                                <!-- HEADER -->
+                                                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-6">
 
-                                    Editar
+                                                    <div class="flex justify-between items-center">
 
-                                </button>
+                                                        <div>
 
-                                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                                                            <h2 class="text-3xl font-bold text-white">
+                                                                {{ $empresa->user->name }}
+                                                            </h2>
 
-                                    Eliminar
+                                                            <p class="text-blue-100 mt-1">
+                                                                Información de la empresa
+                                                            </p>
 
-                                </button>
+                                                        </div>
 
-                            </div>
+                                                        <button
+                                                            @click="open = false"
+                                                            class="text-white text-3xl">
 
-                        </td>
-                    </tr>
+                                                            ×
 
-                    <!-- Empresa 3 -->
-                    <tr class="hover:bg-gray-50 transition">
+                                                        </button>
 
-                        <td class="py-5 font-medium">
-                            Logística S.A.
-                        </td>
+                                                    </div>
 
-                        <td>
+                                                </div>
 
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
+                                                <!-- BODY -->
+                                                <div class="p-8">
 
-                                Suspendida
+                                                    <div class="grid grid-cols-2 gap-6">
 
-                            </span>
+                                                        <!-- ESTADO -->
+                                                        <div class="bg-gray-50 rounded-2xl p-5 border">
 
-                        </td>
+                                                            <p class="text-gray-500 text-sm mb-2">
+                                                                Estado
+                                                            </p>
 
-                        <td>
-                            0
-                        </td>
+                                                            <span
+                                                                class="px-4 py-2 rounded-full text-sm font-semibold
 
-                        <td class="py-5">
+                                                                @if ($empresa->user->estado == 'activo')
+                                                                    bg-green-100 text-green-700
 
-                            <div class="flex justify-center gap-2">
+                                                                @elseif($empresa->user->estado == 'pendiente')
+                                                                    bg-yellow-100 text-yellow-700
 
-                                <button
-                                    class="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition shadow-md">
+                                                                @elseif($empresa->user->estado == 'bloqueado')
+                                                                    bg-red-100 text-red-700
 
-                                    Editar
+                                                                @endif
+                                                            ">
 
-                                </button>
+                                                                {{ ucfirst($empresa->user->estado) }}
 
-                                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                                                            </span>
 
-                                    Eliminar
+                                                        </div>
 
-                                </button>
+                                                        <!-- RUBRO -->
+                                                        <div class="bg-gray-50 rounded-2xl p-5 border">
 
-                            </div>
+                                                            <p class="text-gray-500 text-sm mb-2">
+                                                                Rubro
+                                                            </p>
 
-                        </td>
+                                                            <p class="font-semibold text-lg text-slate-800">
+                                                                {{ $empresa->rubro_empresa }}
+                                                            </p>
 
-                    </tr>
+                                                        </div>
+
+                                                        <!-- TIPO -->
+                                                        <div class="bg-gray-50 rounded-2xl p-5 border">
+
+                                                            <p class="text-gray-500 text-sm mb-2">
+                                                                Tipo Empresa
+                                                            </p>
+
+                                                            <p class="font-semibold text-lg text-slate-800">
+                                                                {{ $empresa->tipo_empresa }}
+                                                            </p>
+
+                                                        </div>
+
+                                                        <!-- PRESENTACION -->
+                                                        <div class="col-span-2 bg-gray-50 rounded-2xl p-5 border">
+
+                                                            <p class="text-gray-500 text-sm mb-3">
+                                                                Presentación
+                                                            </p>
+
+                                                            <p class="text-slate-700 leading-relaxed">
+                                                                {{ $empresa->presentacion_empresa }}
+                                                            </p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- MODAL EDITAR -->
+                                    <div x-data="{ openEdit: false }">
+
+                                        <button
+                                            @click="openEdit = true"
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
+
+                                            Editar
+
+                                        </button>
+
+                                        <!-- MODAL -->
+                                        <div
+                                            x-show="openEdit"
+                                            x-transition.opacity
+                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                                            style="display: none;">
+
+                                            <div
+                                                @click.away="openEdit = false"
+                                                class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden">
+
+                                                <!-- HEADER -->
+                                                <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-6">
+
+                                                    <div class="flex justify-between items-center">
+
+                                                        <div>
+
+                                                            <h2 class="text-3xl font-bold text-white">
+                                                                Editar Empresa
+                                                            </h2>
+
+                                                            <p class="text-green-100 mt-1">
+                                                                Modifica la información de la empresa
+                                                            </p>
+
+                                                        </div>
+
+                                                        <button
+                                                            @click="openEdit = false"
+                                                            class="text-white text-3xl">
+
+                                                            ×
+
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- FORM -->
+                                                <form
+                                                    action="{{ route('admin.empresas.update', $empresa->id) }}"
+                                                    method="POST">
+
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="p-8">
+
+                                                        <div class="grid grid-cols-2 gap-6">
+
+                                                            <!-- NOMBRE -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Empresa
+                                                                </label>
+
+                                                                <input
+                                                                    type="text"
+                                                                    name="name"
+                                                                    value="{{ $empresa->user->name }}"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3">
+
+                                                            </div>
+
+                                                            <!-- ESTADO -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Estado
+                                                                </label>
+
+                                                                <select
+                                                                    name="estado"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3">
+
+                                                                    <option value="activo">
+                                                                        Activo
+                                                                    </option>
+
+                                                                    <option value="pendiente">
+                                                                        Pendiente
+                                                                    </option>
+
+                                                                    <option value="bloqueado">
+                                                                        Bloqueado
+                                                                    </option>
+
+                                                                </select>
+
+                                                            </div>
+
+                                                            <!-- RUBRO -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Rubro
+                                                                </label>
+
+                                                                <input
+                                                                    type="text"
+                                                                    name="rubro_empresa"
+                                                                    value="{{ $empresa->rubro_empresa }}"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3">
+
+                                                            </div>
+
+                                                            <!-- TIPO -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Tipo Empresa
+                                                                </label>
+
+                                                                <input
+                                                                    type="text"
+                                                                    name="tipo_empresa"
+                                                                    value="{{ $empresa->tipo_empresa }}"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3">
+
+                                                            </div>
+
+                                                            <!-- PRESENTACION -->
+                                                            <div class="col-span-2">
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Presentación
+                                                                </label>
+
+                                                                <textarea
+                                                                    name="presentacion_empresa"
+                                                                    rows="5"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 resize-none">{{ $empresa->presentacion_empresa }}</textarea>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- BOTONES -->
+                                                        <div class="flex justify-end gap-4 mt-8">
+
+                                                            <button
+                                                                type="button"
+                                                                @click="openEdit = false"
+                                                                class="px-6 py-3 rounded-2xl border hover:bg-gray-100">
+
+                                                                Cancelar
+
+                                                            </button>
+
+                                                            <button
+                                                                type="submit"
+                                                                class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-2xl shadow-lg">
+
+                                                                Guardar Cambios
+
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @endforeach
 
                 </tbody>
 
             </table>
+
+            <!-- PAGINACION -->
+            <div class="p-6 border-t bg-gray-50">
+
+                {{ $empresas->links() }}
+
+            </div>
 
         </div>
 

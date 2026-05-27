@@ -1,95 +1,346 @@
 <x-admin-layout>
 
-    <h1 class="text-5xl font-bold text-slate-900">
-        Validaciones
-    </h1>
+    <div class="space-y-8">
 
-    <p class="text-gray-500 mt-2">
-        Revisión de talentos y empresas pendientes.
-    </p>
+        <!-- HEADER -->
+        <div>
 
-    <div class="bg-white rounded-2xl shadow p-6 mt-8">
+            <h1 class="text-5xl font-bold text-slate-800">
+                Validaciones
+            </h1>
 
-        <table class="w-full">
+            <p class="text-gray-500 mt-2">
+                Gestión de aprobación de talentos y empresas pendientes.
+            </p>
 
-            <thead>
+        </div>
 
-                <tr class="border-b text-gray-500">
+        <!-- CARDS -->
+        <div class="flex gap-4">
 
-                    <th class="text-left py-4">Nombre</th>
-                    <th class="text-left py-4">Tipo</th>
-                    <th class="text-left py-4">Estado</th>
-                    <th class="text-left py-4">Acciones</th>
+            <!-- TALENTOS -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border w-52">
 
-                </tr>
+                <p class="text-gray-500 text-sm">
+                    Talentos Pendientes
+                </p>
 
-            </thead>
+                <h2 class="text-2xl font-bold text-yellow-500 mt-1">
+                    {{ $talentos->count() }}
+                </h2>
 
-            <tbody>
+            </div>
 
-                <tr class="border-b">
+            <!-- EMPRESAS -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border w-52">
 
-                    <td class="py-4">
-                        Jonathan Ortiz
-                    </td>
+                <p class="text-gray-500 text-sm">
+                    Empresas Pendientes
+                </p>
 
-                    <td>
-                        Talento
-                    </td>
+                <h2 class="text-2xl font-bold text-yellow-500 mt-1">
+                    {{ $empresas->count() }}
+                </h2>
 
-                    <td>
-                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                            Pendiente
-                        </span>
-                    </td>
+            </div>
 
-                    <td class="flex gap-2 py-4">
+        </div>
 
-                        <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
-                            Aprobar
-                        </button>
+        <!-- TALENTOS -->
+        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
 
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
-                            Rechazar
-                        </button>
+            <!-- TITULO -->
+            <div class="p-6 border-b bg-gray-50">
 
-                    </td>
+                <h2 class="text-2xl font-bold text-slate-800">
+                    Talentos Pendientes
+                </h2>
 
-                </tr>
+            </div>
 
-                <tr>
+            <!-- TABLA -->
+            <table class="w-full">
 
-                    <td class="py-4">
-                        TechSolutions
-                    </td>
+                <thead class="bg-gray-50">
 
-                    <td>
-                        Empresa
-                    </td>
+                    <tr>
 
-                    <td>
-                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                            Pendiente
-                        </span>
-                    </td>
+                        <th class="px-6 py-4 text-left text-gray-500">
+                            Nombre
+                        </th>
 
-                    <td class="flex gap-2 py-4">
+                        <th class="px-6 py-4 text-left text-gray-500">
+                            Modalidad
+                        </th>
 
-                        <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
-                            Aprobar
-                        </button>
+                        <th class="px-6 py-4 text-left text-gray-500">
+                            Jornada
+                        </th>
 
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
-                            Rechazar
-                        </button>
+                        <th class="px-6 py-4 text-center text-gray-500">
+                            Estado
+                        </th>
 
-                    </td>
+                        <th class="px-6 py-4 text-center text-gray-500">
+                            Acciones
+                        </th>
 
-                </tr>
+                    </tr>
 
-            </tbody>
+                </thead>
 
-        </table>
+                <tbody>
+
+                    @forelse($talentos as $talento)
+                        <tr class="border-b hover:bg-gray-50 transition">
+
+                            <!-- NOMBRE -->
+                            <td class="px-6 py-4 font-medium">
+
+                                {{ $talento->user->name }}
+
+                            </td>
+
+                            <!-- MODALIDAD -->
+                            <td class="px-6 py-4">
+
+                                {{ $talento->condicion_modalidad }}
+
+                            </td>
+
+                            <!-- JORNADA -->
+                            <td class="px-6 py-4">
+
+                                {{ $talento->condicion_jornada }}
+
+                            </td>
+
+                            <!-- ESTADO -->
+                            <td class="px-6 py-4 text-center">
+
+                                <span
+                                    class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold">
+
+                                    Pendiente
+
+                                </span>
+
+                            </td>
+
+                            <!-- ACCIONES -->
+                            <td class="px-6 py-4">
+
+                                <div class="flex justify-center gap-2">
+
+                                    <!-- APROBAR -->
+                                    <form method="POST"
+                                        action="{{ route('admin.validaciones.talento.aprobar', $talento->id) }}">
+
+                                        @csrf
+                                        @method('PUT')
+
+                                        <button
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition">
+
+                                            Aprobar
+
+                                        </button>
+
+                                    </form>
+
+                                    <!-- RECHAZAR -->
+                                    <form method="POST"
+                                        action="{{ route('admin.validaciones.talento.rechazar', $talento->id) }}">
+
+                                        @csrf
+                                        @method('PUT')
+
+                                        <button
+                                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+
+                                            Rechazar
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="5" class="text-center py-10 text-gray-500">
+
+                                No hay talentos pendientes.
+
+                            </td>
+
+                        </tr>
+                    @endforelse
+
+                </tbody>
+
+            </table>
+            <!-- PAGINACION -->
+            <div class="p-6 border-t bg-gray-50">
+
+                {{ $talentos->links() }}
+
+            </div>
+        </div>
+
+        <!-- EMPRESAS -->
+        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+
+            <!-- TITULO -->
+            <div class="p-6 border-b bg-gray-50">
+
+                <h2 class="text-2xl font-bold text-slate-800">
+                    Empresas Pendientes
+                </h2>
+
+            </div>
+
+            <!-- TABLA -->
+            <table class="w-full">
+
+                <thead class="bg-gray-50">
+
+                    <tr>
+
+                        <th class="px-6 py-4 text-left text-gray-500">
+                            Empresa
+                        </th>
+
+                        <th class="px-6 py-4 text-left text-gray-500">
+                            Rubro
+                        </th>
+
+                        <th class="px-6 py-4 text-left text-gray-500">
+                            Tipo
+                        </th>
+
+                        <th class="px-6 py-4 text-center text-gray-500">
+                            Estado
+                        </th>
+
+                        <th class="px-6 py-4 text-center text-gray-500">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @forelse($empresas as $empresa)
+                        <tr class="border-b hover:bg-gray-50 transition">
+
+                            <!-- EMPRESA -->
+                            <td class="px-6 py-4 font-medium">
+
+                                {{ $empresa->user->name }}
+
+                            </td>
+
+                            <!-- RUBRO -->
+                            <td class="px-6 py-4">
+
+                                {{ $empresa->rubro_empresa }}
+
+                            </td>
+
+                            <!-- TIPO -->
+                            <td class="px-6 py-4">
+
+                                {{ $empresa->tipo_empresa }}
+
+                            </td>
+
+                            <!-- ESTADO -->
+                            <td class="px-6 py-4 text-center">
+
+                                <span
+                                    class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold">
+
+                                    Pendiente
+
+                                </span>
+
+                            </td>
+
+                            <!-- ACCIONES -->
+                            <td class="px-6 py-4">
+
+                                <div class="flex justify-center gap-2">
+
+                                    <!-- APROBAR -->
+                                    <form method="POST"
+                                        action="{{ route('admin.validaciones.empresa.aprobar', $empresa->id) }}">
+
+                                        @csrf
+                                        @method('PUT')
+
+                                        <button
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition">
+
+                                            Aprobar
+
+                                        </button>
+
+                                    </form>
+
+                                    <!-- RECHAZAR -->
+                                    <form method="POST"
+                                        action="{{ route('admin.validaciones.empresa.rechazar', $empresa->id) }}">
+
+                                        @csrf
+                                        @method('PUT')
+
+                                        <button
+                                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+
+                                            Rechazar
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="5" class="text-center py-10 text-gray-500">
+
+                                No hay empresas pendientes.
+
+                            </td>
+
+                        </tr>
+                    @endforelse
+
+                </tbody>
+
+            </table>
+         <!-- PAGINACION -->
+            <div class="p-6 border-t bg-gray-50">
+
+                {{ $talentos->links() }}
+
+            </div>
+        </div>
 
     </div>
 

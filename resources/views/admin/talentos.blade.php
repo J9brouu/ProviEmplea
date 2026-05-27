@@ -3,149 +3,455 @@
     <div class="space-y-8">
 
         <!-- Header -->
-        <div class="flex justify-between items-center">
+        <div class="p-8">
 
-            <div>
+            <!-- HEADER -->
+            <div class="flex justify-between items-center mb-8">
 
-                <h1 class="text-5xl font-bold text-gray-800">
-                    Gestión de Talentos
-                </h1>
+                <div>
+                    <h1 class="text-5xl font-bold text-slate-800">
+                        Gestión de Talentos
+                    </h1>
 
-                <p class="text-gray-500 mt-2">
-                    Administración de perfiles registrados.
-                </p>
+                    <p class="text-gray-500 mt-2">
+                        Administración de perfiles registrados.
+                    </p>
+                </div>
+
+                <a href="{{ route('admin.validaciones') }}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow">
+                    Validaciones
+                </a>
 
             </div>
 
-            <button
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow transition">
+            <!-- CARDS -->
+            <div class="flex gap-4 mb-8">
 
-                Nuevo Talento
+                <!-- TALENTOS -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border w-48">
 
-            </button>
+                    <p class="text-gray-500 text-sm">
+                        Talentos
+                    </p>
 
-        </div>
+                    <h2 class="text-2xl font-bold text-slate-800 mt-1">
+                        {{ $talentos->count() }}
+                    </h2>
 
-        <!-- Tabla -->
-        <div class="bg-white rounded-2xl shadow p-8">
+                </div>
 
-            <table class="w-full text-left">
+                <!-- ACTIVOS -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border w-48">
 
-                <thead>
+                    <p class="text-gray-500 text-sm">
+                        Activos
+                    </p>
 
-                    <tr class="border-b text-gray-500">
+                    <h2 class="text-2xl font-bold text-green-600 mt-1">
+                        {{ $talentos->where('user.estado', 'activo')->count() }}
+                    </h2>
 
-                        <th class="pb-4 text-center">Nombre</th>
-                        <th class="pb-4 text-center">Especialidad</th>
-                        <th class="pb-4 text-center">Estado</th>
-                        <th class="pb-4 text-center">Experiencia</th>
-                        <th class="pb-4 text-center">Acciones</th>
+                </div>
 
-                    </tr>
+            </div>
+            <div class="bg-white p-4 rounded-2xl shadow-sm border mb-6">
 
-                </thead>
+                <form method="GET" action="{{ route('admin.talentos') }}">
 
-                <tbody>
+                    <div class="flex gap-4">
 
-                    <tr class="border-b">
+                        <input type="text" name="buscar" value="{{ request('buscar') }}"
+                            placeholder="Buscar talento..."
+                            class="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
 
-                        <td class="py-5 text-center">
-                            Jonathan Ortiz
-                        </td>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 rounded-xl">
+                            Buscar
+                        </button>
 
-                        <td class="py-5 text-center">
-                            Frontend Developer
-                        </td>
+                    </div>
 
-                        <td class="py-5 text-center">
+                </form>
 
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+            </div>
 
-                                Activo
+            <!-- TABLA -->
+            <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
 
-                            </span>
+                <table class="w-full">
 
-                        </td>
+                    <thead class="bg-gray-50">
+                        <tr>
 
-                        <td class="py-5 text-center">
-                            Junior
-                        </td>
+                            <th class="px-6 py-4 text-left w-[28%]">
+                                Nombre
+                            </th>
 
-                        <td class="py-5 text-center">
+                            <th class="px-6 py-4 text-left w-[18%]">
+                                Modalidad
+                            </th>
 
-                            <div class="flex justify-center gap-2">
+                            <th class="px-6 py-4 text-center w-[18%]">
+                                Estado
+                            </th>
 
-                                <button
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+                            <th class="px-6 py-4 text-left w-[18%]">
+                                Jornada
+                            </th>
 
-                                    Ver
+                            <th class="px-6 py-4 text-center w-[18%]">
+                                Acciones
+                            </th>
 
-                                </button>
+                        </tr>
+                    </thead>
 
-                                <button
-                                    class="bg-green-400 hover:bg-green-500 text-black px-4 py-2 rounded-lg transition">
+                    <tbody>
 
-                                    Editar
 
-                                </button>
+                        @foreach ($talentos as $talento)
+                            <tr class="border-b hover:bg-gray-50 transition">
 
-                            </div>
+                                <td class="px-6 py-4 font-medium">
+                                    {{ $talento->user->name }}
+                                </td>
 
-                        </td>
+                                <td>
+                                    {{ $talento->condicion_modalidad }}
+                                </td>
 
-                    </tr>
+                                
+                                <td class="text-center">
 
-                    <tr>
+                                    <span
+                                        class="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-semibold
 
-                        <td class="py-5 text-center">
-                            Camila Soto
-                        </td>
+        @if ($talento->user->estado == 'activo') bg-green-100 text-green-700
 
-                        <td class="py-5 text-center">
-                            UX/UI Designer
-                        </td>
+        @elseif($talento->user->estado == 'pendiente')
+            bg-yellow-100 text-yellow-700
 
-                        <td class="py-5 text-center">
+        @elseif($talento->user->estado == 'bloqueado')
+            bg-red-100 text-red-700
 
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+        @elseif($talento->user->estado == 'rechazado')
+            bg-gray-200 text-gray-700 @endif
+    ">
 
-                                Verificado
+                                        {{ ucfirst($talento->user->estado) }}
 
-                            </span>
+                                    </span>
 
-                        </td>
+                                </td>
+                                </td>
 
-                        <td class="py-5 text-center">
-                            Senior
-                        </td>
+                                <td>
+                                    {{ $talento->condicion_jornada }}
+                                </td>
 
-                        <td class="py-5 text-center">
+                                <td class="flex gap-2 py-4">
 
-                            <div class="flex justify-center gap-2">
+                                    <div x-data="{ open: false }">
 
-                                <button
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+                                        <!-- BOTON -->
+                                        <button @click="open = true"
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                                            Ver
+                                        </button>
 
-                                    Ver
+                                        <!-- MODAL -->
+                                        <!-- MODAL VER -->
+                                        <div x-show="open" x-transition.opacity
+                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                                            style="display: none;">
 
-                                </button>
+                                            <!-- CAJA -->
+                                            <div @click.away="open = false" x-transition
+                                                class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden">
 
-                                <button
-                                    class="bg-green-400 hover:bg-green-500 text-black px-4 py-2 rounded-lg transition">
+                                                <!-- HEADER -->
+                                                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-6">
 
-                                    Editar
+                                                    <div class="flex justify-between items-center">
 
-                                </button>
+                                                        <div>
 
-                            </div>
+                                                            <h2 class="text-3xl font-bold text-white">
+                                                                {{ $talento->user->name }}
+                                                            </h2>
 
-                        </td>
+                                                            <p class="text-blue-100 mt-1">
+                                                                Información del talento
+                                                            </p>
 
-                    </tr>
+                                                        </div>
 
-                </tbody>
+                                                        <button @click="open = false"
+                                                            class="text-white text-3xl hover:rotate-90 transition">
+                                                            ×
+                                                        </button>
 
-            </table>
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- BODY -->
+                                                <div class="p-8">
+
+                                                    <div class="grid grid-cols-2 gap-6">
+
+                                                        <!-- ESTADO -->
+                                                        <div class="bg-gray-50 rounded-2xl p-5 border">
+
+                                                            <p class="text-gray-500 text-sm mb-2">
+                                                                Estado
+                                                            </p>
+
+                                                            <span
+                                                                class="px-4 py-2 rounded-full text-sm font-semibold
+
+                                                                @if ($talento->user->estado == 'activo') bg-green-100 text-green-700
+                                                                @elseif($talento->user->estado == 'pendiente')
+                                                                    bg-yellow-100 text-yellow-700
+                                                                @elseif($talento->user->estado == 'bloqueado')
+                                                                    bg-red-100 text-red-700
+                                                                @else
+                                                                    bg-gray-100 text-gray-700 @endif
+
+                                                            ">
+
+                                                                {{ $talento->user->estado }}
+
+                                                            </span>
+
+                                                        </div>
+
+                                                        <!-- MODALIDAD -->
+                                                        <div class="bg-gray-50 rounded-2xl p-5 border">
+
+                                                            <p class="text-gray-500 text-sm mb-2">
+                                                                Modalidad
+                                                            </p>
+
+                                                            <p class="font-semibold text-lg text-slate-800">
+                                                                {{ $talento->condicion_modalidad }}
+                                                            </p>
+
+                                                        </div>
+
+                                                        <!-- JORNADA -->
+                                                        <div class="bg-gray-50 rounded-2xl p-5 border">
+
+                                                            <p class="text-gray-500 text-sm mb-2">
+                                                                Jornada
+                                                            </p>
+
+                                                            <p class="font-semibold text-lg text-slate-800">
+                                                                {{ $talento->condicion_jornada }}
+                                                            </p>
+
+                                                        </div>
+
+                                                        <!-- RESUMEN -->
+                                                        <div class="col-span-2 bg-gray-50 rounded-2xl p-5 border">
+
+                                                            <p class="text-gray-500 text-sm mb-3">
+                                                                Resumen Profesional
+                                                            </p>
+
+                                                            <p class="text-slate-700 leading-relaxed">
+                                                                {{ $talento->resumen }}
+                                                            </p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div x-data="{ openEdit: false }">
+
+                                        <!-- BOTON -->
+                                        <button @click="openEdit = true"
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
+                                            Editar
+                                        </button>
+
+                                        <!-- MODAL -->
+                                        <!-- MODAL EDITAR -->
+                                        <div x-show="openEdit" x-transition.opacity
+                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                                            style="display: none;">
+
+                                            <!-- CAJA -->
+                                            <div @click.away="openEdit = false" x-transition
+                                                class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden">
+
+                                                <!-- HEADER -->
+                                                <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-6">
+
+                                                    <div class="flex justify-between items-center">
+
+                                                        <div>
+
+                                                            <h2 class="text-3xl font-bold text-white">
+                                                                Editar Talento
+                                                            </h2>
+
+                                                            <p class="text-green-100 mt-1">
+                                                                Modifica la información del perfil
+                                                            </p>
+
+                                                        </div>
+
+                                                        <button @click="openEdit = false"
+                                                            class="text-white text-3xl hover:rotate-90 transition">
+                                                            ×
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- FORM -->
+                                                <form action="{{ route('admin.talentos.update', $talento->id) }}"
+                                                    method="POST">
+
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="p-8">
+
+                                                        <div class="grid grid-cols-2 gap-6">
+
+                                                            <!-- NOMBRE -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Nombre
+                                                                </label>
+
+                                                                <input type="text" name="name"
+                                                                    value="{{ $talento->user->name }}"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+
+                                                            </div>
+
+                                                            <!-- ESTADO -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Estado
+                                                                </label>
+
+                                                                <select name="estado"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+
+                                                                    <option value="activo">Activo</option>
+                                                                    <option value="pendiente">Pendiente</option>
+                                                                    <option value="bloqueado">Bloqueado</option>
+                                                                    <option value="rechazado">Rechazado</option>
+
+                                                                </select>
+
+                                                            </div>
+
+                                                            <!-- MODALIDAD -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Modalidad
+                                                                </label>
+
+                                                                <select name="condicion_modalidad"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+
+                                                                    <option value="Presencial">Presencial</option>
+                                                                    <option value="Remoto">Remoto</option>
+                                                                    <option value="Híbrido">Híbrido</option>
+
+                                                                </select>
+
+                                                            </div>
+
+                                                            <!-- JORNADA -->
+                                                            <div>
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Jornada
+                                                                </label>
+
+                                                                <select name="condicion_jornada"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+
+                                                                    <option value="Full-Time">Full-Time</option>
+                                                                    <option value="Part-Time">Part-Time</option>
+                                                                    <option value="Freelance">Freelance</option>
+
+                                                                </select>
+
+                                                            </div>
+
+                                                            <!-- RESUMEN -->
+                                                            <div class="col-span-2">
+
+                                                                <label class="block text-sm text-gray-600 mb-2">
+                                                                    Resumen
+                                                                </label>
+
+                                                                <textarea name="resumen" rows="5"
+                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none resize-none">{{ $talento->resumen }}</textarea>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- BOTONES -->
+                                                        <div class="flex justify-end gap-4 mt-8">
+
+                                                            <button type="button" @click="openEdit = false"
+                                                                class="px-6 py-3 rounded-2xl border hover:bg-gray-100 transition">
+                                                                Cancelar
+                                                            </button>
+
+                                                            <button type="submit"
+                                                                class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-2xl shadow-lg transition">
+                                                                Guardar Cambios
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+                <!-- PAGINACION -->
+                <div class="p-6 border-t bg-gray-50">
+
+                    {{ $talentos->links() }}
+
+                </div>
+            </div>
 
         </div>
 
