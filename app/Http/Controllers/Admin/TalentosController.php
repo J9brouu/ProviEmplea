@@ -34,19 +34,43 @@ class TalentosController extends Controller
     {
         $talento = Talento::findOrFail($id);
 
-        // ACTUALIZAR TABLA TALENTO
-        $talento->update([
-            'condicion_modalidad' => $request->condicion_modalidad,
-            'condicion_jornada' => $request->condicion_jornada,
-            'resumen' => $request->resumen,
+        // VALIDAR DATOS
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'estado' => 'required|in:activo,pendiente,bloqueado,rechazado',
+            'condicion_modalidad' => 'required|in:Presencial,Remoto,Híbrido',
+            'condicion_jornada' => 'required|in:Full-Time,Part-Time,Freelance',
+            'resumen' => 'required|string|min:10|max:5000',
+        ], [
+            'name.required' => 'El nombre es requerido',
+            'estado.required' => 'El estado es requerido',
+            'estado.in' => 'El estado no es válido',
+            'condicion_modalidad.required' => 'La modalidad es requerida',
+            'condicion_modalidad.in' => 'La modalidad no es válida',
+            'condicion_jornada.required' => 'La jornada es requerida',
+            'condicion_jornada.in' => 'La jornada no es válida',
+            'resumen.required' => 'El resumen es requerido',
+            'resumen.min' => 'El resumen debe tener al menos 10 caracteres',
+            'resumen.max' => 'El resumen no puede superar 5000 caracteres',
         ]);
 
-        // ACTUALIZAR USUARIO
-        $talento->user->update([
-            'name' => $request->name,
-            'estado' => $request->estado,
-        ]);
+        try {
+            // ACTUALIZAR TABLA TALENTO
+            $talento->update([
+                'condicion_modalidad' => $validated['condicion_modalidad'],
+                'condicion_jornada' => $validated['condicion_jornada'],
+                'resumen' => $validated['resumen'],
+            ]);
 
-        return redirect()->back()->with('success', 'Talento actualizado');
+            // ACTUALIZAR USUARIO
+            $talento->user->update([
+                'name' => $validated['name'],
+                'estado' => $validated['estado'],
+            ]);
+
+            return redirect()->back()->with('success', 'Talento actualizado correctamente ✓');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error al guardar: ' . $e->getMessage()]);
+        }
     }
 }

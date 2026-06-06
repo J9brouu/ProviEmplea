@@ -120,7 +120,7 @@
                                     {{ $talento->condicion_modalidad }}
                                 </td>
 
-                                
+
                                 <td class="text-center">
 
                                     <span
@@ -334,12 +334,16 @@
                                                             <div>
 
                                                                 <label class="block text-sm text-gray-600 mb-2">
-                                                                    Nombre
+                                                                    Nombre <span class="text-red-500">*</span>
                                                                 </label>
 
-                                                                <input type="text" name="name"
-                                                                    value="{{ $talento->user->name }}"
-                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+                                                                <input type="text" name="name" required
+                                                                    value="{{ old('name', $talento->user->name) }}"
+                                                                    class="w-full border {{ $errors->has('name') ? 'border-red-500' : 'border-gray-300' }} rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+
+                                                                @error('name')
+                                                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                                @enderror
 
                                                             </div>
 
@@ -347,18 +351,37 @@
                                                             <div>
 
                                                                 <label class="block text-sm text-gray-600 mb-2">
-                                                                    Estado
+                                                                    Estado <span class="text-red-500">*</span>
                                                                 </label>
 
-                                                                <select name="estado"
-                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+                                                                <select name="estado" required
+                                                                    class="w-full border {{ $errors->has('estado') ? 'border-red-500' : 'border-gray-300' }} rounded-2xl px-4 py-3">
 
-                                                                    <option value="activo">Activo</option>
-                                                                    <option value="pendiente">Pendiente</option>
-                                                                    <option value="bloqueado">Bloqueado</option>
-                                                                    <option value="rechazado">Rechazado</option>
+                                                                    <option value="activo"
+                                                                        {{ old('estado', $talento->user->estado) == 'activo' ? 'selected' : '' }}>
+                                                                        Activo
+                                                                    </option>
+
+                                                                    <option value="pendiente"
+                                                                        {{ old('estado', $talento->user->estado) == 'pendiente' ? 'selected' : '' }}>
+                                                                        Pendiente
+                                                                    </option>
+
+                                                                    <option value="bloqueado"
+                                                                        {{ old('estado', $talento->user->estado) == 'bloqueado' ? 'selected' : '' }}>
+                                                                        Bloqueado
+                                                                    </option>
+
+                                                                    <option value="rechazado"
+                                                                        {{ old('estado', $talento->user->estado) == 'rechazado' ? 'selected' : '' }}>
+                                                                        Rechazado
+                                                                    </option>
 
                                                                 </select>
+
+                                                                @error('estado')
+                                                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                                @enderror
 
                                                             </div>
 
@@ -366,17 +389,21 @@
                                                             <div>
 
                                                                 <label class="block text-sm text-gray-600 mb-2">
-                                                                    Modalidad
+                                                                    Modalidad <span class="text-red-500">*</span>
                                                                 </label>
 
-                                                                <select name="condicion_modalidad"
-                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+                                                                <select name="condicion_modalidad" required
+                                                                    class="w-full border {{ $errors->has('condicion_modalidad') ? 'border-red-500' : 'border-gray-300' }} rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
 
-                                                                    <option value="Presencial">Presencial</option>
-                                                                    <option value="Remoto">Remoto</option>
-                                                                    <option value="Híbrido">Híbrido</option>
+                                                                    <option value="Presencial" {{ old('condicion_modalidad', $talento->condicion_modalidad) == 'Presencial' ? 'selected' : '' }}>Presencial</option>
+                                                                    <option value="Remoto" {{ old('condicion_modalidad', $talento->condicion_modalidad) == 'Remoto' ? 'selected' : '' }}>Remoto</option>
+                                                                    <option value="Híbrido" {{ old('condicion_modalidad', $talento->condicion_modalidad) == 'Híbrido' ? 'selected' : '' }}>Híbrido</option>
 
                                                                 </select>
+
+                                                                @error('condicion_modalidad')
+                                                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                                @enderror
 
                                                             </div>
 
@@ -384,17 +411,21 @@
                                                             <div>
 
                                                                 <label class="block text-sm text-gray-600 mb-2">
-                                                                    Jornada
+                                                                    Jornada <span class="text-red-500">*</span>
                                                                 </label>
 
-                                                                <select name="condicion_jornada"
-                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
+                                                                <select name="condicion_jornada" required
+                                                                    class="w-full border {{ $errors->has('condicion_jornada') ? 'border-red-500' : 'border-gray-300' }} rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none">
 
-                                                                    <option value="Full-Time">Full-Time</option>
-                                                                    <option value="Part-Time">Part-Time</option>
-                                                                    <option value="Freelance">Freelance</option>
+                                                                    <option value="Full-Time" {{ old('condicion_jornada', $talento->condicion_jornada) == 'Full-Time' ? 'selected' : '' }}>Full-Time</option>
+                                                                    <option value="Part-Time" {{ old('condicion_jornada', $talento->condicion_jornada) == 'Part-Time' ? 'selected' : '' }}>Part-Time</option>
+                                                                    <option value="Freelance" {{ old('condicion_jornada', $talento->condicion_jornada) == 'Freelance' ? 'selected' : '' }}>Freelance</option>
 
                                                                 </select>
+
+                                                                @error('condicion_jornada')
+                                                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                                @enderror
 
                                                             </div>
 
@@ -402,11 +433,18 @@
                                                             <div class="col-span-2">
 
                                                                 <label class="block text-sm text-gray-600 mb-2">
-                                                                    Resumen
+                                                                    Resumen <span class="text-red-500">*</span>
                                                                 </label>
 
-                                                                <textarea name="resumen" rows="5"
-                                                                    class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none resize-none">{{ $talento->resumen }}</textarea>
+                                                                <textarea name="resumen" rows="5" required minlength="10"
+                                                                    class="w-full border {{ $errors->has('resumen') ? 'border-red-500' : 'border-gray-300' }} rounded-2xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none resize-none">{{ old('resumen', $talento->resumen) }}</textarea>
+
+                                                                <div class="flex justify-between items-center mt-1">
+                                                                    @error('resumen')
+                                                                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                                                                    @enderror
+                                                                    <p class="text-gray-400 text-xs"><span id="charCount">{{ strlen(old('resumen', $talento->resumen)) }}</span>/5000</p>
+                                                                </div>
 
                                                             </div>
 
@@ -456,5 +494,19 @@
         </div>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.querySelector('textarea[name="resumen"]');
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    const charCount = document.getElementById('charCount');
+                    if (charCount) {
+                        charCount.textContent = this.value.length;
+                    }
+                });
+            }
+        });
+    </script>
 
 </x-admin-layout>

@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\TalentosController;
 use App\Http\Controllers\Admin\EmpresasController;
 use App\Http\Controllers\Admin\SolicitudesController;
 use App\Http\Controllers\Admin\ValidacionesController;
-use App\Http\Controllers\Admin\PerfilController;
+use App\Http\Controllers\Admin\PerfilController as AdminPerfilController;
+use App\Http\Controllers\Talento\DashboardController as TalentoDashboardController;
+use App\Http\Controllers\Talento\PerfilController as TalentoPerfilController;
+use App\Http\Controllers\Talento\PerfeccionamientoController;
+use App\Http\Controllers\Talento\AntecedentesLaboralesController;
 use App\Http\Controllers\Auth\TalentoRegisterController;
 use App\Http\Controllers\Auth\EmpresaRegisterController;
 
@@ -30,10 +34,10 @@ Route::middleware('auth')->group(function () {
 
 // Rutas para el Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('admin/perfil', [PerfilController::class, 'index'])->name('admin.perfil');
-    Route::put('admin/perfil/update', [PerfilController::class, 'update'])->name('admin.perfil.update');
-    Route::put('admin/perfil/password', [PerfilController::class, 'password'])->name('admin.perfil.password');
+    Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('admin/perfil', [AdminPerfilController::class, 'index'])->name('admin.perfil');
+    Route::put('admin/perfil/update', [AdminPerfilController::class, 'update'])->name('admin.perfil.update');
+    Route::put('admin/perfil/password', [AdminPerfilController::class, 'password'])->name('admin.perfil.password');
     Route::get('admin/empresas', [EmpresasController::class, 'index'])->name('admin.empresas');
     Route::put('admin/empresas/{id}', [EmpresasController::class, 'update'])->name('admin.empresas.update');
     Route::get('admin/configuracion', function () {return view('admin.configuracion');})->name('admin.configuracion');
@@ -57,9 +61,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 // Rutas para el talento
 Route::middleware(['auth', 'role:talento'])->group(function () {
-    Route::get('talento/dashboard', function () {return view('talento.dashboard');})->name('talento.dashboard');
-    Route::get('talento/perfil', function () {return view('talento.perfil');})->name('talento.perfil');
-    Route::get('talento/experiencia', function () {return view('talento.experiencia');})->name('talento.experiencia');
+    Route::get('talento/dashboard', [TalentoDashboardController::class, 'index'])->name('talento.dashboard');
+    Route::get('talento/perfil', [TalentoPerfilController::class, 'index'])->name('talento.perfil');
+    Route::put('/talento/perfil', [TalentoPerfilController::class, 'update'])->name('talento.perfil.update');
+    Route::get('/talento/experiencia', [AntecedentesLaboralesController::class, 'index'])->name('talento.experiencia');
+    Route::post('/talento/experiencia', [AntecedentesLaboralesController::class, 'store'])->name('talento.experiencia.store');
+    Route::put('/talento/experiencia/{id}', [AntecedentesLaboralesController::class, 'update'])->name('talento.experiencia.update');
+    Route::delete('/talento/experiencia/{id}',[AntecedentesLaboralesController::class, 'destroy'])->name('talento.experiencia.destroy');
     Route::get('talento/educacion', function () {return view('talento.educacion');})->name('talento.educacion');
     Route::get('talento/documentos', function () {return view('talento.documentos');})->name('talento.documentos');
     Route::get('talento/procesos', function () {return view('talento.procesos');})->name('talento.procesos');
