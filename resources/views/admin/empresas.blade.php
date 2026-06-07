@@ -7,7 +7,7 @@
 
             <div>
 
-                <h1 class="text-5xl font-bold text-slate-800">
+                <h1 class="text-3xl md:text-5xl font-bold text-slate-800">
                     Gestión de Empresas
                 </h1>
 
@@ -19,8 +19,7 @@
 
         </div>
 
-        <!-- CARDS -->
-        <div class="flex gap-4">
+        <div class="flex flex-wrap gap-4">
 
             <!-- TOTAL -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border w-48">
@@ -79,7 +78,7 @@
         </div>
 
         <!-- TABLA -->
-        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-sm border overflow-x-auto">
 
             <table class="w-full">
 
@@ -391,16 +390,20 @@
                                                                     name="estado"
                                                                     class="w-full border border-gray-300 rounded-2xl px-4 py-3">
 
-                                                                    <option value="activo">
+                                                                    <option value="activo" {{ $empresa->user->estado == 'activo' ? 'selected' : '' }}>
                                                                         Activo
                                                                     </option>
 
-                                                                    <option value="pendiente">
+                                                                    <option value="pendiente" {{ $empresa->user->estado == 'pendiente' ? 'selected' : '' }}>
                                                                         Pendiente
                                                                     </option>
 
-                                                                    <option value="bloqueado">
+                                                                    <option value="bloqueado" {{ $empresa->user->estado == 'bloqueado' ? 'selected' : '' }}>
                                                                         Bloqueado
+                                                                    </option>
+
+                                                                    <option value="rechazado" {{ $empresa->user->estado == 'rechazado' ? 'selected' : '' }}>
+                                                                        Rechazado
                                                                     </option>
 
                                                                 </select>

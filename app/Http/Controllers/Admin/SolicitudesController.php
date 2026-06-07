@@ -9,96 +9,74 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitudesController extends Controller
 {
-
-    //LISTAR SOLICITUDES
     public function index(Request $request)
     {
         $buscar = $request->buscar;
 
-        $solicitudes = Interacciones::with([
-            'talento.user',
-            'datosEmpresa.user'
-        ])
-
+        $solicitudes = Interacciones::with(['talento.user', 'datosEmpresa.user'])
             ->when($buscar, function ($query) use ($buscar) {
-
-                $query->whereHas('talento.user', function ($q) use ($buscar) {
-
-                    $q->where('name', 'LIKE', "%{$buscar}%");
-                });
+                $query->whereHas('datosEmpresa.user', fn($q) => $q->where('name', 'LIKE', "%{$buscar}%"));
             })
-
             ->latest()
-
             ->paginate(5);
 
-        return view('admin.solicitudes', compact('solicitudes'));
+        $totales = [
+            'pendiente'    => Interacciones::where('estado', 'pendiente')->count(),
+            'contactado'   => Interacciones::where('estado', 'contactado')->count(),
+            'entrevista'   => Interacciones::where('estado', 'entrevista')->count(),
+            'seleccionado' => Interacciones::where('estado', 'seleccionado')->count(),
+            'contratado'   => Interacciones::where('estado', 'contratado')->count(),
+        ];
+
+        return view('admin.solicitudes', compact('solicitudes', 'totales'));
     }
 
+    public function nota(Request $request, $id)
+    {
+        Interacciones::findOrFail($id)->update(['notas' => $request->notas]);
+        return back()->with('success', 'Nota guardada');
+    }
 
-    //CONTACTAR TALENTO
-public function contactar($id)
-{
-    $solicitud = Interacciones::findOrFail($id);
+    public function aprobar($id)
+    {
+        Interacciones::findOrFail($id)->update(['estado' => 'contactado']);
+        return back()->with('success', 'Solicitud aprobada');
+    }
 
-    $solicitud->update([
-        'estado' => 'contactado'
-    ]);
+    public function contactar($id)
+    {
+        Interacciones::findOrFail($id)->update(['estado' => 'contactado']);
+        return back()->with('success', 'Talento contactado');
+    }
 
-    return back()->with('success', 'Talento contactado');
-}
+    public function entrevista($id)
+    {
+        Interacciones::findOrFail($id)->update(['estado' => 'entrevista']);
+        return back()->with('success', 'Entrevista programada');
+    }
 
+    public function seleccionado($id)
+    {
+        Interacciones::findOrFail($id)->update(['estado' => 'seleccionado']);
+        return back()->with('success', 'Talento seleccionado');
+    }
 
-//PASAR A ENTREVISTA
-public function entrevista($id)
-{
-    $solicitud = Interacciones::findOrFail($id);
+    public function contratar($id)
+    {
+        Interacciones::findOrFail($id)->update(['estado' => 'contratado']);
+        return back()->with('success', 'Talento marcado como contratado. Ya no será visible en la vitrina.');
+    }
 
-    $solicitud->update([
-        'estado' => 'entrevista'
-    ]);
+    public function rechazar($id)
+    {
+        Interacciones::findOrFail($id)->update(['estado' => 'rechazado']);
+        return back()->with('success', 'Solicitud rechazada');
+    }
 
-    return back()->with('success', 'Entrevista programada');
-}
-
-
-//SELECCIONAR TALENTO
-public function seleccionado($id)
-{
-    $solicitud = Interacciones::findOrFail($id);
-
-    $solicitud->update([
-        'estado' => 'seleccionado'
-    ]);
-
-    return back()->with('success', 'Talento seleccionado');
-}
-
-
-//RECHAZAR SOLICITUD
-public function rechazar($id)
-{
-    $solicitud = Interacciones::findOrFail($id);
-
-    $solicitud->update([
-        'estado' => 'rechazado'
-    ]);
-
-    return back()->with('success', 'Solicitud rechazada');
-}
     public function pdf()
     {
-        $solicitudes = Interacciones::with([
-            'talento.user',
-            'datosEmpresa.user'
-        ])->get();
-
-        $pdf = Pdf::loadView(
-            'admin.pdf.solicitudes',
-            compact('solicitudes')
-        );
-
+        $solicitudes = Interacciones::with(['talento.user', 'datosEmpresa.user'])->get();
+        $pdf = Pdf::loadView('admin.pdf.solicitudes', compact('solicitudes'));
         return $pdf->download('reporte-solicitudes.pdf');
     }
-    
 }

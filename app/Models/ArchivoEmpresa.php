@@ -15,7 +15,10 @@ class ArchivoEmpresa extends Model
     protected $fillable = [
         'datos_empresa_id',
         'tipo_archivo',
+        'nombre_archivo',
         'url_archivo',
+        'estado',
+        'motivo_rechazo',
     ];
 
     public function datosEmpresa(): BelongsTo

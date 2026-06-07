@@ -29,10 +29,10 @@ class EmpresaRegisterController extends Controller
 
         // USER
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'rol' => 'empresa',
-            'estado' => 'activo',
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'rol'      => 'empresa',
+            'estado'   => 'pendiente',
             'password' => Hash::make($request->password),
         ]);
 

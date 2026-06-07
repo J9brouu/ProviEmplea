@@ -1,0 +1,23 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('talento_archivo', function (Blueprint $table) {
+            $table->enum('estado', ['pendiente', 'aprobado', 'rechazado'])->default('pendiente')->after('nombre_archivo');
+            $table->text('motivo_rechazo')->nullable()->after('estado');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('talento_archivo', function (Blueprint $table) {
+            $table->dropColumn(['estado', 'motivo_rechazo']);
+        });
+    }
+};

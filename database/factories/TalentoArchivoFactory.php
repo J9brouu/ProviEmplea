@@ -15,10 +15,12 @@ class TalentoArchivoFactory extends Factory
 
     public function definition(): array
     {
+        $tipo = fake()->randomElement(['cv', 'residencia']);
         return [
-            'talento_id' => Talento::factory(),
-            'tipo_archivo' => fake()->randomElement(['CV', 'Carta', 'Certificado']),
-            'url_archivo' => fake()->url(),
+            'talento_id'     => Talento::factory(),
+            'tipo_archivo'   => $tipo,
+            'nombre_archivo' => $tipo === 'cv' ? 'curriculum.pdf' : 'residencia.pdf',
+            'url_archivo'    => "documentos/talento/1/{$tipo}.pdf",
         ];
     }
 }

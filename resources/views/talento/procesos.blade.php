@@ -1,179 +1,98 @@
 <x-talento-layout>
 
     <div class="space-y-8">
+
+        <!-- HEADER -->
         <div>
-            <h1 class="text-5xl font-bold text-gray-800">
-                Procesos de Selección
-            </h1>
-            <p class="text-gray-500 mt-2">
-                Seguimiento de procesos y solicitudes empresariales.
-            </p>
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-800">Mis Procesos</h1>
+            <p class="text-gray-500 mt-2">Seguimiento de procesos de selección en los que participas.</p>
         </div>
 
-        <!-- Cards -->
-
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <div class="bg-white rounded-2xl shadow p-6">
-                <p class="text-gray-500">
-                    Contactados
-                </p>
-                <h2 class="text-5xl font-bold text-blue-600 mt-4">
-                    4
-                </h2>
+        <!-- CARDS -->
+        <div class="grid grid-cols-2 xl:grid-cols-6 gap-4">
+            <div class="bg-white rounded-2xl shadow p-6 border">
+                <p class="text-gray-500 text-sm">Pendientes</p>
+                <h2 class="text-4xl font-bold text-yellow-500 mt-2">{{ $totales['pendiente'] }}</h2>
             </div>
-            <div class="bg-white rounded-2xl shadow p-6">
-                <p class="text-gray-500">
-                    Entrevistas
-                </p>
-                <h2 class="text-5xl font-bold text-yellow-500 mt-4">
-                    2
-                </h2>
+            <div class="bg-white rounded-2xl shadow p-6 border">
+                <p class="text-gray-500 text-sm">Contactado</p>
+                <h2 class="text-4xl font-bold text-blue-600 mt-2">{{ $totales['contactado'] }}</h2>
             </div>
-            <div class="bg-white rounded-2xl shadow p-6">
-                <p class="text-gray-500">
-                    Seleccionados
-                </p>
-                <h2 class="text-5xl font-bold text-green-600 mt-4">
-                    1
-                </h2>
+            <div class="bg-white rounded-2xl shadow p-6 border">
+                <p class="text-gray-500 text-sm">Entrevistas</p>
+                <h2 class="text-4xl font-bold text-purple-600 mt-2">{{ $totales['entrevista'] }}</h2>
             </div>
-            <div class="bg-white rounded-2xl shadow p-6">
-                <p class="text-gray-500">
-                    No Seleccionados
-                </p>
-                <h2 class="text-5xl font-bold text-red-500 mt-4">
-                    3
-                </h2>
+            <div class="bg-white rounded-2xl shadow p-6 border">
+                <p class="text-gray-500 text-sm">Seleccionado</p>
+                <h2 class="text-4xl font-bold text-green-600 mt-2">{{ $totales['seleccionado'] }}</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow p-6 border">
+                <p class="text-gray-500 text-sm">Contratado</p>
+                <h2 class="text-4xl font-bold text-emerald-600 mt-2">{{ $totales['contratado'] }}</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow p-6 border">
+                <p class="text-gray-500 text-sm">No Seleccionado</p>
+                <h2 class="text-4xl font-bold text-red-500 mt-2">{{ $totales['rechazado'] }}</h2>
             </div>
         </div>
 
-        <!-- Tabla -->
-
-        <div class="bg-white rounded-2xl shadow p-8">
+        <!-- TABLA -->
+        <div class="bg-white rounded-2xl shadow p-8 border">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Historial de Procesos</h2>
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
                         <tr class="border-b text-left text-gray-500">
-                            <th class="pb-4">
-                                Empresa
-                            </th>
-                            <th class="pb-4">
-                                Cargo
-                            </th>
-                            <th class="pb-4">
-                                Modalidad
-                            </th>
-                            <th class="pb-4">
-                                Etapa
-                            </th>
-                            <th class="pb-4">
-                                Estado
-                            </th>
-                            <th class="pb-4">
-                                Fecha
-                            </th>
-                            <th class="pb-4 text-center">
-                                Acción
-                            </th>
+                            <th class="pb-4">Empresa</th>
+                            <th class="pb-4">Estado</th>
+                            <th class="pb-4">Notas</th>
+                            <th class="pb-4">Fecha</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-700">
-                        <!-- Proceso -->
-                        <tr class="border-b">
-                            <td class="py-5">
-                                TechSolutions
-                            </td>
-                            <td class="py-5">
-                                Desarrollador Frontend
-                            </td>
-                            <td class="py-5">
-                                Remoto
-                            </td>
-                            <td class="py-5">
-                                Revisión CV
-                            </td>
-                            <td class="py-5">
-                                <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm">
-                                    Contactado
-                                </span>
-                            </td>
-                            <td class="py-5">
-                                18/05/2026
-                            </td>
-                            <td class="py-5 text-center">
-                                <button
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-                                    Ver Proceso
-                                </button>
-                            </td>
-                        </tr>
+                        @forelse($procesos as $proceso)
+                            <tr class="border-b hover:bg-gray-50 transition">
 
-                        <!-- Proceso -->
+                                <!-- EMPRESA (anónima) -->
+                                <td class="py-5 font-medium">
+                                    <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-semibold">
+                                        Empresa #{{ str_pad($proceso->datos_empresa_id, 4, '0', STR_PAD_LEFT) }}
+                                    </span>
+                                </td>
 
-                        <tr class="border-b">
-                            <td class="py-5">
-                                InnovaTech
-                            </td>
-                            <td class="py-5">
-                                Diseñador UX/UI
-                            </td>
-                            <td class="py-5">
-                                Híbrido
-                            </td>
-                            <td class="py-5">
-                                Entrevista Técnica
-                            </td>
-                            <td class="py-5">
+                                <!-- ESTADO -->
+                                <td class="py-5">
+                                    <span class="{{ $proceso->estado_color }} px-4 py-1 rounded-full text-sm font-semibold">
+                                        {{ $proceso->estado_texto }}
+                                    </span>
+                                </td>
 
-                                <span class="bg-yellow-100 text-yellow-700 px-4 py-1 rounded-full text-sm">
-                                    Entrevista
-                                </span>
-                            </td>
-                            <td class="py-5">
-                                10/05/2026
-                            </td>
-                            <td class="py-5 text-center">
-                                <button
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-                                    Ver Proceso
-                                </button>
-                            </td>
-                        </tr>
+                                <!-- NOTAS -->
+                                <td class="py-5 text-gray-500 text-sm">
+                                    {{ $proceso->notas ?? '—' }}
+                                </td>
 
-                        <!-- Proceso -->
+                                <!-- FECHA -->
+                                <td class="py-5 text-gray-500 text-sm">
+                                    {{ $proceso->created_at->format('d/m/Y') }}
+                                </td>
 
-                        <tr>
-                            <td class="py-5">
-                                Logística S.A.
-                            </td>
-                            <td class="py-5">
-                                Soporte TI
-                            </td>
-                            <td class="py-5">
-                                Presencial
-                            </td>
-                            <td class="py-5">
-                                Evaluación Final
-                            </td>
-                            <td class="py-5">
-                                <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm">
-                                    Seleccionado
-                                </span>
-                            </td>
-                            <td class="py-5">
-                                02/05/2026
-                            </td>
-                            <td class="py-5 text-center">
-                                <button
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-                                    Ver Proceso
-                                </button>
-                            </td>
-                        </tr>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="py-16 text-center text-gray-400">
+                                    Aún no tienes procesos de selección activos.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
+            <div class="mt-6">
+                {{ $procesos->links() }}
+            </div>
         </div>
+
     </div>
-    
+
 </x-talento-layout>

@@ -12,7 +12,7 @@ class AntecedentesLaboralesController extends Controller
 {
     public function index()
     {
-        $talento = Talento::where('user_id', Auth::id())->first();
+        $talento = Talento::where('user_id', Auth::id())->firstOrFail();
 
         $experiencias = AntecedentesLaborales::where(
             'talento_id',
@@ -42,7 +42,7 @@ class AntecedentesLaboralesController extends Controller
             $validated['egreso'] = null;
         }
 
-        $talento = Talento::where('user_id', Auth::id())->first();
+        $talento = Talento::where('user_id', Auth::id())->firstOrFail();
 
         AntecedentesLaborales::create([
             'talento_id' => $talento->id,
@@ -87,10 +87,9 @@ class AntecedentesLaboralesController extends Controller
             'egreso' => $validated['egreso'] ?? null,
             'funciones' => $validated['funciones'] ?? null,
             'referencia_nombre' => $validated['referencia_nombre'] ?? null,
-            'referencia_telefono' => !empty($validated['referencia_telefono']) ? '+569' . preg_replace('/^\+569/', '', $validated['referencia_telefono']) : null,
+            'referencia_telefono' => !empty($validated['referencia_telefono']) ? '+569' . preg_replace('/[^0-9]/', '', $validated['referencia_telefono']) : null,
             'referencia_correo' => $validated['referencia_correo'] ?? null,
             'referencia_cargo' => $validated['referencia_cargo'] ?? null,
-
         ]);
 
         return back()->with('success', 'Experiencia laboral actualizada correctamente');

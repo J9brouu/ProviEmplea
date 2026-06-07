@@ -17,6 +17,7 @@ class UsuariosEmpresa extends Model
         'datos_empresa_id',
         'user_id',
         'telefono',
+        'cargo',
     ];
 
     public function datosEmpresa(): BelongsTo

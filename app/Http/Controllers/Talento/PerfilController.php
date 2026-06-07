@@ -7,14 +7,36 @@ use App\Models\User;
 use App\Models\Talento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CompetenciasTecnicas;
+use App\Models\TalentoIdioma;
+use App\Http\Controllers\Talento\IdiomasController;
 
 class PerfilController extends Controller
 {
+    public const LISTA_COMPETENCIAS = [
+        'Excel', 'Word', 'Power BI', 'SAP', 'ERP', 'CRM',
+        'Trabajo en Equipo', 'Liderazgo', 'Comunicación',
+    ];
+
     public function index()
     {
-        $talento = Talento::where('user_id', Auth::id())->first();
+        $talento = Talento::where('user_id', Auth::id())->firstOrFail();
 
-        return view('talento.perfil', compact('talento'));
+        $todasCompetencias = CompetenciasTecnicas::where('talento_id', $talento->id)
+            ->pluck('nombre_competencia')->toArray();
+
+        $competencias = array_intersect($todasCompetencias, self::LISTA_COMPETENCIAS);
+        $otras_competencias = implode(', ', array_diff($todasCompetencias, self::LISTA_COMPETENCIAS));
+        $lista = self::LISTA_COMPETENCIAS;
+
+        $idiomas       = TalentoIdioma::where('talento_id', $talento->id)->get();
+        $listaIdiomas  = IdiomasController::LISTA_IDIOMAS;
+        $nivelesIdiomas = IdiomasController::NIVELES;
+
+        return view('talento.perfil', compact(
+            'talento', 'competencias', 'otras_competencias', 'lista',
+            'idiomas', 'listaIdiomas', 'nivelesIdiomas'
+        ));
     }
 
     public function update(Request $request)
@@ -28,7 +50,8 @@ class PerfilController extends Controller
             'genero' => 'nullable|in:Masculino,Femenino,No binario,No especificado',
             'resumen' => 'nullable|string|max:1000',
             'renta_desde' => 'nullable|numeric|min:0',
-            'renta_hasta' => 'nullable|numeric|gte:renta_desde',
+            'renta_hasta' => 'nullable|numeric|min:0',
+            'discapacidad' => 'nullable|boolean',
             'condicion_jornada' => 'nullable|in:Full-Time,Part-Time,Freelance',
             'condicion_modalidad' => 'nullable|in:Presencial,Híbrido,Remoto',
         ]);
@@ -42,7 +65,7 @@ class PerfilController extends Controller
         ]);
 
         // Perfil talento
-        $talento = Talento::where('user_id', Auth::id())->first();
+        $talento = Talento::where('user_id', Auth::id())->firstOrFail();
 
         // Formatear teléfono
         $telefono = null;
@@ -61,6 +84,7 @@ class PerfilController extends Controller
             'renta_hasta' => $request->renta_hasta ?? 0,
             'condicion_jornada' => $request->condicion_jornada,
             'condicion_modalidad' => $request->condicion_modalidad,
+            'discapacidad' => $request->has('discapacidad') ? 1 : 0,
         ]);
 
         return redirect()

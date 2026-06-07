@@ -30,7 +30,7 @@ class TalentoRegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'rol' => 'talento',
-            'estado' => 'activo',
+            'estado' => 'pendiente',
             'password' => Hash::make($request->password),
         ]);
 

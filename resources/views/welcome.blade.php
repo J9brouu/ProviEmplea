@@ -186,12 +186,7 @@
             <div class="flex items-center gap-4">
                 <a href="{{ route('login') }}"
                     class="px-6 py-2 rounded-lg font-label-md text-label-md text-primary hover:bg-surface-container transition-all">
-                    Iniciar Sesión
-                </a>
-
-                <a href="{{ route('register') }}"
-                    class="px-6 py-2 rounded-lg font-label-md text-label-md bg-primary text-on-primary hover:opacity-90 transition-all shadow-md">
-                    Registrarse
+                    Iniciar Sesión / Registrarse
                 </a>
             </div>
         </div>

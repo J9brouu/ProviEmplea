@@ -22,6 +22,7 @@ class DatosEmpresa extends Model
         'tipo_empresa',
         'presentacion_empresa',
         'beneficios_empresa',
+        'logo_empresa',
         'validacion',
     ];
 

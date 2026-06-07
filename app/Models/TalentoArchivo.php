@@ -15,7 +15,10 @@ class TalentoArchivo extends Model
     protected $fillable = [
         'talento_id',
         'tipo_archivo',
+        'nombre_archivo',
         'url_archivo',
+        'estado',
+        'motivo_rechazo',
     ];
 
     public function talento(): BelongsTo

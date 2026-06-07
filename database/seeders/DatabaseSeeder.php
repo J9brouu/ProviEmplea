@@ -24,54 +24,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // ADMIN
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'rol' => 'talento',
+            'name'   => 'Admin',
+            'email'  => 'admin@admin.com',
+            'rol'    => 'admin',
             'estado' => 'activo',
         ]);
 
-        $talentoUsers = User::factory()->count(10)->talento()->create();
-
+        // TALENTO DE PRUEBA (pendiente, sin archivos — los sube él mismo)
+        $talentoUsers = User::factory()->count(3)->talento()->create();
         foreach ($talentoUsers as $user) {
-            $talento = Talento::factory()->create([ 'user_id' => $user->id ]);
-
-            AntecedentesEducacionales::factory()->count(1)->create([
-                'talento_id' => $talento->id,
-            ]);
-
-            AntecedentesLaborales::factory()->count(1)->create([
-                'talento_id' => $talento->id,
-            ]);
-
-            CompetenciasTecnicas::factory()->count(2)->create([
-                'talento_id' => $talento->id,
-            ]);
-
-            Perfeccionamiento::factory()->count(1)->create([
-                'talento_id' => $talento->id,
-            ]);
-
-            TalentoArchivo::factory()->count(1)->create([
-                'talento_id' => $talento->id,
-            ]);
+            $talento = Talento::factory()->create(['user_id' => $user->id]);
+            AntecedentesEducacionales::factory()->count(1)->create(['talento_id' => $talento->id]);
+            AntecedentesLaborales::factory()->count(1)->create(['talento_id' => $talento->id]);
+            CompetenciasTecnicas::factory()->count(2)->create(['talento_id' => $talento->id]);
+            Perfeccionamiento::factory()->count(1)->create(['talento_id' => $talento->id]);
         }
 
-        $empresaUsers = User::factory()->count(10)->empresa()->create();
-
+        // EMPRESAS
+        $empresaUsers = User::factory()->count(5)->empresa()->create();
         foreach ($empresaUsers as $user) {
-            $datosEmpresa = DatosEmpresa::factory()->create([
-                'user_id' => $user->id,
-            ]);
-
-            UsuariosEmpresa::factory()->create([
-                'datos_empresa_id' => $datosEmpresa->id,
-                'user_id' => $user->id,
-            ]);
-
-            ArchivoEmpresa::factory()->create([
-                'datos_empresa_id' => $datosEmpresa->id,
-            ]);
+            $datosEmpresa = DatosEmpresa::factory()->create(['user_id' => $user->id]);
+            UsuariosEmpresa::factory()->create(['datos_empresa_id' => $datosEmpresa->id, 'user_id' => $user->id]);
+            ArchivoEmpresa::factory()->create(['datos_empresa_id' => $datosEmpresa->id]);
         }
     }
 }

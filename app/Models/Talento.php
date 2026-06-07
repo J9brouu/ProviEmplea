@@ -67,5 +67,10 @@ class Talento extends Model
         return $this->hasMany(Interacciones::class, 'talento_id');
     }
 
+    public function idiomas(): HasMany
+    {
+        return $this->hasMany(\App\Models\TalentoIdioma::class, 'talento_id');
+    }
+
     
 }

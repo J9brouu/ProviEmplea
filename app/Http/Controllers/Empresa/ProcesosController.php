@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Controllers\Empresa;
+
+use App\Http\Controllers\Controller;
+use App\Models\DatosEmpresa;
+use App\Models\Interacciones;
+use Illuminate\Support\Facades\Auth;
+
+class ProcesosController extends Controller
+{
+    public function index()
+    {
+        $empresa = DatosEmpresa::where('user_id', Auth::id())->firstOrFail();
+
+        $procesos = Interacciones::where('datos_empresa_id', $empresa->id)
+            ->with(['talento.competenciasTecnicas', 'talento.antecedentesEducacionales'])
+            ->latest()
+            ->paginate(10);
+
+        $totales = [
+            'pendiente'    => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'pendiente')->count(),
+            'contactado'   => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'contactado')->count(),
+            'entrevista'   => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'entrevista')->count(),
+            'seleccionado' => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'seleccionado')->count(),
+            'rechazado'    => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'rechazado')->count(),
+        ];
+
+        return view('empresa.procesos', compact('procesos', 'totales'));
+    }
+}

@@ -5,94 +5,102 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'ProviEmplea') }}</title>
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans antialiased bg-gray-100">
 
-    <div class="flex min-h-screen m-0 p-0 bg-gray-100" >
+    <div class="flex min-h-screen" x-data="{ sidebarOpen: false }">
+
+        <!-- Overlay móvil -->
+        <div x-show="sidebarOpen" @click="sidebarOpen = false"
+            class="fixed inset-0 z-20 bg-black/50 lg:hidden"
+            x-transition.opacity style="display:none;"></div>
 
         <!-- Sidebar -->
-        <aside class="w-64 bg-slate-900 text-white flex flex-col">
+        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+            class="fixed z-30 inset-y-0 left-0 w-64 bg-slate-900 text-white flex flex-col transform transition-transform duration-300 lg:relative lg:translate-x-0">
 
-            <div class="p-6 text-2xl font-bold border-b border-slate-800">
+            <div class="p-6 text-2xl font-bold border-b border-slate-800 flex items-center justify-between">
                 ProviEmplea
+                <button @click="sidebarOpen = false" class="lg:hidden text-slate-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
             </div>
 
-            <nav class="flex-1 p-4 space-y-2">
-
-                <a href="/admin/dashboard" class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+            <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+                <a href="/admin/dashboard" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Dashboard
                 </a>
-                <a href="/admin/perfil" class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.perfil') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Perfil Empresa
+                <a href="/admin/perfil" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.perfil') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Perfil
                 </a>
-                <a href="/admin/talentos" class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                <a href="/admin/talentos" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Talentos
                 </a>
-
-                <a href="/admin/empresas" class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.empresas') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                <a href="/admin/empresas" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.empresas') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Empresas
                 </a>
-
-                <a href="/admin/validaciones" class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.validaciones') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                <a href="/admin/validaciones" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.validaciones') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Validaciones
                 </a>
-
-                <a href="/admin/solicitudes" class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.solicitudes') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                <a href="/admin/solicitudes" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.solicitudes') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Seguimiento
                 </a>
-
-                <a href="/admin/configuracion" class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.configuracion') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Configuración del sistema
+                <a href="/admin/vitrina" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.vitrina') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Vitrina de Talentos
                 </a>
-
             </nav>
-
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col min-w-0">
 
             <!-- Topbar -->
-            <header class="bg-white shadow px-8 py-4 flex justify-between items-center">
-
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800">
-                        Panel Interno
-                    </h1>
+            <header class="bg-white shadow px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-10">
+                <div class="flex items-center gap-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden text-gray-500 hover:text-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-800">Panel Interno</h1>
                 </div>
 
-                <div class="flex items-center gap-4">
-
-                    <span class="text-gray-700 font-medium">
+                <div class="flex items-center gap-3">
+                    <span class="hidden sm:block text-gray-700 font-medium truncate max-w-[150px]">
                         {{ Auth::user()->name }}
                     </span>
-
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-
                         <button type="submit"
-                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                            class="bg-red-500 hover:bg-red-600 text-white px-3 md:px-4 py-2 rounded-lg transition text-sm">
                             Cerrar sesión
                         </button>
                     </form>
-
                 </div>
-
             </header>
 
             <!-- Content -->
-            <main class="flex-1 p-8">
+            <main class="flex-1 p-4 md:p-8">
                 {{ $slot }}
             </main>
 
         </div>
 
     </div>
+
+    <x-confirm-modal />
 
 </body>
 

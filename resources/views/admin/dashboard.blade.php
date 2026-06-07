@@ -4,7 +4,7 @@
 
         <!-- Header -->
         <div>
-            <h1 class="text-5xl font-bold text-gray-800">
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-800">
                 Dashboard Principal
             </h1>
 
@@ -81,7 +81,7 @@
 
                 <div class="overflow-x-auto">
 
-                    <table class="w-full border-collapse">
+                    <table class="w-full border-collapse min-w-[400px]">
 
                         <thead>
 

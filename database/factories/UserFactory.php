@@ -39,6 +39,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'rol' => 'talento',
+            'estado' => 'pendiente',
         ]);
     }
 
