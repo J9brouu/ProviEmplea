@@ -9,63 +9,59 @@
         @endif
 
         <div>
-            <h1 class="text-3xl md:text-5xl font-bold text-gray-800">Perfil Empresa</h1>
-            <p class="text-gray-500 mt-2">Información general y presentación de la empresa.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Perfil Empresa</h1>
+            <p class="text-gray-500 mt-1">Información general y presentación de la empresa.</p>
         </div>
 
         <!-- Card principal -->
-        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-
-            <div class="h-36 bg-gradient-to-r from-blue-700 to-indigo-600"></div>
-
-            <div class="px-6 md:px-10 pb-10">
-
-                <div class="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-6 -mt-12 relative">
-                    <div class="flex items-end gap-5">
-                        <div class="w-24 h-24 rounded-3xl bg-white shadow-xl border-4 border-white flex items-center justify-center text-4xl font-bold text-blue-700">
+        <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
+            <div class="px-6 py-8">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div class="flex items-center gap-5">
+                        <div class="w-20 h-20 rounded-3xl bg-blue-100 text-blue-700 flex items-center justify-center text-3xl font-bold">
                             {{ strtoupper(substr($empresa->user->name, 0, 2)) }}
                         </div>
-                        <div class="pb-2">
-                            <div class="flex items-center gap-3 flex-wrap mt-2">
-                                <h2 class="text-2xl md:text-4xl font-bold text-gray-800">{{ $empresa->user->name }}</h2>
-                                @if($empresa->validacion)
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Empresa Validada</span>
-                                @else
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">Pendiente de Validación</span>
-                                @endif
-                            </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">{{ $empresa->user->name }}</h2>
                             <p class="text-gray-500 mt-1">{{ $empresa->rubro_empresa ?? '—' }}</p>
+                            @if($empresa->validacion)
+                                <span class="inline-flex items-center mt-3 rounded-full bg-green-100 text-green-700 px-3 py-1 text-sm font-medium">Empresa Validada</span>
+                            @else
+                                <span class="inline-flex items-center mt-3 rounded-full bg-yellow-100 text-yellow-700 px-3 py-1 text-sm font-medium">Pendiente de Validación</span>
+                            @endif
                         </div>
                     </div>
-                    <button onclick="document.getElementById('modalEditar').classList.remove('hidden')"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-semibold transition shadow w-fit">
-                        Editar Perfil
-                    </button>
-                    <button onclick="document.getElementById('modalPassword').classList.remove('hidden')"
-                        class="bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-semibold transition shadow w-fit">
-                        Cambiar Contraseña
-                    </button>
+                    <div class="flex flex-wrap justify-end gap-3">
+                        <button onclick="document.getElementById('modalEditar').classList.remove('hidden')"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold transition shadow text-sm">
+                            Editar Perfil
+                        </button>
+                        <button onclick="document.getElementById('modalPassword').classList.remove('hidden')"
+                            class="bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-xl font-semibold transition shadow text-sm">
+                            Cambiar Contraseña
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-                    <div class="bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                    <div class="bg-white rounded-2xl shadow border border-gray-100 p-5">
                         <p class="text-gray-500 text-sm">Procesos Activos</p>
-                        <h3 class="text-4xl font-bold text-blue-600 mt-3">{{ $totales['procesos'] }}</h3>
+                        <h3 class="text-3xl font-bold text-blue-600 mt-3">{{ $totales['procesos'] }}</h3>
                     </div>
-                    <div class="bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                    <div class="bg-white rounded-2xl shadow border border-gray-100 p-5">
                         <p class="text-gray-500 text-sm">Talentos Contactados</p>
-                        <h3 class="text-4xl font-bold text-green-600 mt-3">{{ $totales['contactados'] }}</h3>
+                        <h3 class="text-3xl font-bold text-green-600 mt-3">{{ $totales['contactados'] }}</h3>
                     </div>
-                    <div class="bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                    <div class="bg-white rounded-2xl shadow border border-gray-100 p-5">
                         <p class="text-gray-500 text-sm">Usuarios Empresa</p>
-                        <h3 class="text-4xl font-bold text-purple-600 mt-3">{{ $totales['usuarios'] }}</h3>
+                        <h3 class="text-3xl font-bold text-purple-600 mt-3">{{ $totales['usuarios'] }}</h3>
                     </div>
                 </div>
 
                 <!-- Info -->
-                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-10">
-                    <div class="bg-gray-50 rounded-3xl p-8 border border-gray-100">
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-white rounded-2xl shadow border border-gray-100 p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-6">Información Empresa</h3>
                         <div class="space-y-4">
                             <div>
@@ -87,7 +83,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 rounded-3xl p-8 border border-gray-100">
+                    <div class="bg-white rounded-2xl shadow border border-gray-100 p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">Presentación</h3>
                         <p class="text-gray-700 leading-relaxed">
                             {{ $empresa->presentacion_empresa ?? 'Sin presentación registrada.' }}

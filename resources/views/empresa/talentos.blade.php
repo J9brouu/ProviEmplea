@@ -30,25 +30,26 @@
 
                     <select name="idioma" class="h-12 rounded-xl border-gray-300 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Idioma</option>
+                        <option value="Español"  {{ request('idioma') == 'Español'  ? 'selected' : '' }}>Español</option>
                         <option value="Inglés"    {{ request('idioma') == 'Inglés'    ? 'selected' : '' }}>Inglés</option>
                         <option value="Francés"   {{ request('idioma') == 'Francés'   ? 'selected' : '' }}>Francés</option>
                         <option value="Portugués" {{ request('idioma') == 'Portugués' ? 'selected' : '' }}>Portugués</option>
                         <option value="Alemán"    {{ request('idioma') == 'Alemán'    ? 'selected' : '' }}>Alemán</option>
                         <option value="Italiano"  {{ request('idioma') == 'Italiano'  ? 'selected' : '' }}>Italiano</option>
                         <option value="Mandarín"  {{ request('idioma') == 'Mandarín'  ? 'selected' : '' }}>Mandarín</option>
+                        <option value="Japonés"   {{ request('idioma') == 'Japonés'   ? 'selected' : '' }}>Japonés</option>
+                        <option value="Árabe"     {{ request('idioma') == 'Árabe'     ? 'selected' : '' }}>Árabe</option>
+                        <option value="Ruso"      {{ request('idioma') == 'Ruso'      ? 'selected' : '' }}>Ruso</option>
                     </select>
                 </div>
 
                 <!-- Fila 2 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-center">
-                    <select name="renta_max" class="h-12 rounded-xl border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                        <option value="">Renta máxima</option>
-                        <option value="500000"  {{ request('renta_max') == '500000'  ? 'selected' : '' }}>Hasta $500.000</option>
-                        <option value="700000"  {{ request('renta_max') == '700000'  ? 'selected' : '' }}>Hasta $700.000</option>
-                        <option value="1000000" {{ request('renta_max') == '1000000' ? 'selected' : '' }}>Hasta $1.000.000</option>
-                        <option value="1500000" {{ request('renta_max') == '1500000' ? 'selected' : '' }}>Hasta $1.500.000</option>
-                        <option value="2000000" {{ request('renta_max') == '2000000' ? 'selected' : '' }}>Hasta $2.000.000</option>
-                    </select>
+                    <input type="number" name="renta_max" value="{{ request('renta_max') }}"
+                        placeholder="Renta máxima"
+                        step="1"
+                        inputmode="numeric"
+                        class="h-12 rounded-xl border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-sm px-4">
 
                     <select name="modalidad" class="h-12 rounded-xl border-gray-300 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Modalidad</option>

@@ -8,6 +8,7 @@ use App\Models\Talento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TalentoRegisterController extends Controller
 {
@@ -27,11 +28,12 @@ class TalentoRegisterController extends Controller
 
         // Crear usuario
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'rol' => 'talento',
-            'estado' => 'pendiente',
-            'password' => Hash::make($request->password),
+            'name'           => $request->name,
+            'email'          => $request->email,
+            'rol'            => 'talento',
+            'estado'         => 'pendiente',
+            'password'       => Hash::make($request->password),
+            'remember_token' => Str::random(60),
         ]);
 
         // Crear perfil talento

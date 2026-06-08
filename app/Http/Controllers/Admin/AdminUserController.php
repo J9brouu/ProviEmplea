@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateAdminUserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 
 class AdminUserController extends Controller
 {
@@ -13,6 +14,8 @@ class AdminUserController extends Controller
     {
         $data = $request->validated();
         $data['rol'] = 'admin';
+        $data['email_verified_at'] = now();
+        $data['remember_token'] = Str::random(60);
 
         User::create($data);
 

@@ -9,6 +9,7 @@ use App\Models\DatosEmpresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class EmpresaRegisterController extends Controller
 {
@@ -29,11 +30,12 @@ class EmpresaRegisterController extends Controller
 
         // USER
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'rol'      => 'empresa',
-            'estado'   => 'pendiente',
-            'password' => Hash::make($request->password),
+            'name'           => $request->name,
+            'email'          => $request->email,
+            'rol'            => 'empresa',
+            'estado'         => 'pendiente',
+            'password'       => Hash::make($request->password),
+            'remember_token' => Str::random(60),
         ]);
 
         // CREAR DATOS EMPRESA
