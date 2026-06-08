@@ -38,6 +38,11 @@ Este archivo registra todos los cambios solicitados y realizados en el proyecto.
 - 2026-06-08: Se ocultaron los usuarios con `estado = desactivado` de las listas de empresa y de administración normales.
 - 2026-06-08: Se agregó una sección de `Usuarios desactivados` en `resources/views/admin/dashboard.blade.php`.
 - 2026-06-08: Se actualizó la creación de usuarios en `App\Http\Controllers\Empresa\UsuariosController` para poblar `email_verified_at` y `remember_token`.
+- 2026-06-08: Se actualizó `App\Http\Controllers\Admin\AdminUserController.php` para marcar como verificado y asignar `remember_token` cuando se crea un administrador desde el panel.
+- 2026-06-08: Se mejoró la vista `resources/views/empresa/perfil.blade.php` para que siga el estilo visual de `empresa/dashboard`, con tarjetas más consistentes, bordes `rounded-2xl` y presentación de estadísticas igual al dashboard.
+- 2026-06-08: Se actualizó `App\Http\Controllers\Auth\EmpresaRegisterController.php` y `App\Http\Controllers\Auth\TalentoRegisterController.php` para generar `remember_token` al crear nuevos usuarios desde el registro.
+- 2026-06-08: Se actualizó `resources/views/empresa/talentos.blade.php` para que el filtro de `renta_max` use un campo numérico entero (`type="number" step="1" inputmode="numeric"`) en lugar de un desplegable.
+- 2026-06-08: Se amplió el selector `idioma` en `resources/views/empresa/talentos.blade.php` para incluir idiomas principales: Español, Inglés, Francés, Portugués, Alemán, Italiano, Mandarín, Japonés, Árabe y Ruso.
 - 2026-06-08: Se corrigió `database/factories/ArchivoEmpresaFactory.php` para incluir `nombre_archivo` en las semillas de `archivo_empresa`.
 - 2026-06-08: Se ejecutó `php artisan migrate:fresh --seed` para recrear y poblar la base de datos correctamente.
 
