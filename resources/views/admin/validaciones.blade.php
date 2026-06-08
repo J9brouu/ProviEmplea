@@ -8,10 +8,9 @@
             </div>
         @endif
 
-        <!-- HEADER -->
         <div>
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Validaciones</h1>
-            <p class="text-gray-500 mt-1">Gestión de aprobación de talentos y empresas pendientes.</p>
+            <h1 class="text-5xl font-bold text-gray-800">Validaciones</h1>
+            <p class="text-gray-500 mt-2">Gestión de aprobación de talentos y empresas pendientes.</p>
         </div>
 
         <!-- CARDS -->
@@ -27,7 +26,7 @@
         </div>
 
         <!-- TALENTOS PENDIENTES -->
-        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+        <div class="bg-white rounded-2xl overflow-hidden">
             <div class="p-6 border-b bg-gray-50">
                 <h2 class="text-xl font-bold text-slate-800">Talentos Pendientes</h2>
             </div>
@@ -109,7 +108,7 @@
         </div>
 
         <!-- EMPRESAS PENDIENTES -->
-        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+        <div class="bg-white rounded-2xl overflow-hidden">
             <div class="p-6 border-b bg-gray-50">
                 <h2 class="text-xl font-bold text-slate-800">Empresas Pendientes</h2>
             </div>

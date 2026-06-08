@@ -2,16 +2,14 @@
 
     <div class="space-y-8">
 
-        <!-- HEADER -->
-        <div class="flex flex-wrap justify-between items-start gap-4">
+        <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl md:text-5xl font-bold text-slate-800">Gestión de Talentos</h1>
-                <p class="text-gray-500 mt-2">Administración de perfiles registrados.</p>
+                <h1 class="text-5xl font-bold text-gray-800">Gestión de Talentos</h1>
+                <p class="text-gray-500 mt-1 text-sm">Administración de perfiles registrados.</p>
             </div>
-            <a href="{{ route('admin.validaciones') }}"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow">
-                Validaciones
-            </a>
+            <div>
+                <a href="{{ route('admin.validaciones') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl shadow">Validaciones</a>
+            </div>
         </div>
 
         <!-- CARDS -->
@@ -45,7 +43,7 @@
 
         </div>
 
-        <div class="bg-white p-4 rounded-2xl shadow-sm border">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border">
 
             <form method="GET" action="{{ route('admin.talentos') }}">
 

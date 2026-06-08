@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Empresa;
 use App\Http\Controllers\Controller;
 use App\Models\DatosEmpresa;
 use App\Models\Interacciones;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,14 +13,25 @@ class PerfilController extends Controller
 {
     public function index()
     {
-        $empresa = DatosEmpresa::where('user_id', Auth::id())
-            ->with('usuariosEmpresa')
-            ->firstOrFail();
+        $empresa = DatosEmpresa::with('usuariosEmpresa')
+            ->firstOrCreate(
+                ['user_id' => Auth::id()],
+                [
+                    'rut_empresa' => 'Pendiente',
+                    'rubro_empresa' => 'No especificado',
+                    'tipo_empresa' => 'Pyme',
+                    'presentacion_empresa' => 'Empresa registrada sin datos.',
+                    'beneficios_empresa' => 'Beneficios por definir.',
+                    'validacion' => 0,
+                ]
+            );
 
         $totales = [
             'procesos'   => Interacciones::where('datos_empresa_id', $empresa->id)->whereIn('estado', ['contactado', 'entrevista'])->count(),
             'contactados'=> Interacciones::where('datos_empresa_id', $empresa->id)->count(),
-            'usuarios'   => $empresa->usuariosEmpresa->count(),
+            'usuarios'   => $empresa->usuariosEmpresa()
+                ->whereHas('user', fn ($q) => $q->where('estado', '!=', 'desactivado'))
+                ->count(),
         ];
 
         return view('empresa.perfil', compact('empresa', 'totales'));
@@ -27,7 +39,17 @@ class PerfilController extends Controller
 
     public function update(Request $request)
     {
-        $empresa = DatosEmpresa::where('user_id', Auth::id())->firstOrFail();
+        $empresa = DatosEmpresa::firstOrCreate(
+            ['user_id' => Auth::id()],
+            [
+                'rut_empresa' => 'Pendiente',
+                'rubro_empresa' => 'No especificado',
+                'tipo_empresa' => 'Pyme',
+                'presentacion_empresa' => 'Empresa registrada sin datos.',
+                'beneficios_empresa' => 'Beneficios por definir.',
+                'validacion' => 0,
+            ]
+        );
 
         $request->validate([
             'name'                 => 'required|string|max:255',
@@ -64,7 +86,10 @@ class PerfilController extends Controller
             'password'         => 'required|string|min:8|confirmed',
         ]);
 
-        Auth::user()->update([
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        $user?->update([
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
         ]);
 

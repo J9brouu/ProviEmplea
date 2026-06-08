@@ -8,15 +8,14 @@
             </div>
         @endif
 
-        <!-- HEADER -->
         <div>
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Vitrina de Talentos</h1>
-            <p class="text-gray-500 mt-1">Busca talentos y envía sus antecedentes a una empresa.</p>
+            <h1 class="text-5xl font-bold text-gray-800">Vitrina de Talentos</h1>
+            <p class="text-gray-500 mt-2">Busca talentos y envía sus antecedentes a una empresa.</p>
         </div>
 
         <!-- FILTROS -->
         <form method="GET" action="{{ route('admin.vitrina') }}">
-            <div class="bg-white p-6 rounded-2xl shadow border border-gray-100 space-y-4">
+            <div class="bg-white rounded-2xl shadow p-6 space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
 
                     <input type="text" name="carrera" value="{{ request('carrera') }}"

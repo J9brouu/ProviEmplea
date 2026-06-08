@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UsuariosController extends Controller
 {
@@ -18,6 +19,9 @@ class UsuariosController extends Controller
 
         $usuarios = UsuariosEmpresa::where('datos_empresa_id', $empresa->id)
             ->with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('estado', '!=', 'desactivado');
+            })
             ->get();
 
         return view('empresa.usuarios', compact('empresa', 'usuarios'));
@@ -43,6 +47,10 @@ class UsuariosController extends Controller
             'estado'   => 'activo',
         ]);
 
+        $user->email_verified_at = now();
+        $user->remember_token = Str::random(10);
+        $user->save();
+
         UsuariosEmpresa::create([
             'datos_empresa_id' => $empresa->id,
             'user_id'          => $user->id,
@@ -61,8 +69,8 @@ class UsuariosController extends Controller
             ->where('datos_empresa_id', $empresa->id)
             ->firstOrFail();
 
-        $usuario->user->delete();
+        $usuario->user->update(['estado' => 'desactivado']);
 
-        return back()->with('success', 'Usuario eliminado.');
+        return back()->with('success', 'Usuario desactivado correctamente.');
     }
 }

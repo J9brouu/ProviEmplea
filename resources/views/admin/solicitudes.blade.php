@@ -8,16 +8,14 @@
             </div>
         @endif
 
-        <!-- HEADER -->
-        <div class="flex flex-wrap justify-between items-start gap-4">
+        <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl md:text-5xl font-bold text-gray-800">Solicitudes Empresariales</h1>
-                <p class="text-gray-500 mt-2">Gestión y seguimiento de contactos entre empresas y talentos.</p>
+                <h1 class="text-5xl font-bold text-gray-800">Solicitudes Empresariales</h1>
+                <p class="text-gray-500 mt-1 text-sm">Gestión y seguimiento de contactos entre empresas y talentos.</p>
             </div>
-            <a href="{{ route('admin.solicitudes.pdf') }}"
-                class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition shadow">
-                Exportar PDF
-            </a>
+            <div>
+                <a href="{{ route('admin.solicitudes.pdf') }}" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-2xl transition shadow">Exportar PDF</a>
+            </div>
         </div>
 
         <!-- CARDS -->

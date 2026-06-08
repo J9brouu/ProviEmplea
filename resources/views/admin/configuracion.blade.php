@@ -2,17 +2,9 @@
 
     <div class="space-y-8">
 
-        <!-- Header -->
         <div>
-
-            <h1 class="text-5xl font-bold text-gray-800">
-                Configuración
-            </h1>
-
-            <p class="text-gray-500 mt-2">
-                Administra las configuraciones generales de la plataforma.
-            </p>
-
+            <h1 class="text-5xl font-bold text-gray-800">Configuración</h1>
+            <p class="text-gray-500 mt-2">Administra las configuraciones generales de la plataforma.</p>
         </div>
 
         <!-- Grid -->

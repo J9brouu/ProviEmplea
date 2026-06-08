@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\TalentosController;
 use App\Http\Controllers\Admin\EmpresasController;
 use App\Http\Controllers\Admin\VitrinaController as AdminVitrinaController;
 use App\Http\Controllers\Admin\SolicitudesController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ValidacionesController;
 use App\Http\Controllers\Admin\PerfilController as AdminPerfilController;
 use App\Http\Controllers\Talento\DashboardController as TalentoDashboardController;
@@ -31,6 +33,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware('auth')->get('/dashboard', function () {
+    return match (Auth::user()->rol) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'talento' => redirect()->route('talento.dashboard'),
+        'empresa' => redirect()->route('empresa.dashboard'),
+        default => redirect()->route('login'),
+    };
+})->name('dashboard');
+
 // Registros
 Route::get('/registro/talento', [TalentoRegisterController::class, 'create'])->name('registro.talento');
 Route::post('/registro/talento', [TalentoRegisterController::class, 'store'])->name('registro.talento.store');
@@ -47,6 +58,7 @@ Route::middleware('auth')->group(function () {
 // Rutas para el Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::post('admin/admins', [AdminUserController::class, 'store'])->name('admin.admins.store');
     Route::get('admin/perfil', [AdminPerfilController::class, 'index'])->name('admin.perfil');
     Route::put('admin/perfil/update', [AdminPerfilController::class, 'update'])->name('admin.perfil.update');
     Route::put('admin/perfil/password', [AdminPerfilController::class, 'password'])->name('admin.perfil.password');

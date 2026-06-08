@@ -18,12 +18,28 @@ class DashboardController extends Controller
         $totalUsuarios = User::count();
         $totalPostulaciones = Interacciones::count();
 
-        $empresas = DatosEmpresa::with('user')->latest()->take(4)->get();
-        $talentos = Talento::with('user')->latest()->take(4)->get();
+        $empresas = DatosEmpresa::with('user')
+            ->whereHas('user', fn ($q) => $q->where('estado', '!=', 'desactivado'))
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $talentos = Talento::with('user')
+            ->whereHas('user', fn ($q) => $q->where('estado', '!=', 'desactivado'))
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $admins = User::where('rol', 'admin')
+            ->where('estado', '!=', 'desactivado')
+            ->latest()
+            ->get();
+
+        $disabledUsers = User::where('estado', 'desactivado')->latest()->get();
 
         return view('admin.dashboard', compact(
             'totalTalentos', 'totalEmpresas', 'totalUsuarios',
-            'totalPostulaciones', 'empresas', 'talentos'
+            'totalPostulaciones', 'empresas', 'talentos', 'admins', 'disabledUsers'
         ));
     }
 }

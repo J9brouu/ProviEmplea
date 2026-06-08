@@ -13,6 +13,7 @@ class TalentosController extends Controller
         $buscar = request('buscar');
 
         $talentos = Talento::with('user')
+            ->whereHas('user', fn ($q) => $q->where('estado', '!=', 'desactivado'))
 
             ->when($buscar, function ($query) use ($buscar) {
 

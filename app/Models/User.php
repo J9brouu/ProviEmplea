@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,6 +51,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function scopeNotDesactivado(Builder $query): Builder
+    {
+        return $query->where('estado', '!=', 'desactivado');
+    }
+
+    public function scopeDesactivados(Builder $query): Builder
+    {
+        return $query->where('estado', 'desactivado');
     }
 
     public function talento(): HasOne
