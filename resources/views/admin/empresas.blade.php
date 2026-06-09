@@ -123,7 +123,7 @@
                                                                 <select name="estado" class="w-full border border-gray-300 rounded-2xl px-4 py-3">
                                                                     <option value="activo" {{ $empresa->user->estado == 'activo' ? 'selected' : '' }}>Activo</option>
                                                                     <option value="pendiente" {{ $empresa->user->estado == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                                                    <option value="bloqueado" {{ $empresa->user->estado == 'bloqueado' ? 'selected' : '' }}>Bloqueado</option>
+                                                                    <option value="desactivado" {{ $empresa->user->estado == 'desactivado' ? 'selected' : '' }}>Desactivado</option>
                                                                     <option value="rechazado" {{ $empresa->user->estado == 'rechazado' ? 'selected' : '' }}>Rechazado</option>
                                                                 </select>
                                                             </div>

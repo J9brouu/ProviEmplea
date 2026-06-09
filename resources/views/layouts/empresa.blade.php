@@ -5,7 +5,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'ProviEmplea') }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <meta name="application-name" content="{{ config('app.name', 'ProviEmplea') }}">
+    @php
+        $routeName = Route::currentRouteName();
+        $pageTitles = [
+            'empresa.dashboard' => 'Dashboard',
+            'empresa.perfil' => 'Perfil',
+            'empresa.talentos' => 'Talentos',
+            'empresa.procesos' => 'Procesos',
+            'empresa.usuarios' => 'Usuarios',
+            'empresa.documentos' => 'Documentos',
+            'empresa.configuracion' => 'Configuración',
+        ];
+        if (! isset($pageTitles[$routeName]) && \Illuminate\Support\Str::startsWith($routeName, 'empresa.')) {
+            $pageTitles[$routeName] = ucfirst(str_replace('.', ' ', str_replace('empresa.', '', $routeName)));
+        }
+        $pageTitle = $pageTitles[$routeName] ?? config('app.name', 'ProviEmplea');
+    @endphp
+    <title>{{ $pageTitle }} | {{ config('app.name', 'ProviEmplea') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

@@ -43,6 +43,16 @@ Este archivo registra todos los cambios solicitados y realizados en el proyecto.
 - 2026-06-08: Se actualizó `App\Http\Controllers\Auth\EmpresaRegisterController.php` y `App\Http\Controllers\Auth\TalentoRegisterController.php` para generar `remember_token` al crear nuevos usuarios desde el registro.
 - 2026-06-08: Se actualizó `resources/views/empresa/talentos.blade.php` para que el filtro de `renta_max` use un campo numérico entero (`type="number" step="1" inputmode="numeric"`) en lugar de un desplegable.
 - 2026-06-08: Se amplió el selector `idioma` en `resources/views/empresa/talentos.blade.php` para incluir idiomas principales: Español, Inglés, Francés, Portugués, Alemán, Italiano, Mandarín, Japonés, Árabe y Ruso.
+- 2026-06-08: Se agregó subida de `talento_idiomas` en `database/seeders/DatabaseSeeder.php` para poblar la tabla con 1 a 3 idiomas por talento durante la semilla.
+- 2026-06-08: Se agregó un favicon SVG en `public/favicon.svg` y se actualizó el head de las plantillas base (`app`, `admin`, `empresa`, `talento`, `guest`) y la landing (`components/landing/head.blade.php`) para mostrar el icono en la pestaña del navegador.
+- 2026-06-08: Se actualizó la generación del título de página en las plantillas base para mostrar el nombre de la sección activa en la pestaña del navegador, manteniendo `ProviEmplea` como sufijo.
+- 2026-06-08: Se cambió la etiqueta `Bloqueado` por `Desactivado` en el select `Estado` de la edición de talentos en `resources/views/admin/talentos.blade.php`, y se actualizó la validación de `app/Http/Controllers/Admin/TalentosController.php` para permitir `desactivado` como valor persistente.
+- 2026-06-08: Se repitió el cambio en el panel de empresas: `resources/views/admin/empresas.blade.php` ahora guarda `desactivado` como estado en la base de datos, y `app/Http/Controllers/Admin/EmpresasController.php` valida `desactivado` como valor permitido.
+- 2026-06-08: Se ajustó la lista de administradores en `resources/views/admin/dashboard.blade.php` para mostrar el estado `Desactivado` con estilo coherente, en lugar de dejar el valor `bloqueado` sin formato específico.
+- 2026-06-08: Se agregó un botón de desactivación junto a cada administrador en la lista de administradores del dashboard, con una ruta `PUT admin/admins/{id}/desactivar` y acción en `App\Http\Controllers\Admin\AdminUserController::deactivate`.
+- 2026-06-08: Se implementó un botón `Reactivar` para cada usuario desactivado en `resources/views/admin/dashboard.blade.php`, con la ruta `PUT admin/admins/{id}/reactivar` y la acción `App\Http\Controllers\Admin\AdminUserController::reactivate`.
+- 2026-06-08: Se actualizó `.env` y `.env.example` para usar `APP_NAME=ProviEmplea`, de modo que los títulos no caigan en el valor por defecto `Laravel`.
+- 2026-06-08: Se ajustó `config/app.php` para usar `ProviEmplea` como nombre de aplicación por defecto.
 - 2026-06-08: Se corrigió `database/factories/ArchivoEmpresaFactory.php` para incluir `nombre_archivo` en las semillas de `archivo_empresa`.
 - 2026-06-08: Se ejecutó `php artisan migrate:fresh --seed` para recrear y poblar la base de datos correctamente.
 

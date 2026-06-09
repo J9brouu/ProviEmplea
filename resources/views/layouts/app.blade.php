@@ -5,8 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <meta name="application-name" content="{{ config('app.name', 'ProviEmplea') }}">
+    @php
+        $routeName = Route::currentRouteName();
+        $pageTitles = [
+            'dashboard' => 'Dashboard',
+            'profile.edit' => 'Perfil',
+        ];
+        if (! isset($pageTitles[$routeName]) && \Illuminate\Support\Str::startsWith($routeName, 'profile.')) {
+            $pageTitles[$routeName] = ucfirst(str_replace('.', ' ', str_replace('profile.', '', $routeName)));
+        }
+        $pageTitle = $pageTitles[$routeName] ?? config('app.name', 'ProviEmplea');
+    @endphp
 
-    <title>{{ config('app.name', 'ProviEmplea') }}</title>
+    <title>{{ $pageTitle }} | {{ config('app.name', 'ProviEmplea') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

@@ -368,9 +368,9 @@
                                                                     Pendiente
                                                                 </option>
 
-                                                                <option value="bloqueado"
-                                                                    {{ old('estado', $talento->user->estado) == 'bloqueado' ? 'selected' : '' }}>
-                                                                    Bloqueado
+                                                                <option value="desactivado"
+                                                                    {{ old('estado', $talento->user->estado) == 'desactivado' ? 'selected' : '' }}>
+                                                                    Desactivado
                                                                 </option>
 
                                                                 <option value="rechazado"

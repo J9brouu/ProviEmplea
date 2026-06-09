@@ -38,7 +38,7 @@ class TalentosController extends Controller
         // VALIDAR DATOS
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'estado' => 'required|in:activo,pendiente,bloqueado,rechazado',
+            'estado' => 'required|in:activo,pendiente,desactivado,bloqueado,rechazado',
             'condicion_modalidad' => 'required|in:Presencial,Remoto,Híbrido',
             'condicion_jornada' => 'required|in:Full-Time,Part-Time,Freelance',
             'resumen' => 'required|string|min:10|max:5000',

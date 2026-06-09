@@ -34,17 +34,25 @@ class EmpresasController extends Controller
     {
         $empresa = DatosEmpresa::findOrFail($id);
 
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'estado' => 'required|in:activo,pendiente,desactivado,bloqueado,rechazado',
+            'rubro_empresa' => 'required|string|max:255',
+            'tipo_empresa' => 'required|string|max:255',
+            'presentacion_empresa' => 'required|string|max:5000',
+        ]);
+
         // ACTUALIZAR USER
         $empresa->user->update([
-            'name' => $request->name,
-            'estado' => $request->estado,
+            'name' => $validated['name'],
+            'estado' => $validated['estado'],
         ]);
 
         // ACTUALIZAR EMPRESA
         $empresa->update([
-            'rubro_empresa' => $request->rubro_empresa,
-            'tipo_empresa' => $request->tipo_empresa,
-            'presentacion_empresa' => $request->presentacion_empresa,
+            'rubro_empresa' => $validated['rubro_empresa'],
+            'tipo_empresa' => $validated['tipo_empresa'],
+            'presentacion_empresa' => $validated['presentacion_empresa'],
         ]);
 
         return redirect()->back()->with('success', 'Empresa actualizada');

@@ -58,47 +58,6 @@
 
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Usuarios desactivados</h2>
-                    <p class="text-gray-500 mt-1">Solo los administradores pueden ver y revisar estas cuentas.</p>
-                </div>
-                <span class="inline-flex items-center rounded-full bg-red-100 text-red-700 px-4 py-2 text-sm font-medium">
-                    {{ $disabledUsers->count() }} desactivados
-                </span>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse min-w-[420px]">
-                    <thead>
-                        <tr class="border-b border-gray-200 text-gray-500 text-sm">
-                            <th class="py-4 text-left">Nombre</th>
-                            <th class="py-4 text-left">Correo</th>
-                            <th class="py-4 text-center">Rol</th>
-                            <th class="py-4 text-right">Desactivado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($disabledUsers as $disabledUser)
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
-                                <td class="py-5 text-gray-900">{{ $disabledUser->name }}</td>
-                                <td class="py-5 text-gray-700">{{ $disabledUser->email }}</td>
-                                <td class="py-5 text-center text-sm text-gray-500">{{ ucfirst($disabledUser->rol) }}</td>
-                                <td class="py-5 text-right text-sm text-gray-500">{{ $disabledUser->updated_at->format('d/m/Y') }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="py-10 text-center text-gray-500">
-                                    No hay usuarios desactivados.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
             <x-admin.register-admin-user />
 
@@ -122,6 +81,7 @@
                                 <th class="py-4 text-left">Nombre</th>
                                 <th class="py-4 text-left">Correo</th>
                                 <th class="py-4 text-center">Estado</th>
+                                <th class="py-4 text-center">Acción</th>
                                 <th class="py-4 text-right">Creado</th>
                             </tr>
                         </thead>
@@ -142,9 +102,30 @@
                                     </td>
                                     <td class="py-5 text-gray-700">{{ $admin->email }}</td>
                                     <td class="py-5 text-center">
-                                        <span class="px-3 py-1 rounded-full text-sm font-medium {{ $admin->estado === 'activo' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                                            {{ ucfirst($admin->estado) }}
+                                        @php
+                                            $adminEstadoLabel = $admin->estado === 'bloqueado' ? 'Desactivado' : ucfirst($admin->estado);
+                                            $adminEstadoClass = $admin->estado === 'activo'
+                                                ? 'bg-green-100 text-green-700'
+                                                : ($admin->estado === 'pendiente'
+                                                    ? 'bg-yellow-100 text-yellow-700'
+                                                    : 'bg-red-100 text-red-700');
+                                        @endphp
+                                        <span class="px-3 py-1 rounded-full text-sm font-medium {{ $adminEstadoClass }}">
+                                            {{ $adminEstadoLabel }}
                                         </span>
+                                    </td>
+                                    <td class="py-5 text-center">
+                                        @if(auth()->id() !== $admin->id)
+                                            <form action="{{ route('admin.admins.deactivate', $admin->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="inline-flex items-center justify-center px-3 py-2 rounded-xl bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition">
+                                                    Desactivar
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="text-gray-400 text-sm">No disponible</span>
+                                        @endif
                                     </td>
                                     <td class="py-5 text-right text-sm text-gray-500">{{ $admin->created_at->format('d/m/Y') }}</td>
                                 </tr>
@@ -352,6 +333,57 @@
 
             </div>
 
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Usuarios desactivados</h2>
+                    <p class="text-gray-500 mt-1">Solo los administradores pueden ver y revisar estas cuentas.</p>
+                </div>
+                <span class="inline-flex items-center rounded-full bg-red-100 text-red-700 px-4 py-2 text-sm font-medium">
+                    {{ $disabledUsers->count() }} desactivados
+                </span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse min-w-[420px]">
+                    <thead>
+                        <tr class="border-b border-gray-200 text-gray-500 text-sm">
+                            <th class="py-4 text-left">Nombre</th>
+                            <th class="py-4 text-left">Correo</th>
+                            <th class="py-4 text-center">Rol</th>
+                            <th class="py-4 text-center">Acción</th>
+                            <th class="py-4 text-right">Desactivado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($disabledUsers as $disabledUser)
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                <td class="py-5 text-gray-900">{{ $disabledUser->name }}</td>
+                                <td class="py-5 text-gray-700">{{ $disabledUser->email }}</td>
+                                <td class="py-5 text-center text-sm text-gray-500">{{ ucfirst($disabledUser->rol) }}</td>
+                                <td class="py-5 text-center">
+                                    <form action="{{ route('admin.admins.reactivate', $disabledUser->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="inline-flex items-center justify-center px-3 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+                                            Reactivar
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="py-5 text-right text-sm text-gray-500">{{ $disabledUser->updated_at->format('d/m/Y') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="py-10 text-center text-gray-500">
+                                    No hay usuarios desactivados.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>

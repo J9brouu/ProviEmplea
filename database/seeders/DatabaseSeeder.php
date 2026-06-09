@@ -10,6 +10,7 @@ use App\Models\DatosEmpresa;
 use App\Models\Perfeccionamiento;
 use App\Models\Talento;
 use App\Models\TalentoArchivo;
+use App\Models\TalentoIdioma;
 use App\Models\UsuariosEmpresa;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -40,6 +41,18 @@ class DatabaseSeeder extends Seeder
             AntecedentesLaborales::factory()->count(1)->create(['talento_id' => $talento->id]);
             CompetenciasTecnicas::factory()->count(2)->create(['talento_id' => $talento->id]);
             Perfeccionamiento::factory()->count(1)->create(['talento_id' => $talento->id]);
+
+            $idiomas = collect(['Español', 'Inglés', 'Portugués', 'Francés', 'Alemán', 'Italiano', 'Chino Mandarín', 'Árabe', 'Japonés', 'Ruso'])
+                ->shuffle()
+                ->take(rand(1, 3));
+
+            foreach ($idiomas as $idioma) {
+                TalentoIdioma::create([
+                    'talento_id'    => $talento->id,
+                    'nombre_idioma' => $idioma,
+                    'nivel'         => fake()->randomElement(['Básico', 'Intermedio', 'Avanzado', 'Nativo']),
+                ]);
+            }
         }
 
         // EMPRESAS

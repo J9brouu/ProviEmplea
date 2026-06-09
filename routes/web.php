@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('admin/admins', [AdminUserController::class, 'store'])->name('admin.admins.store');
+    Route::put('admin/admins/{id}/desactivar', [AdminUserController::class, 'deactivate'])->name('admin.admins.deactivate');
+    Route::put('admin/admins/{id}/reactivar', [AdminUserController::class, 'reactivate'])->name('admin.admins.reactivate');
     Route::get('admin/perfil', [AdminPerfilController::class, 'index'])->name('admin.perfil');
     Route::put('admin/perfil/update', [AdminPerfilController::class, 'update'])->name('admin.perfil.update');
     Route::put('admin/perfil/password', [AdminPerfilController::class, 'password'])->name('admin.perfil.password');
