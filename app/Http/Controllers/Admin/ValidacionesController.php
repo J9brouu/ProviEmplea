@@ -62,7 +62,13 @@ class ValidacionesController extends Controller
     // APROBAR TALENTO COMPLETO
     public function aprobarTalento($id)
     {
-        Talento::findOrFail($id)->user->update(['estado' => 'activo']);
+        $talento = Talento::with('talentoArchivos')->findOrFail($id);
+
+        if ($talento->talentoArchivos->contains('estado', 'pendiente')) {
+            return back()->with('error_aprobacion', 'No se puede aprobar el talento porque tiene documentos pendientes de validar.');
+        }
+
+        $talento->user->update(['estado' => 'activo']);
         return back()->with('success', 'Talento aprobado.');
     }
 
@@ -76,7 +82,13 @@ class ValidacionesController extends Controller
     // APROBAR EMPRESA
     public function aprobarEmpresa($id)
     {
-        DatosEmpresa::findOrFail($id)->user->update(['estado' => 'activo']);
+        $empresa = DatosEmpresa::with('archivosEmpresa')->findOrFail($id);
+
+        if ($empresa->archivosEmpresa->contains('estado', 'pendiente')) {
+            return back()->with('error_aprobacion', 'No se puede aprobar la empresa porque tiene documentos pendientes de validar.');
+        }
+
+        $empresa->user->update(['estado' => 'activo']);
         return back()->with('success', 'Empresa aprobada.');
     }
 

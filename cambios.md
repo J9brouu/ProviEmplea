@@ -56,6 +56,39 @@ Este archivo registra todos los cambios solicitados y realizados en el proyecto.
 - 2026-06-08: Se corrigió `database/factories/ArchivoEmpresaFactory.php` para incluir `nombre_archivo` en las semillas de `archivo_empresa`.
 - 2026-06-08: Se ejecutó `php artisan migrate:fresh --seed` para recrear y poblar la base de datos correctamente.
 
+- 2026-06-09: En `resources/views/talento/perfil.blade.php`, se reemplazaron los selectores `<select>` de `renta_desde` y `renta_hasta` por `<input type="number">` con `min="0"`, `step="1"` e `inputmode="numeric"`, permitiendo al talento ingresar libremente cualquier valor entero positivo. El atributo `oninput` descarta decimales y valores negativos en el cliente. La validación del servidor en `App\Http\Controllers\Talento\PerfilController::update` (`nullable|numeric|min:0`) no requirió cambios.
+
+- 2026-06-09: Se corrigieron las inconsistencias visuales en las cards de `resources/views/talento/documentos.blade.php`:
+  - Se añadió `flex flex-col` a cada card para que el formulario de subida siempre quede alineado al fondo con `mt-auto`.
+  - Se envolvió el bloque de info del archivo en un `div` con `min-h-[72px]` para reservar altura constante incluso cuando no hay documento subido, evitando que las cards tengan alturas dispares.
+  - Se añadió `whitespace-nowrap` a los badges de estado para evitar quiebres de línea en títulos largos.
+  - Se unificó la estructura de la card "Ley 21.015" para seguir el mismo patrón visual (encabezado → info → formulario al fondo) que las otras dos cards.
+  - No se modificó ninguna lógica de controladores ni rutas; solo cambios de presentación en la vista.
+
+- 2026-06-09: Se corrigió el problema del botón "Subir" que aparecía fuera del card en `resources/views/talento/documentos.blade.php`:
+  - Se eliminó el enfoque `mt-auto` + `min-h` que causaba que el bloque del formulario desbordara el borde inferior del card.
+  - El div exterior del card usa `flex flex-col overflow-hidden`; el div interior con padding usa `flex flex-col flex-1`, garantizando que el card nunca desborde su propio contenedor.
+  - La zona de info del archivo usa `flex-1 mb-4` para absorber el espacio variable, manteniendo el formulario pegado al fondo del contenido sin salirse del card.
+  - Los badges usan `shrink-0` para evitar desbordamiento horizontal en el encabezado.
+  - El input de archivo usa `min-w-0` y el botón `shrink-0` para que el flex row nunca desborde horizontalmente.
+  - No se modificó ninguna lógica de controladores ni rutas.
+
+- 2026-06-09: Se eliminó el selector `<select name="cargo">` duplicado en el modal "Nuevo Usuario" de `resources/views/empresa/usuarios.blade.php`. Se conservó el primero (con "Jefe de Área" con tilde) y se eliminó el segundo (que además tenía "Jefe de Area" sin tilde). Sin cambios en controladores ni rutas.
+
+- 2026-06-09: Se eliminó la sección "Vitrina de Talentos" del panel de administración por ser redundante con la vitrina ya existente para empresas. Cambios realizados:
+  - Se eliminaron las rutas `admin.vitrina` (GET) y `admin.vitrina.enviar` (POST) de `routes/web.php`.
+  - Se eliminó el `use` de `App\Http\Controllers\Admin\VitrinaController` en `routes/web.php`.
+  - Se eliminó el enlace "Vitrina de Talentos" del sidebar en `resources/views/layouts/admin.blade.php`.
+  - Se eliminó la entrada `admin.vitrina` del array de títulos de página en el mismo layout.
+  - El archivo `App\Http\Controllers\Admin\VitrinaController.php` y la vista `resources/views/admin/vitrina.blade.php` quedan en el proyecto pero sin rutas activas.
+
+- 2026-06-09: Se agregó bloqueo de aprobación con documentos pendientes en `admin/validaciones`:
+  - **Servidor** (`App\Http\Controllers\Admin\ValidacionesController`): `aprobarTalento` y `aprobarEmpresa` verifican si el usuario tiene documentos con `estado = pendiente` antes de aprobar. Si los hay, redirigen con `session('error_aprobacion')` en lugar de cambiar el estado.
+  - **Cliente** (`resources/views/admin/validaciones.blade.php`): el botón "Aprobar" de cada usuario ahora llama a `intentarAprobar()` en lugar de enviar el form directamente. Si `data-pendientes="1"`, muestra un modal de advertencia amarillo con el nombre del usuario y el mensaje explicativo. Si no hay pendientes, envía el form oculto normalmente.
+  - Se agregó alerta visual para `session('error_aprobacion')` en la parte superior de la vista.
+
+- 2026-06-09: Se actualizó el botón del modal de documentos pendientes en `resources/views/admin/validaciones.blade.php`: se cambió de `<button>` a `<a href="{{ route('admin.validaciones') }}">` con texto "OK", de modo que al hacer clic cierra el modal y redirige explícitamente a la sección de validaciones.
+
 ## Nota
 
 A partir de ahora, cualquier cambio o adición solicitado debe registrarse en este archivo.

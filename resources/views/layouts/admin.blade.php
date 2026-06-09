@@ -18,7 +18,6 @@
             'admin.talentos' => 'Talentos',
             'admin.validaciones' => 'Validaciones',
             'admin.solicitudes' => 'Solicitudes',
-            'admin.vitrina' => 'Vitrina',
         ];
         if (! isset($pageTitles[$routeName])) {
             if (\Illuminate\Support\Str::startsWith($routeName, 'admin.admins.')) {
@@ -79,10 +78,6 @@
                 <a href="/admin/solicitudes" @click="sidebarOpen = false"
                     class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.solicitudes') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Seguimiento
-                </a>
-                <a href="/admin/vitrina" @click="sidebarOpen = false"
-                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('admin.vitrina') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
-                    Vitrina de Talentos
                 </a>
             </nav>
         </aside>

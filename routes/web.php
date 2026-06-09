@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\TalentosController;
 use App\Http\Controllers\Admin\EmpresasController;
-use App\Http\Controllers\Admin\VitrinaController as AdminVitrinaController;
 use App\Http\Controllers\Admin\SolicitudesController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ValidacionesController;
@@ -87,8 +86,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('admin/solicitudes/{id}/seleccionado', [SolicitudesController::class, 'seleccionado'])->name('admin.solicitudes.seleccionado');
     Route::put('admin/solicitudes/{id}/contratar', [SolicitudesController::class, 'contratar'])->name('admin.solicitudes.contratar');
     Route::get('admin/solicitudes/pdf', [SolicitudesController::class, 'pdf'])->name('admin.solicitudes.pdf');
-    Route::get('admin/vitrina', [AdminVitrinaController::class, 'index'])->name('admin.vitrina');
-    Route::post('admin/vitrina/enviar', [AdminVitrinaController::class, 'enviar'])->name('admin.vitrina.enviar');
 });
 
 // Rutas para el Talento

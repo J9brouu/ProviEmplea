@@ -8,6 +8,12 @@
             </div>
         @endif
 
+        @if(session('error_aprobacion'))
+            <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-6 py-4 rounded-xl">
+                {{ session('error_aprobacion') }}
+            </div>
+        @endif
+
         <div>
             <h1 class="text-5xl font-bold text-gray-800">Validaciones</h1>
             <p class="text-gray-500 mt-2">Gestión de aprobación de talentos y empresas pendientes.</p>
@@ -84,9 +90,15 @@
 
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center gap-2">
-                                        <form method="POST" action="{{ route('admin.validaciones.talento.aprobar', $talento->id) }}">
+                                        @php $pendientesTalento = $talento->talentoArchivos->contains('estado', 'pendiente'); @endphp
+                                        <button type="button"
+                                            data-pendientes="{{ $pendientesTalento ? '1' : '0' }}"
+                                            data-form="aprobar-talento-{{ $talento->id }}"
+                                            data-nombre="{{ $talento->user->name }}"
+                                            onclick="intentarAprobar(this)"
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition">Aprobar</button>
+                                        <form id="aprobar-talento-{{ $talento->id }}" method="POST" action="{{ route('admin.validaciones.talento.aprobar', $talento->id) }}" class="hidden">
                                             @csrf @method('PUT')
-                                            <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition">Aprobar</button>
                                         </form>
                                         <form method="POST" action="{{ route('admin.validaciones.talento.rechazar', $talento->id) }}">
                                             @csrf @method('PUT')
@@ -154,9 +166,15 @@
 
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center gap-2">
-                                        <form method="POST" action="{{ route('admin.validaciones.empresa.aprobar', $empresa->id) }}">
+                                        @php $pendientesEmpresa = $empresa->archivosEmpresa->contains('estado', 'pendiente'); @endphp
+                                        <button type="button"
+                                            data-pendientes="{{ $pendientesEmpresa ? '1' : '0' }}"
+                                            data-form="aprobar-empresa-{{ $empresa->id }}"
+                                            data-nombre="{{ $empresa->user->name }}"
+                                            onclick="intentarAprobar(this)"
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition">Aprobar</button>
+                                        <form id="aprobar-empresa-{{ $empresa->id }}" method="POST" action="{{ route('admin.validaciones.empresa.aprobar', $empresa->id) }}" class="hidden">
                                             @csrf @method('PUT')
-                                            <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition">Aprobar</button>
                                         </form>
                                         <form method="POST" action="{{ route('admin.validaciones.empresa.rechazar', $empresa->id) }}">
                                             @csrf @method('PUT')
@@ -307,5 +325,41 @@
             </div>
         </div>
     @endforeach
+
+    {{-- MODAL: documentos pendientes --}}
+    <div id="modal-pendientes" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-yellow-500 px-6 py-5 flex items-center gap-3">
+                <span class="text-2xl">⚠️</span>
+                <div>
+                    <h2 class="text-lg font-bold text-white">Documentos pendientes</h2>
+                    <p class="text-yellow-100 text-xs mt-0.5">No es posible aprobar este usuario</p>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-700 text-sm mb-1">
+                    El usuario <strong id="modal-pendientes-nombre"></strong> tiene documentos pendientes de validar.
+                </p>
+                <p class="text-gray-500 text-sm">Debes aprobar o rechazar todos los documentos antes de aprobar al usuario.</p>
+            </div>
+            <div class="px-6 py-6 flex justify-center">
+                <a href="{{ route('admin.validaciones') }}"
+                    style="background-color:#2563eb;color:#ffffff;display:inline-block;padding:0.625rem 1.5rem;border-radius:0.75rem;font-weight:600;font-size:0.875rem;text-decoration:none;">
+                    OK
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function intentarAprobar(btn) {
+            if (btn.dataset.pendientes === '1') {
+                document.getElementById('modal-pendientes-nombre').textContent = btn.dataset.nombre;
+                document.getElementById('modal-pendientes').classList.remove('hidden');
+            } else {
+                document.getElementById(btn.dataset.form).submit();
+            }
+        }
+    </script>
 
 </x-admin-layout>

@@ -160,15 +160,6 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1.5">Cargo <span class="text-red-500">*</span></label>
-                    <select name="cargo" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm" required>
-                        <option value="RRHH"         {{ old('cargo') == 'RRHH'         ? 'selected' : '' }}>RRHH</option>
-                        <option value="Reclutador"   {{ old('cargo') == 'Reclutador'   ? 'selected' : '' }}>Reclutador</option>
-                        <option value="Supervisor"   {{ old('cargo') == 'Supervisor'   ? 'selected' : '' }}>Supervisor</option>
-                        <option value="Jefe de Area" {{ old('cargo') == 'Jefe de Area' ? 'selected' : '' }}>Jefe de Area</option>
-                    </select>
-                </div>
-                <div>
                     <label class="block text-sm font-medium text-gray-600 mb-1.5">Teléfono</label>
                     <div class="flex">
                         <span class="px-3 py-2.5 border border-r-0 border-gray-300 rounded-l-xl bg-gray-50 text-gray-600 text-sm">+569</span>
