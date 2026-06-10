@@ -5,18 +5,24 @@ namespace App\Http\Controllers\Empresa;
 use App\Http\Controllers\Controller;
 use App\Models\DatosEmpresa;
 use App\Models\Interacciones;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProcesosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $empresa = DatosEmpresa::where('user_id', Auth::id())->firstOrFail();
 
-        $procesos = Interacciones::where('datos_empresa_id', $empresa->id)
+        $query = Interacciones::where('datos_empresa_id', $empresa->id)
             ->with(['talento.competenciasTecnicas', 'talento.antecedentesEducacionales'])
-            ->latest()
-            ->paginate(10);
+            ->latest();
+
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $procesos = $query->paginate(10)->withQueryString();
 
         $totales = [
             'pendiente'    => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'pendiente')->count(),

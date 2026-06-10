@@ -89,6 +89,12 @@ Este archivo registra todos los cambios solicitados y realizados en el proyecto.
 
 - 2026-06-09: Se actualizó el botón del modal de documentos pendientes en `resources/views/admin/validaciones.blade.php`: se cambió de `<button>` a `<a href="{{ route('admin.validaciones') }}">` con texto "OK", de modo que al hacer clic cierra el modal y redirige explícitamente a la sección de validaciones.
 
+- 2026-06-09: En `resources/views/talento/perfil.blade.php`, se reemplazaron los `<select>` de `renta_desde` y `renta_hasta` por `<input type="number">` con `min="0"`, `step="1"` e `inputmode="numeric"`. El `oninput` fuerza enteros positivos en el cliente. La validación del servidor en `PerfilController::update` (`nullable|numeric|min:0`) no requirió cambios.
+
+- 2026-06-09: Se agregó filtro por etapa en `empresa/procesos`:
+  - `App\Http\Controllers\Empresa\ProcesosController::index` ahora recibe `Request` y aplica `where('estado', ...)` cuando el parámetro `estado` está presente. Se añadió `withQueryString()` para que la paginación conserve el filtro activo.
+  - En `resources/views/empresa/procesos.blade.php` se añadió un formulario GET con un `<select>` de etapas (Pendiente, Contactado, Entrevista, Seleccionado, No Seleccionado, Contratado), botón "Filtrar" y enlace "Limpiar" condicional, siguiendo el estilo visual de la vista.
+
 ## Nota
 
 A partir de ahora, cualquier cambio o adición solicitado debe registrarse en este archivo.

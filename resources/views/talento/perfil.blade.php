@@ -563,21 +563,10 @@
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Renta Desde
                             </label>
-                            <select name="renta_desde" class="w-full border border-gray-300 rounded-2xl px-4 py-3">
-                                <option value="0">Sin especificar</option>
-                                <option value="400000"  {{ ($talento->renta_desde ?? 0) == 400000  ? 'selected' : '' }}>$ 400.000</option>
-                                <option value="500000"  {{ ($talento->renta_desde ?? 0) == 500000  ? 'selected' : '' }}>$ 500.000</option>
-                                <option value="600000"  {{ ($talento->renta_desde ?? 0) == 600000  ? 'selected' : '' }}>$ 600.000</option>
-                                <option value="700000"  {{ ($talento->renta_desde ?? 0) == 700000  ? 'selected' : '' }}>$ 700.000</option>
-                                <option value="800000"  {{ ($talento->renta_desde ?? 0) == 800000  ? 'selected' : '' }}>$ 800.000</option>
-                                <option value="900000"  {{ ($talento->renta_desde ?? 0) == 900000  ? 'selected' : '' }}>$ 900.000</option>
-                                <option value="1000000" {{ ($talento->renta_desde ?? 0) == 1000000 ? 'selected' : '' }}>$ 1.000.000</option>
-                                <option value="1200000" {{ ($talento->renta_desde ?? 0) == 1200000 ? 'selected' : '' }}>$ 1.200.000</option>
-                                <option value="1500000" {{ ($talento->renta_desde ?? 0) == 1500000 ? 'selected' : '' }}>$ 1.500.000</option>
-                                <option value="2000000" {{ ($talento->renta_desde ?? 0) == 2000000 ? 'selected' : '' }}>$ 2.000.000</option>
-                                <option value="2500000" {{ ($talento->renta_desde ?? 0) == 2500000 ? 'selected' : '' }}>$ 2.500.000</option>
-                                <option value="3000000" {{ ($talento->renta_desde ?? 0) == 3000000 ? 'selected' : '' }}>$ 3.000.000</option>
-                            </select>
+                            <input type="number" name="renta_desde" min="0" step="1" inputmode="numeric"
+                                value="{{ $talento->renta_desde ?? 0 }}"
+                                oninput="this.value = this.value < 0 ? 0 : Math.trunc(this.value)"
+                                class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         </div>
 
                         <!-- RENTA HASTA -->
@@ -585,21 +574,10 @@
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Renta Hasta
                             </label>
-                            <select name="renta_hasta" class="w-full border border-gray-300 rounded-2xl px-4 py-3">
-                                <option value="0">Sin especificar</option>
-                                <option value="500000"  {{ ($talento->renta_hasta ?? 0) == 500000  ? 'selected' : '' }}>$ 500.000</option>
-                                <option value="600000"  {{ ($talento->renta_hasta ?? 0) == 600000  ? 'selected' : '' }}>$ 600.000</option>
-                                <option value="700000"  {{ ($talento->renta_hasta ?? 0) == 700000  ? 'selected' : '' }}>$ 700.000</option>
-                                <option value="800000"  {{ ($talento->renta_hasta ?? 0) == 800000  ? 'selected' : '' }}>$ 800.000</option>
-                                <option value="900000"  {{ ($talento->renta_hasta ?? 0) == 900000  ? 'selected' : '' }}>$ 900.000</option>
-                                <option value="1000000" {{ ($talento->renta_hasta ?? 0) == 1000000 ? 'selected' : '' }}>$ 1.000.000</option>
-                                <option value="1200000" {{ ($talento->renta_hasta ?? 0) == 1200000 ? 'selected' : '' }}>$ 1.200.000</option>
-                                <option value="1500000" {{ ($talento->renta_hasta ?? 0) == 1500000 ? 'selected' : '' }}>$ 1.500.000</option>
-                                <option value="2000000" {{ ($talento->renta_hasta ?? 0) == 2000000 ? 'selected' : '' }}>$ 2.000.000</option>
-                                <option value="2500000" {{ ($talento->renta_hasta ?? 0) == 2500000 ? 'selected' : '' }}>$ 2.500.000</option>
-                                <option value="3000000" {{ ($talento->renta_hasta ?? 0) == 3000000 ? 'selected' : '' }}>$ 3.000.000</option>
-                                <option value="4000000" {{ ($talento->renta_hasta ?? 0) == 4000000 ? 'selected' : '' }}>$ 4.000.000</option>
-                            </select>
+                            <input type="number" name="renta_hasta" min="0" step="1" inputmode="numeric"
+                                value="{{ $talento->renta_hasta ?? 0 }}"
+                                oninput="this.value = this.value < 0 ? 0 : Math.trunc(this.value)"
+                                class="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         </div>
 
                         <!-- LEY 21.015 -->

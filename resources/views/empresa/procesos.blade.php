@@ -32,6 +32,32 @@
             </div>
         </div>
 
+        <!-- FILTRO -->
+        <form method="GET" action="{{ route('empresa.procesos') }}">
+            <div class="bg-white p-4 rounded-2xl shadow border border-gray-100 flex flex-wrap items-center gap-3">
+                <select name="estado"
+                    class="h-11 rounded-xl border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-sm px-3">
+                    <option value="">Todas</option>
+                    <option value="pendiente"    {{ request('estado') == 'pendiente'    ? 'selected' : '' }}>Pendiente</option>
+                    <option value="contactado"   {{ request('estado') == 'contactado'   ? 'selected' : '' }}>Contactado</option>
+                    <option value="entrevista"   {{ request('estado') == 'entrevista'   ? 'selected' : '' }}>Entrevista</option>
+                    <option value="seleccionado" {{ request('estado') == 'seleccionado' ? 'selected' : '' }}>Seleccionado</option>
+                    <option value="rechazado"    {{ request('estado') == 'rechazado'    ? 'selected' : '' }}>No Seleccionado</option>
+                    <option value="contratado"   {{ request('estado') == 'contratado'   ? 'selected' : '' }}>Contratado</option>
+                </select>
+                <button type="submit"
+                    class="h-11 bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-xl font-semibold transition text-sm">
+                    Filtrar
+                </button>
+                @if(request()->filled('estado'))
+                    <a href="{{ route('empresa.procesos') }}"
+                        class="h-11 flex items-center px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl transition text-sm">
+                        Limpiar
+                    </a>
+                @endif
+            </div>
+        </form>
+
         <!-- TABLA -->
         <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
             <div class="px-6 py-5 border-b bg-gray-50">
