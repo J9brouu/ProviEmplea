@@ -67,10 +67,9 @@ class PerfilController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            if ($empresa->logo_empresa) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($empresa->logo_empresa);
-            }
-            $data['logo_empresa'] = $request->file('logo')->store('logos/empresas', 'public');
+            $logoFile = $request->file('logo');
+            $data['logo_contenido'] = base64_encode(file_get_contents($logoFile->getRealPath()));
+            $data['logo_mime']      = $logoFile->getMimeType();
         }
 
         $empresa->update($data);

@@ -53,7 +53,7 @@ ProviEmplea es una plataforma web que conecta personas que buscan trabajo (talen
 - **Estados de usuario:** Campo `estado` en `users` con valores `activo`, `pendiente`, `rechazado`, `bloqueado`, `desactivado`.
 - **CSS:** Tailwind CSS compilado con Vite (`vite.config.js`).
 - **PDF:** Paquete `barryvdh/laravel-dompdf` para generación de reportes.
-- **Almacenamiento:** `Storage::disk('public')` para archivos subidos, accesibles vía `Storage::url()`.
+- **Almacenamiento:** `Storage::disk('public')` para archivos subidos, accesibles vía `Storage::url()`. Solución temporal para proyecto de título (sin S3).
 - **Layouts Blade:** `layouts/admin.blade.php`, `layouts/talento.blade.php`, `layouts/empresa.blade.php`, `layouts/guest.blade.php`.
 - **Componentes Blade:** `x-admin-layout`, `x-talento-layout`, `x-empresa-layout`, `x-confirm-modal`, componentes de landing en `components/landing/`.
 
@@ -69,6 +69,8 @@ Cada sección de la plataforma está protegida: solo el tipo de usuario correcto
 ### `RoleMiddleware` (`app/Http/Middleware/RoleMiddleware.php`)
 
 Verifica que el usuario autenticado tenga el rol requerido. Si no está autenticado redirige a `/login`. Si el rol no coincide lanza `abort(403)`.
+
+**Nota de seguridad:** Todos los controladores de recursos del talento (`AntecedentesLaboralesController`, `PerfeccionamientoController`) verifican además que el ID del registro pertenezca al talento autenticado antes de permitir edición o eliminación, evitando acceso cruzado entre usuarios.
 
 Registrado en `bootstrap/app.php` como alias `role`. Se aplica en grupos de rutas:
 
@@ -654,15 +656,17 @@ Una empresa puede tener varios miembros del equipo con acceso a la plataforma (p
 ### 8.6 Documentos de empresa (`empresa/documentos`)
 
 **En palabras simples:**
-La empresa puede subir documentos institucionales (por ejemplo, contrato, acreditaciones, etc.) que el administrador puede revisar y validar. Cada documento puede eliminarse cuando ya no sea necesario.
+La empresa puede subir documentos institucionales (contrato, acreditaciones, RUT, etc.) que el administrador puede revisar y validar. Cada documento puede eliminarse cuando ya no sea necesario. Al subir un documento nuevo, la cuenta vuelve a estado "pendiente" para que el admin lo revise.
 
 **Técnico:**
 
 **Controlador:** `Empresa\DocumentosController`
 
-- `index()`: carga `ArchivoEmpresa` de la empresa autenticada.
-- `store(Request)`: valida archivo (pdf, doc, docx, png, jpg, jpeg; máx. 5MB) y tipo de archivo (string libre). Almacena en `empresa/documentos/` vía `Storage::disk('public')`. Crea registro en `archivo_empresa`.
-- `destroy($id)`: elimina archivo físico del storage y el registro de la BD.
+Tipos permitidos (definidos en la constante `TIPOS_PERMITIDOS`): `Escritura Empresa`, `RUT Empresa`, `Certificado SII`, `Contrato`, `Acreditación`, `Otro`.
+
+- `index()`: carga `ArchivoEmpresa` de la empresa autenticada. Pasa `$tipos` al view.
+- `store(Request)`: valida archivo (pdf, doc, docx, png, jpg, jpeg; máx. 5MB) y `tipo_archivo` contra la lista `TIPOS_PERMITIDOS`. Almacena en `empresa/documentos/` vía `Storage::disk('public')`. Crea registro en `archivo_empresa`. Actualiza `user.estado = 'pendiente'` para que el admin lo revise.
+- `destroy(int $id)`: elimina archivo físico del storage y el registro de la BD.
 - Rutas: `GET empresa/documentos`, `POST empresa/documentos`, `DELETE empresa/documentos/{id}`
 
 ---
@@ -708,6 +712,8 @@ Esta sección describe decisiones de diseño importantes que afectan cómo funci
 **Técnico:**
 
 - **Eliminación lógica:** nunca se borra un usuario de la BD. `estado = 'desactivado'` actúa como soft delete. Todos los listados excluyen desactivados con `where('estado', '!=', 'desactivado')` o `whereHas('user', ...)`.
+- **Conteos de estado optimizados:** los dashboards y paneles de procesos usan una sola consulta con `selectRaw('estado, COUNT(*) as total')->groupBy('estado')->pluck('total', 'estado')` en lugar de múltiples queries separadas por estado.
+- **Autorización de recursos del talento:** `AntecedentesLaboralesController` y `PerfeccionamientoController` verifican que el ID del registro pertenezca al talento autenticado antes de editar o eliminar, usando `where('talento_id', $talento->id)` en lugar de solo `findOrFail`.
 - **`remember_token`:** se genera con `Str::random(10)` (o `60` en admins) al crear usuarios programáticamente para garantizar la persistencia de sesión.
 - **`email_verified_at`:** se establece a `now()` al crear usuarios desde el panel (admin, empresa, usuarios de empresa) para que queden verificados sin flujo de email.
 - **Teléfono:** se almacena con prefijo `+569` concatenado. En el formulario se muestra solo los 8 dígitos y se ensambla en el controlador.

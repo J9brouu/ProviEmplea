@@ -224,7 +224,7 @@
                                     <p class="text-xs text-gray-400 mt-0.5 truncate max-w-[200px]">{{ $archivo->nombre_archivo }}</p>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <a href="{{ Storage::url($archivo->url_archivo) }}" target="_blank"
+                                    <a href="{{ route('archivos.talento', $archivo->id) }}" target="_blank"
                                         class="text-blue-600 hover:text-blue-700 text-xs font-medium">Ver</a>
                                     @if($archivo->estado === 'aprobado')
                                         <span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-semibold">Aprobado</span>
@@ -287,7 +287,7 @@
                                     <p class="text-xs text-gray-400 mt-0.5 truncate max-w-[200px]">{{ $archivo->nombre_archivo }}</p>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <a href="{{ Storage::url($archivo->url_archivo) }}" target="_blank"
+                                    <a href="{{ route('archivos.empresa', $archivo->id) }}" target="_blank"
                                         class="text-blue-600 hover:text-blue-700 text-xs font-medium">Ver</a>
                                     @if($archivo->estado === 'aprobado')
                                         <span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-semibold">Aprobado</span>

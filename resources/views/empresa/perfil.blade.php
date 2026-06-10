@@ -18,9 +18,15 @@
             <div class="px-6 py-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-center gap-5">
-                        <div class="w-20 h-20 rounded-3xl bg-blue-100 text-blue-700 flex items-center justify-center text-3xl font-bold">
-                            {{ strtoupper(substr($empresa->user->name, 0, 2)) }}
-                        </div>
+                        @if($empresa->logo_contenido)
+                            <img src="{{ route('archivos.logo', $empresa->id) }}"
+                                alt="Logo {{ $empresa->user->name }}"
+                                class="w-20 h-20 rounded-3xl object-cover border border-gray-200">
+                        @else
+                            <div class="w-20 h-20 rounded-3xl bg-blue-100 text-blue-700 flex items-center justify-center text-3xl font-bold">
+                                {{ strtoupper(substr($empresa->user->name, 0, 2)) }}
+                            </div>
+                        @endif
                         <div>
                             <h2 class="text-2xl font-bold text-gray-800">{{ $empresa->user->name }}</h2>
                             <p class="text-gray-500 mt-1">{{ $empresa->rubro_empresa ?? '—' }}</p>

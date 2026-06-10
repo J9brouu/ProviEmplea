@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,6 @@ use App\Http\Controllers\Talento\DashboardController as TalentoDashboardControll
 use App\Http\Controllers\Talento\PerfilController as TalentoPerfilController;
 use App\Http\Controllers\Talento\IdiomasController;
 use App\Http\Controllers\Talento\ProcesosController;
-use App\Http\Controllers\Talento\PerfeccionamientoController;
 use App\Http\Controllers\Talento\AntecedentesEducacionalesController;
 use App\Http\Controllers\Talento\AntecedentesLaboralesController;
 use App\Http\Controllers\Talento\CompetenciasController;
@@ -52,6 +52,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Archivos almacenados en BD (requieren autenticación)
+Route::middleware('auth')->group(function () {
+    Route::get('/archivos/talento/{id}', [ArchivoController::class, 'talento'])->name('archivos.talento');
+    Route::get('/archivos/empresa/{id}', [ArchivoController::class, 'empresa'])->name('archivos.empresa');
+    Route::get('/archivos/logo/{id}', [ArchivoController::class, 'logo'])->name('archivos.logo');
 });
 
 // Rutas para el Admin

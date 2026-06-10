@@ -51,11 +51,11 @@
                         <select name="tipo_archivo"
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" required>
                             <option value="">Seleccionar tipo</option>
-                            <option value="Escritura Empresa">Escritura Empresa</option>
-                            <option value="RUT Empresa">RUT Empresa</option>
-                            <option value="Logo">Logo</option>
-                            <option value="Certificado SII">Certificado SII</option>
-                            <option value="Otro">Otro</option>
+                            @foreach($tipos as $tipo)
+                                <option value="{{ $tipo }}" {{ old('tipo_archivo') === $tipo ? 'selected' : '' }}>
+                                    {{ $tipo }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div>
@@ -124,7 +124,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <div class="flex justify-center gap-2">
-                                        <a href="{{ Storage::url($doc->url_archivo) }}" target="_blank"
+                                        <a href="{{ route('archivos.empresa', $doc->id) }}" target="_blank"
                                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition">
                                             Ver
                                         </a>

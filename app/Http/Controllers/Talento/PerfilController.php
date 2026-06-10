@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Talento;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Talento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,8 +55,8 @@ class PerfilController extends Controller
             'condicion_modalidad' => 'nullable|in:Presencial,Híbrido,Remoto',
         ]);
 
-        // Usuario autenticado
-        $user = User::find(Auth::id());
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
         $user->update([
             'name' => $request->name,

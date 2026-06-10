@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\ArchivoEmpresa;
 use App\Models\AntecedentesEducacionales;
 use App\Models\AntecedentesLaborales;
 use App\Models\CompetenciasTecnicas;
@@ -60,7 +59,6 @@ class DatabaseSeeder extends Seeder
         foreach ($empresaUsers as $user) {
             $datosEmpresa = DatosEmpresa::factory()->create(['user_id' => $user->id]);
             UsuariosEmpresa::factory()->create(['datos_empresa_id' => $datosEmpresa->id, 'user_id' => $user->id]);
-            ArchivoEmpresa::factory()->create(['datos_empresa_id' => $datosEmpresa->id]);
         }
     }
 }

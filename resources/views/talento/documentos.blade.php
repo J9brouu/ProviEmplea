@@ -162,7 +162,7 @@
                                     <p class="text-sm font-medium text-gray-700 truncate">{{ $certDisc->nombre_archivo }}</p>
                                     <p class="text-xs text-gray-400">{{ $certDisc->created_at->format('d/m/Y H:i') }}</p>
                                 </div>
-                                <a href="{{ Storage::url($certDisc->url_archivo) }}" target="_blank"
+                                <a href="{{ route('archivos.talento', $certDisc->id) }}" target="_blank"
                                     class="shrink-0 text-blue-600 hover:text-blue-700 text-sm font-medium">Ver</a>
                             </div>
                             @if($certDisc->estado === 'rechazado' && $certDisc->motivo_rechazo)
@@ -251,7 +251,7 @@
                                     </td>
                                     <td class="py-4 text-gray-500 text-sm">{{ $doc->created_at->format('d/m/Y') }}</td>
                                     <td class="py-4 text-center">
-                                        <a href="{{ Storage::url($doc->url_archivo) }}" target="_blank"
+                                        <a href="{{ route('archivos.talento', $doc->id) }}" target="_blank"
                                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm">
                                             Ver
                                         </a>

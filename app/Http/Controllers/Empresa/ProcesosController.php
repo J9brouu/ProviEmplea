@@ -24,12 +24,17 @@ class ProcesosController extends Controller
 
         $procesos = $query->paginate(10)->withQueryString();
 
+        $conteos = Interacciones::where('datos_empresa_id', $empresa->id)
+            ->selectRaw('estado, COUNT(*) as total')
+            ->groupBy('estado')
+            ->pluck('total', 'estado');
+
         $totales = [
-            'pendiente'    => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'pendiente')->count(),
-            'contactado'   => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'contactado')->count(),
-            'entrevista'   => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'entrevista')->count(),
-            'seleccionado' => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'seleccionado')->count(),
-            'rechazado'    => Interacciones::where('datos_empresa_id', $empresa->id)->where('estado', 'rechazado')->count(),
+            'pendiente'    => $conteos->get('pendiente', 0),
+            'contactado'   => $conteos->get('contactado', 0),
+            'entrevista'   => $conteos->get('entrevista', 0),
+            'seleccionado' => $conteos->get('seleccionado', 0),
+            'rechazado'    => $conteos->get('rechazado', 0),
         ];
 
         return view('empresa.procesos', compact('procesos', 'totales'));

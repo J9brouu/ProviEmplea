@@ -60,9 +60,12 @@ class AntecedentesLaboralesController extends Controller
         return back()->with('success', 'Experiencia laboral agregada correctamente');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
-        $experiencia = AntecedentesLaborales::findOrFail($id);
+        $talento = Talento::where('user_id', Auth::id())->firstOrFail();
+        $experiencia = AntecedentesLaborales::where('id', $id)
+            ->where('talento_id', $talento->id)
+            ->firstOrFail();
 
         $validated = $request->validate([
             'institucion_o_empresa' => 'required|string|max:255',
@@ -95,9 +98,12 @@ class AntecedentesLaboralesController extends Controller
         return back()->with('success', 'Experiencia laboral actualizada correctamente');
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        $experiencia = AntecedentesLaborales::findOrFail($id);
+        $talento = Talento::where('user_id', Auth::id())->firstOrFail();
+        $experiencia = AntecedentesLaborales::where('id', $id)
+            ->where('talento_id', $talento->id)
+            ->firstOrFail();
 
         $experiencia->delete();
 

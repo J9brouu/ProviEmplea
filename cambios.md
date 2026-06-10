@@ -95,6 +95,82 @@ Este archivo registra todos los cambios solicitados y realizados en el proyecto.
   - `App\Http\Controllers\Empresa\ProcesosController::index` ahora recibe `Request` y aplica `where('estado', ...)` cuando el parámetro `estado` está presente. Se añadió `withQueryString()` para que la paginación conserve el filtro activo.
   - En `resources/views/empresa/procesos.blade.php` se añadió un formulario GET con un `<select>` de etapas (Pendiente, Contactado, Entrevista, Seleccionado, No Seleccionado, Contratado), botón "Filtrar" y enlace "Limpiar" condicional, siguiendo el estilo visual de la vista.
 
+## Revisión profesional completa — 2026-06-09
+
+Se realizó un escaneo integral del proyecto para identificar y corregir bugs, inconsistencias de seguridad, problemas de rendimiento y malas prácticas. Los cambios se aplicaron sin alterar ninguna funcionalidad existente.
+
+### Bugs de seguridad corregidos
+
+- **`App\Http\Controllers\Talento\PerfeccionamientoController::update()`**: El bloque de autorización estaba vacío (`{ }`), lo que permitía a cualquier talento autenticado editar el perfeccionamiento de otro usuario. Se añadió `abort(403)` cuando el `user_id` no coincide con el autenticado.
+- **`App\Http\Controllers\Talento\AntecedentesLaboralesController::update()` y `::destroy()`**: No verificaban que el registro perteneciera al talento autenticado. Se reemplazó `findOrFail($id)` por una búsqueda con doble condición `where('id', $id)->where('talento_id', $talento->id)->firstOrFail()`.
+- **`App\Http\Controllers\Auth\EmpresaRegisterController`**: Validación de contraseña cambiada de `min:6` a `min:8` para ser consistente con el resto del sistema.
+- **`App\Http\Controllers\Admin\PerfilController::password()`**: Validación de contraseña cambiada de `min:6` a `min:8`.
+- **`App\Http\Controllers\Admin\PerfilController::update()`**: Se añadió la regla `unique:users,email,{Auth::id()}` al campo email para evitar que un admin pueda guardar un correo ya usado por otro usuario.
+- **`App\Http\Controllers\Empresa\UsuariosController::store()`**: `remember_token` cambiado de `Str::random(10)` a `Str::random(60)` para cumplir el estándar de Laravel.
+
+### Validación y consistencia de flujo
+
+- **`App\Http\Controllers\Empresa\DocumentosController`**:
+  - Se reemplazó el campo `tipo_archivo` de texto libre por una lista validada de valores permitidos: `Escritura Empresa`, `RUT Empresa`, `Certificado SII`, `Contrato`, `Acreditación`, `Otro`.
+  - Se añadió `$empresa->user->update(['estado' => 'pendiente'])` al subir un documento, consistente con el comportamiento del flujo de talentos.
+  - Se pasa `$tipos` al view para que el `<select>` use siempre la misma lista que el controlador.
+  - `resources/views/empresa/documentos.blade.php`: el selector de tipo de documento ahora se genera con `@foreach($tipos as $tipo)` en lugar de opciones hardcodeadas.
+
+### Optimización de consultas (N+1 queries)
+
+- **`App\Http\Controllers\Talento\ProcesosController::index()`**: Los 6 conteos de estado separados se reemplazaron por una sola consulta con `selectRaw('estado, COUNT(*) as total')->groupBy('estado')->pluck(...)`.
+- **`App\Http\Controllers\Empresa\ProcesosController::index()`**: Mismo patrón, 5 consultas reducidas a 1.
+- **`App\Http\Controllers\Admin\SolicitudesController::index()`**: Mismo patrón, 5 consultas reducidas a 1.
+
+### Calidad de código
+
+- **`App\Http\Controllers\Talento\PerfilController::update()`**: Se reemplazó `User::find(Auth::id())` por `Auth::user()` (evita una consulta redundante). Se eliminó el `use App\Models\User` innecesario.
+- **`App\Http\Controllers\Talento\PerfeccionamientoController`**: Se eliminó la constante `TIPOS` declarada pero nunca usada. Se añadieron type hints `int $id` en `update()` y `destroy()`.
+- **`App\Http\Controllers\Admin\SolicitudesController`**: Se añadieron type hints `int $id` en todos los métodos de acción.
+- **`App\Http\Controllers\Empresa\UsuariosController`**: Se añadió type hint `int $id` en `destroy()`.
+
+### Migraciones nuevas
+
+- **`2026_06_09_000000_make_nullable_fields_in_talento_tables`**: Hace nullable los campos `egreso`, `funciones` y los cuatro campos de referencia en `antecedentes_laborales`, y `egreso` en `perfeccionamiento`. Estos campos ya eran tratados como opcionales por los controladores pero la migración original los declaraba como NOT NULL, lo que podía causar errores en MySQL strict mode y era la causa por la que el seeder fallaba.
+- **`2026_06_09_000001_add_indexes_to_performance_columns`**: Añade índices en `users.rol`, `users.estado`, `interacciones.estado`, `talento.condicion_jornada` y `talento.condicion_modalidad` para optimizar las consultas de filtrado más frecuentes.
+
+### Documentación
+
+- **`README.md`**: Reemplazado el README genérico de Laravel por la documentación real del proyecto (descripción, stack, instalación, credenciales de prueba, estructura de directorios, notas de despliegue).
+
+### Almacenamiento de archivos en base de datos
+
+Se migró completamente el almacenamiento de archivos desde `Storage::disk('public')` hacia la base de datos (LONGTEXT con base64), requerido por el entorno de despliegue en Laravel Cloud donde el filesystem local es efímero.
+
+**Migración nueva** (`2026_06_09_000002_store_files_in_database`):
+- `talento_archivo`: agrega `contenido` (LONGTEXT nullable) y `mime_type` (varchar nullable); hace `url_archivo` nullable.
+- `archivo_empresa`: mismas columnas.
+- `datos_empresa`: agrega `logo_contenido` (LONGTEXT nullable) y `logo_mime` (varchar nullable).
+
+**Modelos actualizados**:
+- `TalentoArchivo`: `contenido` y `mime_type` en `fillable`; `contenido` en `hidden`.
+- `ArchivoEmpresa`: mismo patrón.
+- `DatosEmpresa`: `logo_contenido` y `logo_mime` en `fillable`; `logo_contenido` en `hidden`.
+
+**Controlador nuevo** (`App\Http\Controllers\ArchivoController`):
+- `GET /archivos/talento/{id}`: sirve archivos de talento (admin ve todos; talento solo los suyos; empresa: 403).
+- `GET /archivos/empresa/{id}`: sirve archivos de empresa (admin ve todos; empresa solo los suyos; talento: 403).
+- `GET /archivos/logo/{id}`: sirve el logo de una empresa (cualquier usuario autenticado; incluye `Cache-Control: public, max-age=86400`).
+
+**Rutas nuevas** en `routes/web.php` bajo middleware `auth`.
+
+**Controladores actualizados**:
+- `Talento\DocumentosController`: `store()` guarda `base64_encode(file_get_contents(...))` en `contenido`; `index()` excluye la columna `contenido` en el SELECT; `destroy()` solo elimina el registro.
+- `Empresa\DocumentosController`: mismo patrón.
+- `Empresa\PerfilController`: logo se guarda en `logo_contenido`/`logo_mime` en `datos_empresa`.
+
+**Vistas actualizadas** (todas las referencias a `Storage::url($x->url_archivo)` reemplazadas por rutas de archivo):
+- `resources/views/talento/partials/doc-info.blade.php` → `route('archivos.talento', $doc->id)`
+- `resources/views/talento/documentos.blade.php` (2 ocurrencias) → `route('archivos.talento', ...)`
+- `resources/views/empresa/documentos.blade.php` → `route('archivos.empresa', $doc->id)`
+- `resources/views/admin/validaciones.blade.php` (2 modales) → `route('archivos.talento', ...)` y `route('archivos.empresa', ...)`
+- `resources/views/empresa/perfil.blade.php`: el avatar de iniciales ahora muestra el logo real (`<img src="{{ route('archivos.logo', ...) }}">`) cuando `logo_contenido` existe, con fallback a las iniciales.
+
 ## Nota
 
 A partir de ahora, cualquier cambio o adición solicitado debe registrarse en este archivo.

@@ -23,8 +23,8 @@ class PerfilController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
+            'name'  => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
         ]);
         
         $user->update([
@@ -45,7 +45,7 @@ class PerfilController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:8|confirmed',
         ]);
         
         $user->update([

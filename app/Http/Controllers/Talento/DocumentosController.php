@@ -7,7 +7,6 @@ use App\Models\Talento;
 use App\Models\TalentoArchivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentosController extends Controller
 {
@@ -19,9 +18,15 @@ class DocumentosController extends Controller
 
     public function index()
     {
-        $talento    = Talento::where('user_id', Auth::id())->firstOrFail();
-        $documentos = TalentoArchivo::where('talento_id', $talento->id)->latest()->get();
-        $tipos      = self::TIPOS;
+        $talento = Talento::where('user_id', Auth::id())->firstOrFail();
+
+        // Excluye la columna 'contenido' para no cargar binarios en el listado
+        $documentos = TalentoArchivo::where('talento_id', $talento->id)
+            ->select(['id', 'talento_id', 'tipo_archivo', 'nombre_archivo', 'mime_type', 'estado', 'motivo_rechazo', 'created_at', 'updated_at'])
+            ->latest()
+            ->get();
+
+        $tipos = self::TIPOS;
 
         return view('talento.documentos', compact('documentos', 'tipos'));
     }
@@ -44,19 +49,17 @@ class DocumentosController extends Controller
             ->where('tipo_archivo', $tipo)->first();
 
         if ($anterior) {
-            Storage::disk('public')->delete($anterior->url_archivo);
             $anterior->delete();
         }
 
-        $archivo      = $request->file('archivo');
-        $nombreOriginal = $archivo->getClientOriginalName();
-        $ruta         = $archivo->store("documentos/talento/{$talento->id}", 'public');
+        $archivo = $request->file('archivo');
 
         TalentoArchivo::create([
             'talento_id'     => $talento->id,
             'tipo_archivo'   => $tipo,
-            'nombre_archivo' => $nombreOriginal,
-            'url_archivo'    => $ruta,
+            'nombre_archivo' => $archivo->getClientOriginalName(),
+            'contenido'      => base64_encode(file_get_contents($archivo->getRealPath())),
+            'mime_type'      => $archivo->getMimeType(),
         ]);
 
         // Volver a pendiente para que el admin lo revise
@@ -65,15 +68,12 @@ class DocumentosController extends Controller
         return back()->with('success', 'Documento subido. Quedará en revisión hasta que el admin lo apruebe.');
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $talento   = Talento::where('user_id', Auth::id())->firstOrFail();
         $documento = TalentoArchivo::where('id', $id)
             ->where('talento_id', $talento->id)->firstOrFail();
 
-        Storage::disk('public')->delete($documento->url_archivo);
-
-        // Si elimina el cert. de discapacidad, limpiar el campo
         if ($documento->tipo_archivo === 'discapacidad') {
             $talento->update(['discapacidad' => 0]);
         }

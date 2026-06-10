@@ -18,13 +18,18 @@ class ProcesosController extends Controller
             ->latest()
             ->paginate(10);
 
+        $conteos = Interacciones::where('talento_id', $talento->id)
+            ->selectRaw('estado, COUNT(*) as total')
+            ->groupBy('estado')
+            ->pluck('total', 'estado');
+
         $totales = [
-            'pendiente'    => Interacciones::where('talento_id', $talento->id)->where('estado', 'pendiente')->count(),
-            'contactado'   => Interacciones::where('talento_id', $talento->id)->where('estado', 'contactado')->count(),
-            'entrevista'   => Interacciones::where('talento_id', $talento->id)->where('estado', 'entrevista')->count(),
-            'seleccionado' => Interacciones::where('talento_id', $talento->id)->where('estado', 'seleccionado')->count(),
-            'contratado'   => Interacciones::where('talento_id', $talento->id)->where('estado', 'contratado')->count(),
-            'rechazado'    => Interacciones::where('talento_id', $talento->id)->where('estado', 'rechazado')->count(),
+            'pendiente'    => $conteos->get('pendiente', 0),
+            'contactado'   => $conteos->get('contactado', 0),
+            'entrevista'   => $conteos->get('entrevista', 0),
+            'seleccionado' => $conteos->get('seleccionado', 0),
+            'contratado'   => $conteos->get('contratado', 0),
+            'rechazado'    => $conteos->get('rechazado', 0),
         ];
 
         return view('talento.procesos', compact('procesos', 'totales'));

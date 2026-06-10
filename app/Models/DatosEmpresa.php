@@ -23,8 +23,12 @@ class DatosEmpresa extends Model
         'presentacion_empresa',
         'beneficios_empresa',
         'logo_empresa',
+        'logo_contenido',
+        'logo_mime',
         'validacion',
     ];
+
+    protected $hidden = ['logo_contenido'];
 
     protected $casts = [
         'validacion' => 'boolean',

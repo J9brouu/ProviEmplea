@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PerfeccionamientoController extends Controller
 {
-    private const TIPOS = ['Curso', 'Certificación', 'Diplomado', 'Bootcamp', 'Taller'];
-
     private function rules(): array
     {
         return [
@@ -67,11 +65,12 @@ class PerfeccionamientoController extends Controller
         return back()->with('success', 'Perfeccionamiento agregado correctamente');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $perfeccionamiento = Perfeccionamiento::findOrFail($id);
 
         if ($perfeccionamiento->talento?->user_id !== Auth::id()) {
+            abort(403, 'No tienes permiso para editar este registro.');
         }
 
         $validated = $request->validate($this->rules(), $this->messages());
@@ -87,7 +86,7 @@ class PerfeccionamientoController extends Controller
         return back()->with('success', 'Perfeccionamiento actualizado correctamente');
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $perfeccionamiento = Perfeccionamiento::findOrFail($id);
 

@@ -20,54 +20,58 @@ class SolicitudesController extends Controller
             ->latest()
             ->paginate(5);
 
+        $conteos = Interacciones::selectRaw('estado, COUNT(*) as total')
+            ->groupBy('estado')
+            ->pluck('total', 'estado');
+
         $totales = [
-            'pendiente'    => Interacciones::where('estado', 'pendiente')->count(),
-            'contactado'   => Interacciones::where('estado', 'contactado')->count(),
-            'entrevista'   => Interacciones::where('estado', 'entrevista')->count(),
-            'seleccionado' => Interacciones::where('estado', 'seleccionado')->count(),
-            'contratado'   => Interacciones::where('estado', 'contratado')->count(),
+            'pendiente'    => $conteos->get('pendiente', 0),
+            'contactado'   => $conteos->get('contactado', 0),
+            'entrevista'   => $conteos->get('entrevista', 0),
+            'seleccionado' => $conteos->get('seleccionado', 0),
+            'contratado'   => $conteos->get('contratado', 0),
         ];
 
         return view('admin.solicitudes', compact('solicitudes', 'totales'));
     }
 
-    public function nota(Request $request, $id)
+    public function nota(Request $request, int $id)
     {
         Interacciones::findOrFail($id)->update(['notas' => $request->notas]);
         return back()->with('success', 'Nota guardada');
     }
 
-    public function aprobar($id)
+    public function aprobar(int $id)
     {
         Interacciones::findOrFail($id)->update(['estado' => 'contactado']);
         return back()->with('success', 'Solicitud aprobada');
     }
 
-    public function contactar($id)
+    public function contactar(int $id)
     {
         Interacciones::findOrFail($id)->update(['estado' => 'contactado']);
         return back()->with('success', 'Talento contactado');
     }
 
-    public function entrevista($id)
+    public function entrevista(int $id)
     {
         Interacciones::findOrFail($id)->update(['estado' => 'entrevista']);
         return back()->with('success', 'Entrevista programada');
     }
 
-    public function seleccionado($id)
+    public function seleccionado(int $id)
     {
         Interacciones::findOrFail($id)->update(['estado' => 'seleccionado']);
         return back()->with('success', 'Talento seleccionado');
     }
 
-    public function contratar($id)
+    public function contratar(int $id)
     {
         Interacciones::findOrFail($id)->update(['estado' => 'contratado']);
         return back()->with('success', 'Talento marcado como contratado. Ya no será visible en la vitrina.');
     }
 
-    public function rechazar($id)
+    public function rechazar(int $id)
     {
         Interacciones::findOrFail($id)->update(['estado' => 'rechazado']);
         return back()->with('success', 'Solicitud rechazada');

@@ -17,9 +17,13 @@ class ArchivoEmpresa extends Model
         'tipo_archivo',
         'nombre_archivo',
         'url_archivo',
+        'contenido',
+        'mime_type',
         'estado',
         'motivo_rechazo',
     ];
+
+    protected $hidden = ['contenido'];
 
     public function datosEmpresa(): BelongsTo
     {

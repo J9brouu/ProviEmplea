@@ -48,7 +48,7 @@ class UsuariosController extends Controller
         ]);
 
         $user->email_verified_at = now();
-        $user->remember_token = Str::random(10);
+        $user->remember_token = Str::random(60);
         $user->save();
 
         UsuariosEmpresa::create([
@@ -61,7 +61,7 @@ class UsuariosController extends Controller
         return back()->with('success', 'Usuario agregado correctamente.');
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $empresa = DatosEmpresa::where('user_id', Auth::id())->firstOrFail();
 
