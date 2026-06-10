@@ -1,6 +1,6 @@
 # Funcionalidades del proyecto ProviEmplea
 
-Este documento describe todas las funcionalidades del proyecto, cómo funcionan técnicamente a nivel de código y los conceptos clave involucrados. Se basa en el estado actual del código fuente.
+Este documento describe todas las funcionalidades del proyecto. Cada sección incluye primero una explicación en lenguaje simple para personas sin conocimientos técnicos, y luego el detalle técnico para desarrolladores.
 
 ---
 
@@ -43,6 +43,10 @@ Este documento describe todas las funcionalidades del proyecto, cómo funcionan 
 
 ## 1. Arquitectura general
 
+**En palabras simples:**
+ProviEmplea es una plataforma web que conecta personas que buscan trabajo (talentos) con empresas que buscan candidatos, todo supervisado por un equipo administrador. La plataforma tiene tres tipos de usuarios con pantallas y permisos distintos: el administrador gestiona y valida todo, los talentos completan su perfil profesional, y las empresas buscan y solicitan candidatos. La información de todos se guarda en una base de datos, y los archivos (CVs, certificados) se guardan en el servidor.
+
+**Técnico:**
 - **Framework:** Laravel 11 con Blade como motor de plantillas.
 - **Autenticación:** Laravel Breeze (`routes/auth.php`) para login, logout, registro base, recuperación y verificación de email.
 - **Roles:** Campo `rol` en la tabla `users` con valores `admin`, `talento`, `empresa`. Controlado por `RoleMiddleware`.
@@ -56,6 +60,11 @@ Este documento describe todas las funcionalidades del proyecto, cómo funcionan 
 ---
 
 ## 2. Middleware y control de acceso
+
+**En palabras simples:**
+Cada sección de la plataforma está protegida: solo el tipo de usuario correcto puede entrar. Si un talento intenta acceder al panel de administración, el sistema lo bloquea automáticamente. Lo mismo aplica si alguien intenta acceder sin haber iniciado sesión. Cuando un usuario inicia sesión, el sistema lo reconoce por su tipo de cuenta y lo lleva directo a su panel correspondiente.
+
+**Técnico:**
 
 ### `RoleMiddleware` (`app/Http/Middleware/RoleMiddleware.php`)
 
@@ -76,6 +85,11 @@ La ruta `/dashboard` con middleware `auth` usa `match()` sobre `Auth::user()->ro
 ---
 
 ## 3. Esquema de base de datos
+
+**En palabras simples:**
+La base de datos es el lugar donde se guarda toda la información de la plataforma. Cada "tabla" es como una hoja de cálculo con columnas específicas. Por ejemplo, la tabla de usuarios guarda el nombre, correo y tipo de cuenta de cada persona. La tabla de talentos guarda el currículum profesional. La tabla de interacciones registra qué empresas están interesadas en qué talentos y en qué etapa va ese proceso.
+
+**Técnico:**
 
 ### Tabla `users` (migración base de Laravel)
 | Columna | Tipo | Descripción |
@@ -208,6 +222,11 @@ Estados posibles de `interacciones.estado`: `pendiente`, `contactado`, `entrevis
 
 ## 4. Modelos y relaciones
 
+**En palabras simples:**
+Los modelos son la forma en que el código representa cada entidad del sistema (un usuario, un talento, una empresa, etc.) y cómo están conectadas entre sí. Por ejemplo, un talento está conectado a su cuenta de usuario, a sus documentos, a sus idiomas y a los procesos de selección en los que participa. Estas conexiones permiten obtener toda la información relacionada de forma eficiente con una sola consulta.
+
+**Técnico:**
+
 ### `User`
 - Scopes: `scopeNotDesactivado()`, `scopeDesactivados()`
 - Relaciones: `hasOne Talento`, `hasOne DatosEmpresa`, `hasMany UsuariosEmpresa`
@@ -241,6 +260,11 @@ Estados posibles de `interacciones.estado`: `pendiente`, `contactado`, `entrevis
 
 ## 5. Registro de usuarios
 
+**En palabras simples:**
+Cualquier persona puede crear una cuenta como talento o como empresa desde la página de inicio. Al registrarse, la cuenta queda en estado "pendiente" hasta que el administrador la revise y apruebe. Esto garantiza que solo personas y empresas verificadas puedan usar la plataforma. Una vez registrado, el sistema inicia sesión automáticamente y lleva al usuario a su panel.
+
+**Técnico:**
+
 ### Talento (`TalentoRegisterController`)
 - Ruta GET `/registro/talento` → formulario
 - Ruta POST `/registro/talento` → crea `User` con `rol = 'talento'`, `estado = 'pendiente'`, genera `remember_token` y marca `email_verified_at`
@@ -259,9 +283,17 @@ Ambos arrancan en estado `pendiente` hasta que el admin los valide.
 
 ## 6. Panel de administrador
 
+**En palabras simples:**
+El panel de administrador es el centro de control de toda la plataforma. Desde aquí, el equipo de ProviEmplea puede ver estadísticas generales, gestionar las cuentas de talentos y empresas, aprobar o rechazar documentos, y hacer seguimiento de todos los procesos de selección activos. Solo los usuarios con rol de administrador pueden acceder a esta sección.
+
 Rutas protegidas con `['auth', 'role:admin']`. Layout: `x-admin-layout` → `layouts/admin.blade.php`.
 
 ### 6.1 Dashboard (`admin/dashboard`)
+
+**En palabras simples:**
+Es la pantalla de inicio del administrador. Muestra un resumen rápido de todo lo que está pasando en la plataforma: cuántos talentos y empresas están registrados, cuántos procesos de selección hay activos, las empresas y talentos más recientes, y la lista de otros administradores del sistema. También permite ver y reactivar cuentas desactivadas.
+
+**Técnico:**
 
 **Controlador:** `Admin\DashboardController@index`
 
@@ -273,6 +305,11 @@ Rutas protegidas con `['auth', 'role:admin']`. Layout: `x-admin-layout` → `lay
 
 ### 6.2 Administradores (`admin/admins`)
 
+**En palabras simples:**
+Permite crear nuevas cuentas de administrador para que otros miembros del equipo de ProviEmplea puedan gestionar la plataforma. También permite desactivar temporalmente a un administrador (por ejemplo si deja el equipo) o reactivarlo. Un administrador no puede desactivarse a sí mismo.
+
+**Técnico:**
+
 **Controlador:** `Admin\AdminUserController`
 
 - `store(CreateAdminUserRequest)`: valida con `FormRequest` (nombre, email único, password confirmado). Crea `User` con `rol = 'admin'`, `email_verified_at = now()`, `remember_token = Str::random(60)`.
@@ -281,6 +318,11 @@ Rutas protegidas con `['auth', 'role:admin']`. Layout: `x-admin-layout` → `lay
 - Rutas: `POST admin/admins`, `PUT admin/admins/{id}/desactivar`, `PUT admin/admins/{id}/reactivar`
 
 ### 6.3 Perfil del admin (`admin/perfil`)
+
+**En palabras simples:**
+Cada administrador puede actualizar su propio nombre y correo electrónico, y también cambiar su contraseña cuando lo necesite.
+
+**Técnico:**
 
 **Controlador:** `Admin\PerfilController`
 
@@ -291,6 +333,11 @@ Rutas protegidas con `['auth', 'role:admin']`. Layout: `x-admin-layout` → `lay
 
 ### 6.4 Talentos (`admin/talentos`)
 
+**En palabras simples:**
+El administrador puede ver la lista completa de talentos registrados, buscarlos por nombre o tipo de trabajo, y editar sus datos principales como el nombre, el estado de la cuenta, la modalidad de trabajo preferida o el resumen profesional. Esto es útil para corregir información incorrecta o gestionar el estado de una cuenta.
+
+**Técnico:**
+
 **Controlador:** `Admin\TalentosController`
 
 - `index()`: carga talentos paginados (5 por página) con `with('user')`, excluye desactivados. Acepta parámetro `buscar` que filtra por `user.name`, `condicion_modalidad`, `condicion_jornada` usando `LIKE`.
@@ -299,6 +346,11 @@ Rutas protegidas con `['auth', 'role:admin']`. Layout: `x-admin-layout` → `lay
 
 ### 6.5 Empresas (`admin/empresas`)
 
+**En palabras simples:**
+Similar a la gestión de talentos, pero para empresas. El administrador puede buscar empresas, editar sus datos (nombre, rubro, tipo de empresa, presentación) y cambiar el estado de su cuenta.
+
+**Técnico:**
+
 **Controlador:** `Admin\EmpresasController`
 
 - `index()`: carga empresas paginadas (5 por página) con `with('user')`, excluye desactivadas. Acepta `buscar` que filtra por `user.name`.
@@ -306,6 +358,11 @@ Rutas protegidas con `['auth', 'role:admin']`. Layout: `x-admin-layout` → `lay
 - Ruta: `GET admin/empresas`, `PUT admin/empresas/{id}`
 
 ### 6.6 Validaciones (`admin/validaciones`)
+
+**En palabras simples:**
+Esta es una de las secciones más importantes. Cuando un talento o empresa se registra o sube documentos, queda en estado "pendiente" hasta que el administrador los revise. Aquí el admin puede ver los documentos subidos (CV, certificado de residencia, certificados de empresa) y decidir si aprobarlos o rechazarlos con un motivo. Solo cuando todos los documentos de un usuario están revisados (aprobados o rechazados), se puede aprobar la cuenta completa. Si se intenta aprobar una cuenta con documentos aún pendientes, el sistema muestra un aviso de advertencia y bloquea la acción.
+
+**Técnico:**
 
 **Controlador:** `Admin\ValidacionesController`
 
@@ -329,9 +386,14 @@ Métodos disponibles:
 
 ### 6.7 Seguimiento de solicitudes (`admin/solicitudes`)
 
+**En palabras simples:**
+Aquí el administrador gestiona todos los procesos de selección activos. Cuando una empresa solicita contacto con un talento, esa solicitud llega a esta sección. El admin es quien mueve el proceso de etapa en etapa: primero aprueba la solicitud, luego marca si se realizó contacto, si hubo entrevista, si el talento fue seleccionado y finalmente si fue contratado. También puede agregar notas internas a cada proceso y rechazar solicitudes. Además, puede generar un reporte en PDF con todos los procesos.
+
+**Técnico:**
+
 **Controlador:** `Admin\SolicitudesController`
 
-- `index(Request)`: carga todas las `Interacciones` con `with(['talento.user', 'datosEmpresa.user'])`, paginadas (5 por página), ordenadas por `latest()`. Acepta parámetro `buscar` que filtra por nombre de empresa (`whereHas('datosEmpresa.user', ...)`). Calcula totales globales por estado.
+- `index(Request)`: carga todas las `Interacciones` con `with(['talento.user', 'datosEmpresa.user'])`, paginadas (5 por página), ordenadas por `latest()`. Acepta parámetro `buscar` que filtra por nombre de empresa. Calcula totales globales por estado.
 - Acciones sobre una interacción (todas vía `PUT`):
 
 | Método | Estado resultante |
@@ -350,15 +412,28 @@ Métodos disponibles:
 
 ### 6.8 Configuración (`admin/configuracion`)
 
+**En palabras simples:**
+Sección reservada para futuras opciones de configuración general de la plataforma. Actualmente es una página informativa sin funcionalidad activa.
+
+**Técnico:**
+
 Vista estática `admin/configuracion.blade.php`. Sin lógica de controlador, retornada directamente desde la ruta.
 
 ---
 
 ## 7. Panel de talento
 
+**En palabras simples:**
+El panel de talento es el espacio personal de cada persona que busca trabajo. Desde aquí puede completar y actualizar su perfil profesional, subir sus documentos, ver en qué procesos de selección está participando y conocer el estado de cada uno.
+
 Rutas protegidas con `['auth', 'role:talento']`. Layout: `x-talento-layout` → `layouts/talento.blade.php`.
 
 ### 7.1 Dashboard (`talento/dashboard`)
+
+**En palabras simples:**
+La pantalla de inicio del talento. Muestra un resumen rápido: en cuántos procesos está participando, cuántos están en etapa de entrevista o selección, y qué documentos tiene subidos. Es la primera pantalla que ve al iniciar sesión.
+
+**Técnico:**
 
 **Controlador:** `Talento\DashboardController@index`
 
@@ -368,6 +443,11 @@ Rutas protegidas con `['auth', 'role:talento']`. Layout: `x-talento-layout` → 
 - Carga documentos del talento desde `TalentoArchivo`.
 
 ### 7.2 Perfil (`talento/perfil`)
+
+**En palabras simples:**
+Aquí el talento puede ver y editar toda su información personal y profesional: nombre, correo, edad, género, teléfono, dirección, resumen profesional, preferencias de trabajo (modalidad, jornada, rango de renta) y si está acogido a la Ley 21.015 de inclusión laboral. El formulario de edición se abre en una ventana emergente (modal) sobre la misma página. También puede gestionar sus competencias técnicas e idiomas desde esta misma sección.
+
+**Técnico:**
 
 **Controlador:** `Talento\PerfilController`
 
@@ -381,6 +461,11 @@ Excel, Word, Power BI, SAP, ERP, CRM, Trabajo en Equipo, Liderazgo, Comunicació
 
 ### 7.3 Competencias técnicas
 
+**En palabras simples:**
+El talento puede seleccionar sus habilidades técnicas de una lista predefinida (como Excel, SAP, Power BI, etc.) y también agregar habilidades personalizadas escribiéndolas a mano. Cada vez que guarda, la lista se reemplaza completamente con la nueva selección.
+
+**Técnico:**
+
 **Controlador:** `Talento\CompetenciasController@store`
 
 - Elimina todas las competencias existentes del talento con `CompetenciasTecnicas::where('talento_id', ...)->delete()`.
@@ -389,6 +474,11 @@ Excel, Word, Power BI, SAP, ERP, CRM, Trabajo en Equipo, Liderazgo, Comunicació
 - Ruta: `POST /talento/competencias`
 
 ### 7.4 Idiomas
+
+**En palabras simples:**
+El talento puede indicar qué idiomas habla y a qué nivel (Básico, Intermedio, Avanzado o Nativo). Puede agregar varios idiomas y eliminarlos. Al guardar, la lista se reemplaza completamente.
+
+**Técnico:**
 
 **Controlador:** `Talento\IdiomasController@store`
 
@@ -400,6 +490,11 @@ Excel, Word, Power BI, SAP, ERP, CRM, Trabajo en Equipo, Liderazgo, Comunicació
 
 ### 7.5 Experiencia laboral (`talento/experiencia`)
 
+**En palabras simples:**
+El talento puede registrar todos sus trabajos anteriores: empresa, cargo, fechas de inicio y término, funciones que realizaba y datos de una referencia laboral (nombre, teléfono, correo y cargo). Si todavía trabaja en un lugar, puede marcar la opción "actualidad" para dejar la fecha de término en blanco. Puede editar o eliminar cada experiencia.
+
+**Técnico:**
+
 **Controlador:** `Talento\AntecedentesLaboralesController`
 
 - `index()`: lista experiencias laborales del talento ordenadas por `latest()`.
@@ -409,6 +504,11 @@ Excel, Word, Power BI, SAP, ERP, CRM, Trabajo en Equipo, Liderazgo, Comunicació
 - Rutas: `GET /talento/experiencia`, `POST`, `PUT /talento/experiencia/{id}`, `DELETE /talento/experiencia/{id}`
 
 ### 7.6 Educación y perfeccionamiento (`talento/educacion`)
+
+**En palabras simples:**
+El talento puede registrar sus estudios formales (carreras universitarias, técnicas, etc.) y también cursos de perfeccionamiento (diplomados, talleres, certificaciones). Para los estudios en curso, puede marcar "actualidad" y dejar la fecha de término vacía. Puede editar o eliminar cada registro independientemente.
+
+**Técnico:**
 
 **Controlador:** `Talento\AntecedentesEducacionalesController`
 
@@ -421,6 +521,11 @@ Excel, Word, Power BI, SAP, ERP, CRM, Trabajo en Equipo, Liderazgo, Comunicació
 - Rutas: `GET talento/educacion`, `POST /talento/educacion`, `PUT /talento/educacion/{id}`, `PUT /talento/educacion/curso/{id}`, `DELETE /talento/educacion/{id}`, `DELETE /talento/educacion/curso/{id}`
 
 ### 7.7 Documentos (`talento/documentos`)
+
+**En palabras simples:**
+El talento puede subir tres tipos de documentos: su Curriculum Vitae, un Certificado de Residencia y (opcionalmente) el Certificado de Discapacidad para la Ley 21.015. Cada documento pasa por revisión del administrador, quien puede aprobarlo o rechazarlo con un motivo. Solo puede haber un documento activo por tipo: si se sube uno nuevo, reemplaza automáticamente al anterior. Al subir un documento, la cuenta vuelve a estado "pendiente" para que el administrador lo revise.
+
+**Técnico:**
 
 **Controlador:** `Talento\DocumentosController`
 
@@ -438,6 +543,11 @@ Tipos permitidos definidos en la constante `TIPOS`:
 
 ### 7.8 Procesos (`talento/procesos`)
 
+**En palabras simples:**
+El talento puede ver en qué procesos de selección está participando y en qué etapa va cada uno. Las etapas van desde "Pendiente" (recién solicitado) hasta "Contratado". También ve un resumen con cuántos procesos tiene en cada etapa.
+
+**Técnico:**
+
 **Controlador:** `Talento\ProcesosController@index`
 
 - Carga todas las `Interacciones` donde `talento_id` = talento autenticado.
@@ -449,9 +559,17 @@ Tipos permitidos definidos en la constante `TIPOS`:
 
 ## 8. Panel de empresa
 
+**En palabras simples:**
+El panel de empresa es el espacio desde donde las empresas pueden buscar candidatos, solicitar contacto con ellos, hacer seguimiento de sus procesos de selección y gestionar los usuarios de su equipo que tienen acceso a la plataforma.
+
 Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → `layouts/empresa.blade.php`.
 
 ### 8.1 Dashboard (`empresa/dashboard`)
+
+**En palabras simples:**
+La pantalla de inicio de la empresa. Muestra cuántos talentos ha solicitado, cuántos están en proceso activo (contactados o en entrevista), cuántos han sido seleccionados y cuántos usuarios de la empresa tienen acceso a la plataforma. También muestra los últimos 5 procesos recientes.
+
+**Técnico:**
 
 **Controlador:** `Empresa\DashboardController@index`
 
@@ -461,6 +579,11 @@ Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → 
 
 ### 8.2 Perfil de empresa (`empresa/perfil`)
 
+**En palabras simples:**
+La empresa puede actualizar su información institucional: nombre, RUT, rubro, tipo de empresa, presentación corporativa, beneficios que ofrece a sus empleados y logo. También puede cambiar su contraseña, pero en este caso debe ingresar la contraseña actual para confirmar el cambio.
+
+**Técnico:**
+
 **Controlador:** `Empresa\PerfilController`
 
 - `index()`: usa `firstOrCreate` para garantizar existencia del registro. Calcula totales de procesos y usuarios.
@@ -469,6 +592,11 @@ Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → 
 - Rutas: `GET empresa/perfil`, `PUT empresa/perfil`, `PUT empresa/perfil/password`
 
 ### 8.3 Vitrina de talentos (`empresa/talentos`)
+
+**En palabras simples:**
+Es el catálogo de candidatos disponibles. La empresa puede buscar talentos usando filtros como carrera, competencias técnicas, idioma, modalidad de trabajo, jornada, rango de renta y si el candidato está acogido a la Ley 21.015. Los perfiles son anónimos: no se muestra el nombre real del talento, solo un número identificador (ej: "Talento #0042"), para proteger la privacidad hasta que el administrador apruebe el contacto. La empresa puede seleccionar varios talentos a la vez y enviar una solicitud de contacto al equipo de ProviEmplea.
+
+**Técnico:**
 
 **Controlador:** `Empresa\TalentosController`
 
@@ -496,6 +624,11 @@ Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → 
 
 ### 8.4 Procesos de selección (`empresa/procesos`)
 
+**En palabras simples:**
+Aquí la empresa puede ver todos los talentos con los que está en proceso de selección y en qué etapa va cada uno. Puede filtrar la lista por etapa (por ejemplo, ver solo los que están en entrevista) usando un selector en la parte superior. Las tarjetas de resumen muestran cuántos procesos hay en cada etapa. La paginación recuerda el filtro activo al pasar de página.
+
+**Técnico:**
+
 **Controlador:** `Empresa\ProcesosController@index`
 
 - Carga `Interacciones` de la empresa con `with(['talento.competenciasTecnicas', 'talento.antecedentesEducacionales'])`.
@@ -506,6 +639,11 @@ Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → 
 
 ### 8.5 Usuarios asociados (`empresa/usuarios`)
 
+**En palabras simples:**
+Una empresa puede tener varios miembros del equipo con acceso a la plataforma (por ejemplo, el área de RRHH, un reclutador o un supervisor). Desde aquí se pueden crear nuevas cuentas para esos usuarios, asignarles un cargo y gestionar su acceso. Eliminar a un usuario no borra su cuenta, solo la desactiva para que no pueda ingresar.
+
+**Técnico:**
+
 **Controlador:** `Empresa\UsuariosController`
 
 - `index()`: lista `UsuariosEmpresa` de la empresa autenticada con `with('user')`, excluyendo usuarios con `estado = 'desactivado'`.
@@ -514,6 +652,11 @@ Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → 
 - Rutas: `GET empresa/usuarios`, `POST empresa/usuarios`, `DELETE empresa/usuarios/{id}`
 
 ### 8.6 Documentos de empresa (`empresa/documentos`)
+
+**En palabras simples:**
+La empresa puede subir documentos institucionales (por ejemplo, contrato, acreditaciones, etc.) que el administrador puede revisar y validar. Cada documento puede eliminarse cuando ya no sea necesario.
+
+**Técnico:**
 
 **Controlador:** `Empresa\DocumentosController`
 
@@ -526,6 +669,18 @@ Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → 
 
 ## 9. Flujo completo de una solicitud de talento
 
+**En palabras simples:**
+Así funciona el proceso completo desde que una empresa encuentra un candidato hasta que lo contrata:
+
+1. La empresa navega por la vitrina, filtra candidatos y selecciona los que le interesan.
+2. Envía una solicitud de contacto al equipo de ProviEmplea.
+3. El administrador revisa la solicitud y la aprueba, lo que pone el proceso en marcha.
+4. El admin va avanzando el estado del proceso según lo que ocurra: se contacta al talento, se agenda una entrevista, se lo selecciona y finalmente se lo marca como contratado.
+5. Una vez que un talento está seleccionado o contratado, desaparece de la vitrina para que otras empresas no lo vean.
+6. El talento puede ver en su propio panel en qué etapa está cada proceso.
+
+**Técnico:**
+
 1. **Empresa** accede a `empresa/talentos`, aplica filtros y selecciona talentos mediante checkboxes.
 2. Envía formulario POST a `empresa/talentos/solicitar` → se crean registros en `interacciones` con `estado = 'pendiente'`.
 3. **Admin** accede a `admin/solicitudes`, ve las interacciones pendientes.
@@ -537,6 +692,20 @@ Rutas protegidas con `['auth', 'role:empresa']`. Layout: `x-empresa-layout` → 
 ---
 
 ## 10. Convenciones y decisiones técnicas
+
+**En palabras simples:**
+Esta sección describe decisiones de diseño importantes que afectan cómo funciona el sistema internamente y por qué se tomaron así:
+
+- **Las cuentas nunca se borran:** cuando se "elimina" un usuario, en realidad solo se marca como desactivado. Esto permite recuperar la cuenta y mantener el historial.
+- **Los nuevos usuarios quedan verificados automáticamente:** cuando el admin o la empresa crea una cuenta nueva, no necesita confirmar el correo; queda activa de inmediato.
+- **El teléfono siempre incluye el prefijo +569:** el sistema lo agrega automáticamente al guardar, el usuario solo escribe los 8 dígitos.
+- **Las competencias e idiomas se guardan de una sola vez:** cada vez que se guarda, se borra todo lo anterior y se escribe la nueva lista. Esto evita inconsistencias.
+- **Un solo documento por tipo:** si el talento sube un CV nuevo, el anterior se elimina automáticamente del servidor.
+- **La Ley 21.015 se sincroniza con el documento:** si el administrador aprueba el certificado de discapacidad, el perfil del talento se marca automáticamente. Si se rechaza o elimina, se desmarca.
+- **El perfil del talento es anónimo en la vitrina:** las empresas solo ven un número identificador, nunca el nombre real del candidato.
+- **Los filtros se recuerdan al cambiar de página:** al paginar los resultados filtrados, los filtros activos no se pierden.
+
+**Técnico:**
 
 - **Eliminación lógica:** nunca se borra un usuario de la BD. `estado = 'desactivado'` actúa como soft delete. Todos los listados excluyen desactivados con `where('estado', '!=', 'desactivado')` o `whereHas('user', ...)`.
 - **`remember_token`:** se genera con `Str::random(10)` (o `60` en admins) al crear usuarios programáticamente para garantizar la persistencia de sesión.
