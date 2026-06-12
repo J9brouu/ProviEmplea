@@ -43,10 +43,22 @@
 
                 </div>
 
-                <button type="button" onclick="openModal()"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition">
-                    Editar Perfil
-                </button>
+                <div class="flex flex-col items-end gap-3">
+                    <button type="button" onclick="openModal()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition">
+                        Editar Perfil
+                    </button>
+                    @php
+                        $colorBarra = $completitud >= 80 ? 'bg-green-500' : ($completitud >= 50 ? 'bg-blue-500' : 'bg-yellow-500');
+                        $colorTexto = $completitud >= 80 ? 'text-green-600' : ($completitud >= 50 ? 'text-blue-600' : 'text-yellow-600');
+                    @endphp
+                    <div class="w-40 text-right">
+                        <span class="text-xs font-semibold {{ $colorTexto }}">Perfil {{ $completitud }}% completo</span>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="{{ $colorBarra }} h-2 rounded-full" style="width: {{ $completitud }}%"></div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 

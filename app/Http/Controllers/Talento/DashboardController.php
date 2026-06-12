@@ -18,7 +18,11 @@ class DashboardController extends Controller
         $totales  = ['contactado' => 0, 'entrevista' => 0, 'seleccionado' => 0, 'rechazado' => 0];
         $documentos = collect();
 
+        $completitud = 0;
+
         if ($talento) {
+            $talento->load(['user', 'antecedentesEducacionales', 'antecedentesLaborales', 'competenciasTecnicas', 'talentoArchivos']);
+
             $procesos = Interacciones::where('talento_id', $talento->id)
                 ->with('datosEmpresa.user')
                 ->latest()
@@ -30,9 +34,10 @@ class DashboardController extends Controller
                     ->where('estado', $estado)->count();
             }
 
-            $documentos = TalentoArchivo::where('talento_id', $talento->id)->latest()->get();
+            $documentos  = TalentoArchivo::where('talento_id', $talento->id)->latest()->get();
+            $completitud = $talento->porcentajeCompletitud();
         }
 
-        return view('talento.dashboard', compact('talento', 'procesos', 'totales', 'documentos'));
+        return view('talento.dashboard', compact('talento', 'procesos', 'totales', 'documentos', 'completitud'));
     }
 }

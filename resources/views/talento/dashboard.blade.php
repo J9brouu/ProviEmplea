@@ -11,6 +11,32 @@
             </p>
         </div>
 
+        <!-- Completitud del perfil -->
+        @php
+            $color = $completitud >= 80 ? 'bg-green-500' : ($completitud >= 50 ? 'bg-blue-500' : 'bg-yellow-500');
+            $texto = $completitud >= 80 ? 'Perfil sólido' : ($completitud >= 50 ? 'En progreso' : 'Completa tu perfil');
+        @endphp
+        <div class="bg-white rounded-2xl shadow p-6">
+            <div class="flex items-center justify-between mb-3">
+                <div>
+                    <p class="text-gray-500 text-sm">Completitud del perfil</p>
+                    <p class="text-2xl font-bold text-gray-800 mt-1">{{ $completitud }}%</p>
+                </div>
+                <span class="text-sm font-semibold px-3 py-1 rounded-full
+                    {{ $completitud >= 80 ? 'bg-green-100 text-green-700' : ($completitud >= 50 ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700') }}">
+                    {{ $texto }}
+                </span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3">
+                <div class="{{ $color }} h-3 rounded-full transition-all duration-500" style="width: {{ $completitud }}%"></div>
+            </div>
+            @if($completitud < 100)
+                <a href="{{ route('talento.perfil') }}" class="text-sm text-blue-600 hover:underline mt-3 block">
+                    Completar perfil →
+                </a>
+            @endif
+        </div>
+
         <!-- Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 

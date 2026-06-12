@@ -72,5 +72,38 @@ class Talento extends Model
         return $this->hasMany(\App\Models\TalentoIdioma::class, 'talento_id');
     }
 
-    
+    public function porcentajeCompletitud(): int
+    {
+        $puntos = 0;
+
+        // Datos básicos (30 pts)
+        if (!empty($this->user?->name))           $puntos += 5;
+        if (!empty($this->user?->email))          $puntos += 5;
+        if (!empty($this->edad))                  $puntos += 5;
+        if (!empty($this->genero))                $puntos += 5;
+        if (!empty($this->telefono))              $puntos += 5;
+        if (!empty($this->direccion))             $puntos += 5;
+
+        // Resumen (10 pts)
+        if (!empty($this->resumen))               $puntos += 10;
+
+        // Condiciones laborales (15 pts)
+        if (($this->renta_desde ?? 0) > 0)        $puntos += 5;
+        if (!empty($this->condicion_jornada))     $puntos += 5;
+        if (!empty($this->condicion_modalidad))   $puntos += 5;
+
+        // Educación (15 pts)
+        if ($this->antecedentesEducacionales()->exists()) $puntos += 15;
+
+        // Experiencia (15 pts)
+        if ($this->antecedentesLaborales()->exists())     $puntos += 15;
+
+        // Competencias (10 pts)
+        if ($this->competenciasTecnicas()->exists())      $puntos += 10;
+
+        // Documentos (5 pts)
+        if ($this->talentoArchivos()->exists())           $puntos += 5;
+
+        return min($puntos, 100);
+    }
 }

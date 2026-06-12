@@ -21,9 +21,9 @@ class PerfilController extends Controller
     public function index()
     {
         $talento = Talento::where('user_id', Auth::id())->firstOrFail();
+        $talento->load(['user', 'antecedentesEducacionales', 'antecedentesLaborales', 'competenciasTecnicas', 'talentoArchivos']);
 
-        $todasCompetencias = CompetenciasTecnicas::where('talento_id', $talento->id)
-            ->pluck('nombre_competencia')->toArray();
+        $todasCompetencias = $talento->competenciasTecnicas->pluck('nombre_competencia')->toArray();
 
         $competencias = array_intersect($todasCompetencias, self::LISTA_COMPETENCIAS);
         $otras_competencias = implode(', ', array_diff($todasCompetencias, self::LISTA_COMPETENCIAS));
@@ -33,9 +33,11 @@ class PerfilController extends Controller
         $listaIdiomas  = IdiomasController::LISTA_IDIOMAS;
         $nivelesIdiomas = IdiomasController::NIVELES;
 
+        $completitud = $talento->porcentajeCompletitud();
+
         return view('talento.perfil', compact(
             'talento', 'competencias', 'otras_competencias', 'lista',
-            'idiomas', 'listaIdiomas', 'nivelesIdiomas'
+            'idiomas', 'listaIdiomas', 'nivelesIdiomas', 'completitud'
         ));
     }
 

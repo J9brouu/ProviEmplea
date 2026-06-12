@@ -13,7 +13,7 @@ class TalentosController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Talento::with(['competenciasTecnicas', 'idiomas', 'antecedentesEducacionales', 'antecedentesLaborales'])
+        $query = Talento::with(['competenciasTecnicas', 'idiomas', 'antecedentesEducacionales', 'antecedentesLaborales', 'perfeccionamientos'])
             ->whereHas('user', fn($q) => $q->where('estado', 'activo'))
             ->whereDoesntHave('interacciones', fn($q) => $q->whereIn('estado', ['seleccionado', 'contratado']));
 
