@@ -15,6 +15,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
+
+        $middleware->redirectUsersTo(function ($request) {
+            $user = $request->user();
+            if (!$user) return route('login');
+            return match($user->rol) {
+                'admin'   => route('admin.dashboard'),
+                'empresa' => route('empresa.dashboard'),
+                default   => route('talento.dashboard'),
+            };
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -207,14 +207,14 @@
                     reales a través de CVs anónimos, permitiendo que las empresas compitan por el mejor talento.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <button
+                    <a href="{{ route('registro.talento') }}"
                         class="px-8 py-4 rounded-xl bg-primary text-on-primary font-title-lg text-title-lg shadow-lg hover:scale-[1.02] active:scale-95 transition-all">
                         Empezar Ahora
-                    </button>
-                    <button
+                    </a>
+                    <a href="{{ route('login') }}"
                         class="px-8 py-4 rounded-xl border-2 border-outline-variant text-on-surface font-title-lg text-title-lg hover:bg-surface-container transition-all">
-                        Saber más
-                    </button>
+                        Iniciar Sesión
+                    </a>
                 </div>
             </div>
             <div class="relative">
@@ -381,14 +381,14 @@
                         para talentos.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <button
-                            class="px-10 py-5 rounded-2xl bg-primary text-on-primary font-headline-md text-headline-md shadow-xl hover:scale-105 transition-all">
+                        <a href="{{ route('registro.talento') }}"
+                            class="px-10 py-5 rounded-2xl bg-primary text-on-primary font-headline-md text-headline-md shadow-xl hover:scale-105 transition-all text-center">
                             Registrarme como Talento
-                        </button>
-                        <button
-                            class="px-10 py-5 rounded-2xl border-2 border-primary text-primary font-headline-md text-headline-md hover:bg-primary-container hover:text-on-primary-container transition-all">
+                        </a>
+                        <a href="{{ route('registro.empresa') }}"
+                            class="px-10 py-5 rounded-2xl border-2 border-primary text-primary font-headline-md text-headline-md hover:bg-primary-container hover:text-on-primary-container transition-all text-center">
                             Registrar Empresa
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Abstract UI background element -->

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Talento;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,8 @@ class TalentoRegisterController extends Controller
             'discapacidad' => 0,
             'validacion' => 0,
         ]);
+
+        event(new Registered($user));
 
         Auth::login($user);
 

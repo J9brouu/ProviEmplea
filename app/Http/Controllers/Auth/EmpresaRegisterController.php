@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UsuariosEmpresa;
 use App\Models\DatosEmpresa;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -54,6 +55,8 @@ class EmpresaRegisterController extends Controller
             'rut' => $request->rut,
             'telefono' => $request->filled('telefono') ? '+569' . preg_replace('/[^0-9]/', '', $request->telefono) : null,
         ]);
+        event(new Registered($user));
+
         Auth::login($user);
 
         return redirect('/empresa/dashboard');

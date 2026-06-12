@@ -78,7 +78,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 // Rutas para el Talento
-Route::middleware(['auth', 'role:talento'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:talento'])->group(function () {
     Route::get('talento/dashboard', [TalentoDashboardController::class, 'index'])->name('talento.dashboard');
     Route::get('talento/perfil', [TalentoPerfilController::class, 'index'])->name('talento.perfil');
     Route::put('/talento/perfil', [TalentoPerfilController::class, 'update'])->name('talento.perfil.update');
@@ -103,7 +103,7 @@ Route::middleware(['auth', 'role:talento'])->group(function () {
 });
 
 // Rutas para la Empresa
-Route::middleware(['auth', 'role:empresa'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:empresa'])->group(function () {
     Route::get('empresa/dashboard', [EmpresaDashboardController::class, 'index'])->name('empresa.dashboard');
     Route::get('empresa/perfil', [EmpresaPerfilController::class, 'index'])->name('empresa.perfil');
     Route::put('empresa/perfil', [EmpresaPerfilController::class, 'update'])->name('empresa.perfil.update');
