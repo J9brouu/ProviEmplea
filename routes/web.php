@@ -80,6 +80,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/export/talentos', [AdminExportController::class, 'talentos'])->name('admin.export.talentos');
     Route::get('admin/export/empresas', [AdminExportController::class, 'empresas'])->name('admin.export.empresas');
     Route::get('admin/export/procesos', [AdminExportController::class, 'procesos'])->name('admin.export.procesos');
+    Route::post('admin/talentos/cvs/zip', [AdminExportController::class, 'cvsBulk'])->name('admin.talentos.cvs.zip');
 });
 
 // Rutas para el Talento

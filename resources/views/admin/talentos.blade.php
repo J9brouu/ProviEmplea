@@ -60,14 +60,20 @@
 
         </div>
 
+        <!-- Form oculto para descarga masiva de CVs -->
+        <form id="formBulkCvs" method="POST" action="{{ route('admin.talentos.cvs.zip') }}">
+            @csrf
+            <div id="inputsIdsCvs"></div>
+        </form>
+
         <div class="bg-white p-4 rounded-2xl shadow-sm border">
 
             <form method="GET" action="{{ route('admin.talentos') }}">
 
-                <div class="flex gap-4">
+                <div class="flex gap-4 flex-wrap">
 
                     <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar talento..."
-                        class="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        class="flex-1 border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none min-w-[200px]">
 
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 rounded-xl">
                         Buscar
@@ -82,6 +88,15 @@
                         Excel
                     </a>
 
+                    <button type="button" id="btnDescargaCvs" onclick="descargarCvsSeleccionados()"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl font-semibold flex items-center gap-2 whitespace-nowrap">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span id="labelBtnCvs">Descargar CVs</span>
+                    </button>
+
                 </div>
 
             </form>
@@ -95,6 +110,11 @@
 
                 <thead class="bg-gray-50">
                     <tr>
+
+                        <th class="px-4 py-4 w-10">
+                            <input type="checkbox" id="checkAll" onclick="toggleTodos(this)"
+                                class="w-4 h-4 rounded accent-indigo-600 cursor-pointer">
+                        </th>
 
                         <th class="px-6 py-4 text-left w-[28%]">
                             Nombre
@@ -128,6 +148,12 @@
 
                     @foreach ($talentos as $talento)
                         <tr class="border-b hover:bg-gray-50 transition">
+
+                            <td class="px-4 py-4">
+                                <input type="checkbox" name="ids[]" value="{{ $talento->id }}"
+                                    class="checkbox-talento w-4 h-4 rounded accent-indigo-600 cursor-pointer"
+                                    onchange="actualizarContador()">
+                            </td>
 
                             <td class="px-6 py-4 font-medium">
                                 {{ $talento->user->name }}
@@ -550,6 +576,39 @@
                 }
             });
         });
+
+        function toggleTodos(checkbox) {
+            document.querySelectorAll('.checkbox-talento').forEach(cb => cb.checked = checkbox.checked);
+            actualizarContador();
+        }
+
+        function actualizarContador() {
+            const n = document.querySelectorAll('.checkbox-talento:checked').length;
+            const label = document.getElementById('labelBtnCvs');
+            label.textContent = n > 0 ? `Descargar CVs (${n})` : 'Descargar CVs';
+            const checkAll = document.getElementById('checkAll');
+            const total = document.querySelectorAll('.checkbox-talento').length;
+            checkAll.indeterminate = n > 0 && n < total;
+            checkAll.checked = n === total && total > 0;
+        }
+
+        function descargarCvsSeleccionados() {
+            const checked = document.querySelectorAll('.checkbox-talento:checked');
+            if (!checked.length) {
+                alert('Selecciona al menos un talento para descargar sus CVs.');
+                return;
+            }
+            const container = document.getElementById('inputsIdsCvs');
+            container.innerHTML = '';
+            checked.forEach(cb => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids[]';
+                input.value = cb.value;
+                container.appendChild(input);
+            });
+            document.getElementById('formBulkCvs').submit();
+        }
     </script>
 
 </x-admin-layout>

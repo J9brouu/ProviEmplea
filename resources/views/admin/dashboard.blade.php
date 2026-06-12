@@ -68,6 +68,56 @@
             </div>
         </div>
 
+        <!-- Estadísticas con gráficos -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <!-- Donut: Procesos por estado -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-1">Procesos por Estado</h2>
+                <p class="text-sm text-gray-400 mb-4">Distribución actual del embudo de selección</p>
+                <div class="flex items-center justify-center" style="height:220px;">
+                    <canvas id="chartProcesos"></canvas>
+                </div>
+            </div>
+
+            <!-- Barras: Talentos por género -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-1">Talentos por Género</h2>
+                <p class="text-sm text-gray-400 mb-4">Distribución de género en los perfiles registrados</p>
+                <div style="height:220px;">
+                    <canvas id="chartGenero"></canvas>
+                </div>
+            </div>
+
+            <!-- Barras: Talentos por jornada -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-1">Talentos por Jornada</h2>
+                <p class="text-sm text-gray-400 mb-4">Preferencias de jornada laboral declaradas</p>
+                <div style="height:220px;">
+                    <canvas id="chartJornada"></canvas>
+                </div>
+            </div>
+
+            <!-- Barras: Talentos por modalidad -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-1">Talentos por Modalidad</h2>
+                <p class="text-sm text-gray-400 mb-4">Preferencias de modalidad de trabajo declaradas</p>
+                <div style="height:220px;">
+                    <canvas id="chartModalidad"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Barras horizontales: Empresas por rubro -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-1">Empresas por Rubro</h2>
+            <p class="text-sm text-gray-400 mb-4">Top rubros con mayor presencia en la plataforma</p>
+            <div style="height:200px;">
+                <canvas id="chartRubros"></canvas>
+            </div>
+        </div>
+
         <!-- Solicitudes pendientes de atención -->
         @if($solicitudesPendientes->count() > 0)
         <div class="bg-white rounded-2xl shadow-sm border border-yellow-200 p-6">
@@ -193,5 +243,109 @@
         </div>
 
     </div>
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#6B7280';
+
+        const navy   = '#0B1739';
+        const colors = ['#3B82F6','#10B981','#8B5CF6','#F59E0B','#EF4444','#06B6D4','#EC4899','#84CC16'];
+
+        const scalesBar = {
+            y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#F3F4F6' } },
+            x: { grid: { display: false } }
+        };
+
+        // --- Donut: Procesos por estado ---
+        new Chart(document.getElementById('chartProcesos'), {
+            type: 'doughnut',
+            data: {
+                labels: {!! json_encode(array_keys($procesosPorEstado)) !!}.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                datasets: [{
+                    data: {!! json_encode(array_values($procesosPorEstado)) !!},
+                    backgroundColor: ['#F59E0B','#10B981','#8B5CF6','#3B82F6','#059669'],
+                    borderWidth: 2,
+                    borderColor: '#fff',
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: { legend: { position: 'bottom', labels: { padding: 14, boxWidth: 12 } } }
+            }
+        });
+
+        // --- Barras: Género ---
+        new Chart(document.getElementById('chartGenero'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($talentosPorGenero->keys()) !!},
+                datasets: [{
+                    label: 'Talentos',
+                    data: {!! json_encode($talentosPorGenero->values()) !!},
+                    backgroundColor: colors,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: scalesBar }
+        });
+
+        // --- Barras: Jornada ---
+        new Chart(document.getElementById('chartJornada'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($talentosPorJornada->keys()) !!},
+                datasets: [{
+                    label: 'Talentos',
+                    data: {!! json_encode($talentosPorJornada->values()) !!},
+                    backgroundColor: navy,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: scalesBar }
+        });
+
+        // --- Barras: Modalidad ---
+        new Chart(document.getElementById('chartModalidad'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($talentosPorModalidad->keys()) !!},
+                datasets: [{
+                    label: 'Talentos',
+                    data: {!! json_encode($talentosPorModalidad->values()) !!},
+                    backgroundColor: ['#3B82F6','#10B981','#8B5CF6','#F59E0B'],
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: scalesBar }
+        });
+
+        // --- Barras horizontales: Rubros ---
+        new Chart(document.getElementById('chartRubros'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($empresasPorRubro->keys()) !!},
+                datasets: [{
+                    label: 'Empresas',
+                    data: {!! json_encode($empresasPorRubro->values()) !!},
+                    backgroundColor: colors,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#F3F4F6' } }, y: { grid: { display: false } } }
+            }
+        });
+    </script>
+    @endpush
 
 </x-admin-layout>

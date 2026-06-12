@@ -41,10 +41,34 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // Estadísticas para gráficos
+        $talentosPorJornada = Talento::selectRaw('condicion_jornada, count(*) as total')
+            ->whereNotNull('condicion_jornada')
+            ->groupBy('condicion_jornada')
+            ->pluck('total', 'condicion_jornada');
+
+        $talentosPorModalidad = Talento::selectRaw('condicion_modalidad, count(*) as total')
+            ->whereNotNull('condicion_modalidad')
+            ->groupBy('condicion_modalidad')
+            ->pluck('total', 'condicion_modalidad');
+
+        $talentosPorGenero = Talento::selectRaw('genero, count(*) as total')
+            ->whereNotNull('genero')
+            ->groupBy('genero')
+            ->pluck('total', 'genero');
+
+        $empresasPorRubro = DatosEmpresa::selectRaw('rubro_empresa, count(*) as total')
+            ->whereNotNull('rubro_empresa')
+            ->groupBy('rubro_empresa')
+            ->orderByDesc('total')
+            ->limit(6)
+            ->pluck('total', 'rubro_empresa');
+
         return view('admin.dashboard', compact(
             'totalTalentos', 'totalEmpresas', 'totalUsuarios', 'totalProcesos',
             'talentosPendientes', 'empresasPendientes',
-            'procesosPorEstado', 'empresas', 'talentos', 'solicitudesPendientes'
+            'procesosPorEstado', 'empresas', 'talentos', 'solicitudesPendientes',
+            'talentosPorJornada', 'talentosPorModalidad', 'talentosPorGenero', 'empresasPorRubro'
         ));
     }
 }
