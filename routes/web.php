@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\VitrinaController as AdminVitrinaController;
 use App\Http\Controllers\Admin\SolicitudesController;
 use App\Http\Controllers\Admin\ValidacionesController;
 use App\Http\Controllers\Admin\PerfilController as AdminPerfilController;
+use App\Http\Controllers\Admin\ExportController as AdminExportController;
 use App\Http\Controllers\Talento\DashboardController as TalentoDashboardController;
 use App\Http\Controllers\Talento\PerfilController as TalentoPerfilController;
 use App\Http\Controllers\Talento\IdiomasController;
@@ -76,6 +77,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('admin/solicitudes/{id}/seleccionado', [SolicitudesController::class, 'seleccionado'])->name('admin.solicitudes.seleccionado');
     Route::put('admin/solicitudes/{id}/contratar', [SolicitudesController::class, 'contratar'])->name('admin.solicitudes.contratar');
     Route::get('admin/solicitudes/pdf', [SolicitudesController::class, 'pdf'])->name('admin.solicitudes.pdf');
+    Route::get('admin/export/talentos', [AdminExportController::class, 'talentos'])->name('admin.export.talentos');
+    Route::get('admin/export/empresas', [AdminExportController::class, 'empresas'])->name('admin.export.empresas');
+    Route::get('admin/export/procesos', [AdminExportController::class, 'procesos'])->name('admin.export.procesos');
 });
 
 // Rutas para el Talento

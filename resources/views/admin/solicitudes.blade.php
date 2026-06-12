@@ -14,10 +14,20 @@
                 <h1 class="text-3xl md:text-5xl font-bold text-gray-800">Solicitudes Empresariales</h1>
                 <p class="text-gray-500 mt-2">Gestión y seguimiento de contactos entre empresas y talentos.</p>
             </div>
-            <a href="{{ route('admin.solicitudes.pdf') }}"
-                class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition shadow">
-                Exportar PDF
-            </a>
+            <div class="flex gap-2">
+                <a href="{{ route('admin.export.procesos') }}"
+                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold flex items-center gap-2 transition shadow">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Excel
+                </a>
+                <a href="{{ route('admin.solicitudes.pdf') }}"
+                    class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition shadow">
+                    Exportar PDF
+                </a>
+            </div>
         </div>
 
         <!-- CARDS -->
