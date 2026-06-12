@@ -18,6 +18,7 @@ use App\Http\Controllers\Talento\AntecedentesEducacionalesController;
 use App\Http\Controllers\Talento\AntecedentesLaboralesController;
 use App\Http\Controllers\Talento\CompetenciasController;
 use App\Http\Controllers\Talento\DocumentosController;
+use App\Http\Controllers\Talento\CvController;
 use App\Http\Controllers\Auth\TalentoRegisterController;
 use App\Http\Controllers\Auth\EmpresaRegisterController;
 use App\Http\Controllers\Empresa\TalentosController as EmpresaTalentosController;
@@ -100,6 +101,7 @@ Route::middleware(['auth', 'verified', 'role:talento'])->group(function () {
     Route::delete('talento/documentos/{id}', [DocumentosController::class, 'destroy'])->name('talento.documentos.destroy');
     Route::get('talento/archivos/{id}', [DocumentosController::class, 'ver'])->name('archivos.talento');
     Route::get('talento/procesos', [ProcesosController::class, 'index'])->name('talento.procesos');
+    Route::get('talento/cv/descargar', [CvController::class, 'descargar'])->name('talento.cv.descargar');
 });
 
 // Rutas para la Empresa

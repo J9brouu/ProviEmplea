@@ -44,10 +44,20 @@
                 </div>
 
                 <div class="flex flex-col items-end gap-3">
-                    <button type="button" onclick="openModal()"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition">
-                        Editar Perfil
-                    </button>
+                    <div class="flex gap-2">
+                        <a href="{{ route('talento.cv.descargar') }}"
+                            class="bg-gray-700 hover:bg-gray-900 text-white px-5 py-3 rounded-xl font-semibold transition flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                            Descargar CV
+                        </a>
+                        <button type="button" onclick="openModal()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition">
+                            Editar Perfil
+                        </button>
+                    </div>
                     @php
                         $colorBarra = $completitud >= 80 ? 'bg-green-500' : ($completitud >= 50 ? 'bg-blue-500' : 'bg-yellow-500');
                         $colorTexto = $completitud >= 80 ? 'text-green-600' : ($completitud >= 50 ? 'text-blue-600' : 'text-yellow-600');
