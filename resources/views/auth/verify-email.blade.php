@@ -96,10 +96,25 @@
                 </button>
             </form>
 
+            <p class="text-center text-xs text-gray-400 mt-6">
+                Esta página se actualizará automáticamente cuando verifiques tu correo.
+            </p>
+
         </div>
     </section>
 
 </main>
+
+<script>
+    setInterval(function () {
+        fetch('/verificacion/estado')
+            .then(r => r.json())
+            .then(data => {
+                if (data.verified) window.location.href = data.redirect;
+            })
+            .catch(() => {});
+    }, 5000);
+</script>
 
 </body>
 </html>

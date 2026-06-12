@@ -34,6 +34,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/verificacion/estado', function () {
+    if (!auth()->check()) {
+        return response()->json(['verified' => false]);
+    }
+    $user = auth()->user();
+    if (!$user->hasVerifiedEmail()) {
+        return response()->json(['verified' => false]);
+    }
+    $redirect = match($user->rol) {
+        'admin'   => route('admin.dashboard'),
+        'empresa' => route('empresa.dashboard'),
+        default   => route('talento.dashboard'),
+    };
+    return response()->json(['verified' => true, 'redirect' => $redirect]);
+})->middleware('auth');
+
 // Registros
 Route::get('/registro/talento', [TalentoRegisterController::class, 'create'])->name('registro.talento');
 Route::post('/registro/talento', [TalentoRegisterController::class, 'store'])->name('registro.talento.store');
