@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <title>Registro Empresa | ProviEmplea</title>
     @vite(['resources/css/app.css'])
 </head>
@@ -120,7 +121,7 @@
                                 autocomplete="new-password" required aria-required="true"
                                 aria-describedby="password-hint"
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                            <p id="password-hint" class="text-xs text-gray-400 mt-1">Mínimo 6 caracteres</p>
+                            <p id="password-hint" class="text-xs text-gray-400 mt-1">Mínimo 8 caracteres</p>
                         </div>
                         <div>
                             <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-1.5">

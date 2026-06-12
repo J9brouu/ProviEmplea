@@ -1,59 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ProviEmplea
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma web de gestión laboral y vinculación de talentos con empresas de la comuna de Providencia. Permite a la municipalidad administrar procesos de selección, validar perfiles de candidatos y conectar empresas con trabajadores.
 
-## About Laravel
+## Roles
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Rol | Descripción |
+|-----|-------------|
+| **Admin** | Panel de administración completo: gestión de talentos, empresas, validaciones, procesos de selección y configuración. |
+| **Talento** | Registro de perfil profesional, documentos, experiencia, educación, idiomas y seguimiento de postulaciones. |
+| **Empresa** | Publicación de búsquedas, revisión de vitrina de talentos, gestión de usuarios internos y documentos. |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack tecnológico
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Backend:** Laravel 12 · PHP 8.3+
+- **Frontend:** Tailwind CSS · Alpine.js
+- **Base de datos:** MySQL 8.4
+- **PDF:** barryvdh/laravel-dompdf
+- **Excel:** maatwebsite/excel
+- **Deploy:** Laravel Cloud
+- **Dev local:** Laragon
 
-## Learning Laravel
+## Requisitos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP >= 8.2
+- Composer
+- Node.js y npm
+- MySQL
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación local
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/J9brouu/ProviEmplea.git
+cd ProviEmplea
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+composer install
+npm install
 
-### Premium Partners
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Configura la base de datos en `.env`:
 
-## Contributing
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=proviemplea
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Configura el correo en `.env` (Gmail con app password):
 
-## Code of Conduct
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_SCHEME=smtps
+MAIL_USERNAME=tu@gmail.com
+MAIL_PASSWORD="xxxx xxxx xxxx xxxx"
+MAIL_FROM_ADDRESS=tu@gmail.com
+MAIL_FROM_NAME=ProviEmplea
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Ejecuta las migraciones y levanta el servidor:
 
-## Security Vulnerabilities
+```bash
+php artisan migrate
+npm run dev
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Despliegue en Laravel Cloud
 
-## License
+Variables de entorno requeridas en el dashboard (Settings → Environment):
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_SCHEME=smtps
+MAIL_USERNAME=tu@gmail.com
+MAIL_PASSWORD="xxxx xxxx xxxx xxxx"
+MAIL_FROM_ADDRESS=tu@gmail.com
+MAIL_FROM_NAME=ProviEmplea
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=database
+```
+
+## Estructura de carpetas relevante
+
+```
+app/Http/Controllers/
+├── Admin/          # Dashboard, talentos, empresas, validaciones, procesos, configuración
+├── Talento/        # Perfil, educación, experiencia, documentos, CV, procesos
+├── Empresa/        # Perfil, talentos, procesos, usuarios, documentos
+└── Auth/           # Registro por rol, verificación de correo
+
+resources/views/
+├── admin/
+├── talento/
+├── empresa/
+├── auth/
+└── layouts/        # admin.blade.php, talento.blade.php, empresa.blade.php
+```
+
+## Licencia
+
+Proyecto desarrollado para la Municipalidad de Providencia. Todos los derechos reservados.

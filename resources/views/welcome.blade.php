@@ -5,7 +5,16 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <title>ProviEmplea | El talento busca a las empresas</title>
+    <meta name="description" content="ProviEmplea es la plataforma de vinculación laboral de la Municipalidad de Providencia. Conectamos talentos locales con empresas mediante CVs anónimos y validación municipal.">
+    <meta property="og:title" content="ProviEmplea | El talento busca a las empresas">
+    <meta property="og:description" content="Plataforma de gestión laboral y vinculación de talentos con empresas de Providencia. Registro gratuito para profesionales.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://proviemplea-jonathan-dev-dkthud.laravel.cloud">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ProviEmplea | El talento busca a las empresas">
+    <meta name="twitter:description" content="Conectamos talentos locales con empresas de Providencia mediante CVs anónimos y validación municipal.">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
@@ -175,9 +184,9 @@
             <div class="font-headline-md text-headline-md font-bold text-primary">ProviEmplea</div>
             <div class="hidden md:flex items-center gap-8">
                 <a class="text-primary font-bold border-b-2 border-primary font-body-md text-body-md transition-colors"
-                    href="#">Soluciones</a>
+                    href="#soluciones">Soluciones</a>
                 <a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors"
-                    href="#">Nosotros</a>
+                    href="#nosotros">Nosotros</a>
             </div>
             <div class="flex items-center gap-4">
                 <a href="{{ route('login') }}"
@@ -227,7 +236,7 @@
         </div>
     </section>
     <!-- How it Works (Blind CV) -->
-    <section class="bg-surface-container-low py-24">
+    <section id="soluciones" class="bg-surface-container-low py-24">
         <div class="max-w-container-max mx-auto px-margin-desktop">
             <div class="text-center mb-16">
                 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">¿Cómo funciona el Blind CV?</h2>
@@ -238,11 +247,11 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
-                <div
-                    class="glass-card p-8 rounded-2xl flex flex-col items-start gap-4 hover:shadow-lg transition-all border border-outline-variant">
+                <div class="glass-card p-8 rounded-2xl flex flex-col items-start gap-4 hover:shadow-lg transition-all border border-outline-variant">
                     <div class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center">
-                        <span class="material-symbols-outlined text-on-primary-container"
-                            style="font-variation-settings: 'FILL' 1;">person_off</span>
+                        <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                        </svg>
                     </div>
                     <h3 class="font-title-lg text-title-lg text-on-surface">Perfil Anónimo</h3>
                     <p class="font-body-sm text-body-sm text-on-surface-variant">
@@ -251,11 +260,11 @@
                     </p>
                 </div>
                 <!-- Step 2 -->
-                <div
-                    class="glass-card p-8 rounded-2xl flex flex-col items-start gap-4 hover:shadow-lg transition-all border border-outline-variant">
+                <div class="glass-card p-8 rounded-2xl flex flex-col items-start gap-4 hover:shadow-lg transition-all border border-outline-variant">
                     <div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center">
-                        <span class="material-symbols-outlined text-on-secondary-container"
-                            style="font-variation-settings: 'FILL' 1;">analytics</span>
+                        <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
                     </div>
                     <h3 class="font-title-lg text-title-lg text-on-surface">Validación Municipal</h3>
                     <p class="font-body-sm text-body-sm text-on-surface-variant">
@@ -264,11 +273,11 @@
                     </p>
                 </div>
                 <!-- Step 3 -->
-                <div
-                    class="glass-card p-8 rounded-2xl flex flex-col items-start gap-4 hover:shadow-lg transition-all border border-outline-variant">
+                <div class="glass-card p-8 rounded-2xl flex flex-col items-start gap-4 hover:shadow-lg transition-all border border-outline-variant">
                     <div class="w-12 h-12 rounded-lg bg-tertiary-fixed flex items-center justify-center">
-                        <span class="material-symbols-outlined text-on-tertiary-fixed"
-                            style="font-variation-settings: 'FILL' 1;">handshake</span>
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
                     </div>
                     <h3 class="font-title-lg text-title-lg text-on-surface">Match de Valor</h3>
                     <p class="font-body-sm text-body-sm text-on-surface-variant">
@@ -280,7 +289,7 @@
         </div>
     </section>
     <!-- Bento Grid Benefits -->
-    <section class="py-24 bg-surface">
+    <section id="nosotros" class="py-24 bg-surface">
         <div class="max-w-container-max mx-auto px-margin-desktop">
             <h2 class="font-headline-lg text-headline-lg text-on-surface mb-12 text-center">Beneficios para el
                 ecosistema</h2>
@@ -296,21 +305,21 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <ul class="space-y-4">
                                 <li class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-secondary-fixed">check_circle</span>
+                                    <svg class="w-5 h-5 text-secondary-fixed shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4.5-4.5 1.41-1.41L10 13.67l7.09-7.09 1.41 1.41L10 16.5z"/></svg>
                                     <span class="font-body-md text-body-md">Visibilidad ante empresas TOP</span>
                                 </li>
                                 <li class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-secondary-fixed">check_circle</span>
+                                    <svg class="w-5 h-5 text-secondary-fixed shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4.5-4.5 1.41-1.41L10 13.67l7.09-7.09 1.41 1.41L10 16.5z"/></svg>
                                     <span class="font-body-md text-body-md">Sin discriminación por edad o género</span>
                                 </li>
                             </ul>
                             <ul class="space-y-4">
                                 <li class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-secondary-fixed">check_circle</span>
+                                    <svg class="w-5 h-5 text-secondary-fixed shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4.5-4.5 1.41-1.41L10 13.67l7.09-7.09 1.41 1.41L10 16.5z"/></svg>
                                     <span class="font-body-md text-body-md">Feedback real sobre tu perfil</span>
                                 </li>
                                 <li class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-secondary-fixed">check_circle</span>
+                                    <svg class="w-5 h-5 text-secondary-fixed shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4.5-4.5 1.41-1.41L10 13.67l7.09-7.09 1.41 1.41L10 16.5z"/></svg>
                                     <span class="font-body-md text-body-md">Acceso a formación exclusiva</span>
                                 </li>
                             </ul>
@@ -331,9 +340,8 @@
                     <h3 class="text-3xl font-bold mb-4">Calidad sobre cantidad</h3>
                     <p class="font-body-sm text-body-sm mb-8">Acceda a un pool de talento pre-calificado y reduzca sus
                         tiempos de contratación en un 40%.</p>
-                    <button
-                        class="w-full bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all">Ver
-                        Planes</button>
+                    <a href="{{ route('registro.empresa') }}"
+                        class="w-full block text-center bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all">Registrar Empresa</a>
                 </div>
                 <!-- Talent Support Card -->
                 <div class="lg:col-span-4 bg-surface-container p-8 rounded-[2rem] border border-outline-variant">
@@ -399,43 +407,30 @@
             class="flex flex-col md:flex-row justify-between items-start md:items-center px-margin-desktop py-stack-lg max-w-container-max mx-auto gap-12">
             <div class="max-w-xs">
                 <div class="font-title-lg text-title-lg font-bold text-primary mb-4">ProviEmplea</div>
-                <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 ProviEmplea. Municipal Excellence
-                    in Career Growth. Impulsando el empleo local con tecnología de vanguardia.</p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">© <span id="footer-year"></span> ProviEmplea. Impulsando el empleo local con tecnología de vanguardia.</p>
+                <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 w-full md:w-auto">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 w-full md:w-auto">
                 <div class="flex flex-col gap-3">
-                    <span class="font-label-md text-label-md font-bold text-on-surface">Ecosistema</span>
+                    <span class="font-label-md text-label-md font-bold text-on-surface">Acceso</span>
                     <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
-                        href="#">Talentos</a>
+                        href="{{ route('registro.talento') }}">Registro Talento</a>
                     <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
-                        href="#">Empresas</a>
+                        href="{{ route('registro.empresa') }}">Registro Empresa</a>
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
+                        href="{{ route('login') }}">Iniciar Sesión</a>
                 </div>
                 <div class="flex flex-col gap-3">
-                    <span class="font-label-md text-label-md font-bold text-on-surface">Legal</span>
+                    <span class="font-label-md text-label-md font-bold text-on-surface">Plataforma</span>
                     <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
-                        href="#">Política de Privacidad</a>
+                        href="#soluciones">Cómo funciona</a>
                     <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
-                        href="#">Términos de Servicio</a>
-                </div>
-                <div class="flex flex-col gap-3">
-                    <span class="font-label-md text-label-md font-bold text-on-surface">Soporte</span>
-                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
-                        href="#">Contacto Institucional</a>
-                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
-                        href="#">Documentación API</a>
+                        href="#nosotros">Beneficios</a>
                 </div>
                 <div class="flex flex-col gap-4">
-                    <span class="font-label-md text-label-md font-bold text-on-surface">Social</span>
-                    <div class="flex gap-4">
-                        <div
-                            class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center hover:bg-primary hover:text-on-primary cursor-pointer transition-all">
-                            <span class="material-symbols-outlined text-[20px]">share</span>
-                        </div>
-                        <div
-                            class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center hover:bg-primary hover:text-on-primary cursor-pointer transition-all">
-                            <span class="material-symbols-outlined text-[20px]">link</span>
-                        </div>
-                    </div>
+                    <span class="font-label-md text-label-md font-bold text-on-surface">Municipio</span>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Municipalidad de Providencia</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Santiago, Chile</p>
                 </div>
             </div>
         </div>
