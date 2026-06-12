@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UsuariosEmpresa;
 use App\Models\DatosEmpresa;
+use App\Rules\RutChileno;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,7 @@ class EmpresaRegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'rut' => 'required|string|max:50',
+            'rut' => ['required', 'string', 'max:50', new RutChileno],
             'telefono' => 'required|string|max:50',
             'password' => 'required|confirmed|min:6',
         ]);

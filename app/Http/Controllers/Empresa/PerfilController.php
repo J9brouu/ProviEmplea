@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Empresa;
 use App\Http\Controllers\Controller;
 use App\Models\DatosEmpresa;
 use App\Models\Interacciones;
+use App\Rules\RutChileno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +32,7 @@ class PerfilController extends Controller
 
         $request->validate([
             'name'                 => 'required|string|max:255',
-            'rut_empresa'          => 'required|string|max:20',
+            'rut_empresa'          => ['required', 'string', 'max:20', new RutChileno],
             'rubro_empresa'        => 'required|string|max:255',
             'tipo_empresa'         => 'required|string|max:100',
             'presentacion_empresa' => 'nullable|string|max:3000',
