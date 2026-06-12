@@ -25,11 +25,12 @@ class ConfiguracionController extends Controller
         ]);
 
         User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'rol'      => 'admin',
-            'estado'   => 'activo',
+            'name'              => $request->name,
+            'email'             => $request->email,
+            'password'          => Hash::make($request->password),
+            'rol'               => 'admin',
+            'estado'            => 'activo',
+            'email_verified_at' => now(),
         ]);
 
         return back()->with('success', 'Administrador creado correctamente.');

@@ -22,7 +22,7 @@ class TalentoRegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'telefono' => 'nullable|string|max:50',
+            'telefono' => 'nullable|digits:8',
             'password' => 'required|confirmed|min:8',
         ]);
 

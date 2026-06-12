@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rutas para el Admin
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('admin/perfil', [AdminPerfilController::class, 'index'])->name('admin.perfil');
     Route::put('admin/perfil/update', [AdminPerfilController::class, 'update'])->name('admin.perfil.update');

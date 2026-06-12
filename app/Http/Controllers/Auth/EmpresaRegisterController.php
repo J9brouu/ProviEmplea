@@ -25,7 +25,7 @@ class EmpresaRegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'rut' => ['required', 'string', 'max:50', new RutChileno],
-            'telefono' => 'required|string|max:50',
+            'telefono' => 'required|digits:8',
             'password' => 'required|confirmed|min:8',
         ]);
 

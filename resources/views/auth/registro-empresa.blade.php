@@ -13,7 +13,7 @@
 <main class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2" role="main">
 
     <!-- PANEL IZQUIERDO -->
-    <aside class="bg-[#071847] text-white p-10 flex flex-col justify-between" aria-label="Información ProviEmplea">
+    <aside class="bg-[#0B1739] text-white p-10 flex flex-col justify-between" aria-label="Información ProviEmplea">
         <div>
             <h1 class="text-4xl font-bold mb-4">ProviEmplea</h1>
             <p class="text-gray-300 leading-relaxed">
