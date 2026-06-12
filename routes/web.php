@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SolicitudesController;
 use App\Http\Controllers\Admin\ValidacionesController;
 use App\Http\Controllers\Admin\PerfilController as AdminPerfilController;
 use App\Http\Controllers\Admin\ExportController as AdminExportController;
+use App\Http\Controllers\Admin\ConfiguracionController as AdminConfiguracionController;
 use App\Http\Controllers\Talento\DashboardController as TalentoDashboardController;
 use App\Http\Controllers\Talento\PerfilController as TalentoPerfilController;
 use App\Http\Controllers\Talento\IdiomasController;
@@ -54,7 +55,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('admin/perfil/password', [AdminPerfilController::class, 'password'])->name('admin.perfil.password');
     Route::get('admin/empresas', [EmpresasController::class, 'index'])->name('admin.empresas');
     Route::put('admin/empresas/{id}', [EmpresasController::class, 'update'])->name('admin.empresas.update');
-    Route::get('admin/configuracion', function () { return view('admin.configuracion'); })->name('admin.configuracion');
+    Route::get('admin/configuracion', [AdminConfiguracionController::class, 'index'])->name('admin.configuracion');
+    Route::post('admin/configuracion/usuarios', [AdminConfiguracionController::class, 'storeAdmin'])->name('admin.configuracion.usuarios.store');
+    Route::put('admin/configuracion/usuarios/{id}/toggle', [AdminConfiguracionController::class, 'toggleAdmin'])->name('admin.configuracion.usuarios.toggle');
     Route::get('admin/talentos', [TalentosController::class, 'index'])->name('admin.talentos');
     Route::get('admin/vitrina', [AdminVitrinaController::class, 'index'])->name('admin.vitrina');
     Route::post('admin/vitrina/enviar', [AdminVitrinaController::class, 'enviar'])->name('admin.vitrina.enviar');
