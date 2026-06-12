@@ -2,8 +2,23 @@
 
     <div class="space-y-8">
 
-        <!-- HEADER -->
-        <div class="flex flex-wrap justify-between items-start gap-4">
+        @if (session('success'))
+            <div class="bg-green-100 text-green-700 px-4 py-3 rounded-xl">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any() && !old('talento_edit_id'))
+            <div class="bg-red-100 text-red-700 px-4 py-3 rounded-xl">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>• {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl md:text-5xl font-bold text-slate-800">Gestión de Talentos</h1>
                 <p class="text-gray-500 mt-2">Administración de perfiles registrados.</p>
@@ -109,12 +124,11 @@
                                 {{ $talento->user->name }}
                             </td>
 
-                            <td>
+                            <td class="px-6 py-4">
                                 {{ $talento->condicion_modalidad }}
                             </td>
 
-
-                            <td class="text-center">
+                            <td class="px-6 py-4 text-center">
 
                                 <span
                                     class="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-semibold
@@ -137,7 +151,7 @@
 
                             </td>
 
-                            <td>
+                            <td class="px-6 py-4">
                                 {{ $talento->condicion_jornada }}
                             </td>
 
@@ -151,7 +165,8 @@
                                 @endif
                             </td>
 
-                            <td class="flex gap-2 py-4">
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex gap-2 justify-center">
 
                                 <div x-data="{ open: false }">
 
@@ -277,7 +292,7 @@
 
                                 </div>
 
-                                <div x-data="{ openEdit: false }">
+                                <div x-data="{ openEdit: {{ old('talento_edit_id') == $talento->id && $errors->any() ? 'true' : 'false' }} }">
 
                                     <!-- BOTON -->
                                     <button @click="openEdit = true"
@@ -327,6 +342,7 @@
 
                                                 @csrf
                                                 @method('PUT')
+                                                <input type="hidden" name="talento_edit_id" value="{{ $talento->id }}">
 
                                                 <div class="p-8">
 
@@ -496,6 +512,7 @@
 
                                 </div>
 
+                                </div>{{-- flex wrapper --}}
                             </td>
 
                         </tr>

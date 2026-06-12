@@ -87,19 +87,28 @@
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm transition">
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="rut" class="block text-sm font-semibold text-gray-700 mb-1.5">RUT Empresa</label>
-                            <input type="text" id="rut" name="rut" value="{{ old('rut') }}"
-                                placeholder="76.123.456-7"
-                                class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
+                    <div>
+                        <label for="rut" class="block text-sm font-semibold text-gray-700 mb-1.5">RUT Empresa</label>
+                        <input type="text" id="rut" name="rut" value="{{ old('rut') }}"
+                            placeholder="76.123.456-7"
+                            maxlength="12"
+                            autocomplete="off"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
+                    </div>
+
+                    <div>
+                        <label for="telefono" class="block text-sm font-semibold text-gray-700 mb-1.5">Teléfono</label>
+                        <div class="flex rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+                            <span class="inline-flex items-center px-4 py-3 bg-gray-50 text-gray-500 text-sm font-medium select-none border-r border-gray-300 shrink-0">+569</span>
+                            <input type="tel" id="telefono" name="telefono"
+                                value="{{ old('telefono') }}"
+                                placeholder="12345678"
+                                maxlength="8"
+                                autocomplete="tel"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)"
+                                class="flex-1 px-4 py-3 outline-none text-sm bg-white">
                         </div>
-                        <div>
-                            <label for="telefono" class="block text-sm font-semibold text-gray-700 mb-1.5">Teléfono</label>
-                            <input type="tel" id="telefono" name="telefono" value="{{ old('telefono') }}"
-                                placeholder="+56 9 1234 5678" autocomplete="tel"
-                                class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Ingresa los 8 dígitos de tu número celular</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -139,5 +148,30 @@
 
 </main>
 
+<script>
+    (function () {
+        var rutInput = document.getElementById('rut');
+        if (!rutInput) return;
+
+        rutInput.addEventListener('input', function () {
+            var clean = this.value.replace(/[^0-9kK]/g, '').toUpperCase();
+            if (clean.length === 0) { this.value = ''; return; }
+
+            var dv   = clean.slice(-1);
+            var body = clean.slice(0, -1);
+
+            // Insert dots every 3 digits from right
+            var formatted = '';
+            var count = 0;
+            for (var i = body.length - 1; i >= 0; i--) {
+                formatted = body[i] + formatted;
+                count++;
+                if (count === 3 && i > 0) { formatted = '.' + formatted; count = 0; }
+            }
+
+            this.value = formatted + (clean.length > 1 ? '-' + dv : dv);
+        });
+    })();
+</script>
 </body>
 </html>

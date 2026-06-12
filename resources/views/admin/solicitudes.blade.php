@@ -22,26 +22,31 @@
 
         <!-- CARDS -->
         <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
-            <div class="bg-white p-6 rounded-2xl shadow border">
+            <a href="{{ route('admin.solicitudes') }}"
+                class="bg-white p-6 rounded-2xl shadow border hover:shadow-md transition {{ !request('estado') ? 'ring-2 ring-blue-500' : '' }}">
                 <p class="text-gray-500 text-sm">Total</p>
                 <h2 class="text-4xl font-bold text-blue-600 mt-3">{{ array_sum($totales) }}</h2>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow border">
+            </a>
+            <a href="{{ route('admin.solicitudes', ['estado' => 'pendiente']) }}"
+                class="bg-white p-6 rounded-2xl shadow border hover:shadow-md transition {{ request('estado') == 'pendiente' ? 'ring-2 ring-yellow-400' : '' }}">
                 <p class="text-gray-500 text-sm">Pendientes</p>
                 <h2 class="text-4xl font-bold text-yellow-500 mt-3">{{ $totales['pendiente'] }}</h2>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow border">
+            </a>
+            <a href="{{ route('admin.solicitudes', ['estado' => 'contactado']) }}"
+                class="bg-white p-6 rounded-2xl shadow border hover:shadow-md transition {{ request('estado') == 'contactado' ? 'ring-2 ring-green-500' : '' }}">
                 <p class="text-gray-500 text-sm">Contactados</p>
                 <h2 class="text-4xl font-bold text-green-600 mt-3">{{ $totales['contactado'] }}</h2>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow border">
+            </a>
+            <a href="{{ route('admin.solicitudes', ['estado' => 'entrevista']) }}"
+                class="bg-white p-6 rounded-2xl shadow border hover:shadow-md transition {{ request('estado') == 'entrevista' ? 'ring-2 ring-purple-500' : '' }}">
                 <p class="text-gray-500 text-sm">Entrevistas</p>
                 <h2 class="text-4xl font-bold text-purple-600 mt-3">{{ $totales['entrevista'] }}</h2>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow border">
+            </a>
+            <a href="{{ route('admin.solicitudes', ['estado' => 'contratado']) }}"
+                class="bg-white p-6 rounded-2xl shadow border hover:shadow-md transition {{ request('estado') == 'contratado' ? 'ring-2 ring-emerald-500' : '' }}">
                 <p class="text-gray-500 text-sm">Contratados</p>
                 <h2 class="text-4xl font-bold text-emerald-600 mt-3">{{ $totales['contratado'] }}</h2>
-            </div>
+            </a>
         </div>
 
         <!-- TABLA -->
@@ -52,9 +57,14 @@
                     <h2 class="text-2xl font-bold text-gray-800">Historial de Solicitudes</h2>
                     <p class="text-gray-500 mt-1 text-sm">Seguimiento de interacciones entre empresas y talentos.</p>
                 </div>
-                <form method="GET" action="{{ route('admin.solicitudes') }}">
-                    <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar empresa..."
+                <form method="GET" action="{{ route('admin.solicitudes') }}" class="flex gap-2 flex-wrap">
+                    <input type="hidden" name="estado" value="{{ request('estado') }}">
+                    <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar talento o empresa..."
                         class="border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl text-sm transition">Buscar</button>
+                    @if(request('buscar') || request('estado'))
+                        <a href="{{ route('admin.solicitudes') }}" class="flex items-center px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-sm transition">Limpiar</a>
+                    @endif
                 </form>
             </div>
 

@@ -38,7 +38,7 @@ class TalentoRegisterController extends Controller
         Talento::create([
             'user_id' => $user->id,
             'edad' => 0,
-            'telefono' => $request->telefono,
+            'telefono' => $request->filled('telefono') ? '+569' . preg_replace('/[^0-9]/', '', $request->telefono) : null,
             'direccion' => 'No especificado',
             'genero' => 'No especificado',
             'resumen' => '',

@@ -52,7 +52,7 @@ class EmpresaRegisterController extends Controller
             'user_id' => $user->id,
             'datos_empresa_id' => $datosEmpresa->id,
             'rut' => $request->rut,
-            'telefono' => $request->telefono,
+            'telefono' => $request->filled('telefono') ? '+569' . preg_replace('/[^0-9]/', '', $request->telefono) : null,
         ]);
         Auth::login($user);
 

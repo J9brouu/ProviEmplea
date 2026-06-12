@@ -30,7 +30,7 @@ class TalentosController extends Controller
         return view('admin.talentos', compact('talentos'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $talento = Talento::findOrFail($id);
 
@@ -40,7 +40,7 @@ class TalentosController extends Controller
             'estado' => 'required|in:activo,pendiente,bloqueado,rechazado',
             'condicion_modalidad' => 'required|in:Presencial,Remoto,Híbrido',
             'condicion_jornada' => 'required|in:Full-Time,Part-Time,Freelance',
-            'resumen' => 'required|string|min:10|max:5000',
+            'resumen' => 'nullable|string|min:10|max:5000',
         ], [
             'name.required' => 'El nombre es requerido',
             'estado.required' => 'El estado es requerido',

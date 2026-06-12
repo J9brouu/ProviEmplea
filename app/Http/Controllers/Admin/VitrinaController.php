@@ -52,18 +52,33 @@ class VitrinaController extends Controller
             'talento_ids'      => 'required|array|min:1',
             'datos_empresa_id' => 'required|exists:datos_empresa,id',
         ], [
-            'talento_ids.required' => 'Debes seleccionar al menos un talento.',
+            'talento_ids.required'      => 'Debes seleccionar al menos un talento.',
             'datos_empresa_id.required' => 'Debes seleccionar una empresa.',
         ]);
 
         $empresaId = $request->datos_empresa_id;
         $enviados  = 0;
+        $activos   = 0;
+
+        $estadosActivos = ['entrevista', 'seleccionado', 'contratado'];
 
         foreach ($request->talento_ids as $talentoId) {
-            $existe = Interacciones::where('datos_empresa_id', $empresaId)
-                ->where('talento_id', $talentoId)->exists();
+            $interaccion = Interacciones::where('datos_empresa_id', $empresaId)
+                ->where('talento_id', $talentoId)
+                ->first();
 
-            if (!$existe) {
+            if ($interaccion && in_array($interaccion->estado, $estadosActivos)) {
+                $activos++;
+                continue;
+            }
+
+            if ($interaccion) {
+                $interaccion->update([
+                    'estado'         => 'contactado',
+                    'fecha_contacto' => now(),
+                    'notas'          => 'Enviado por el equipo ProviEmplea.',
+                ]);
+            } else {
                 Interacciones::create([
                     'datos_empresa_id' => $empresaId,
                     'talento_id'       => $talentoId,
@@ -71,10 +86,16 @@ class VitrinaController extends Controller
                     'fecha_contacto'   => now(),
                     'notas'            => 'Enviado por el equipo ProviEmplea.',
                 ]);
-                $enviados++;
             }
+
+            $enviados++;
         }
 
-        return back()->with('success', "{$enviados} talento(s) enviado(s) a la empresa correctamente.");
+        $msg = "{$enviados} talento(s) enviado(s) a la empresa correctamente.";
+        if ($activos > 0) {
+            $msg .= " {$activos} talento(s) omitido(s) por tener proceso activo.";
+        }
+
+        return back()->with('success', $msg);
     }
 }

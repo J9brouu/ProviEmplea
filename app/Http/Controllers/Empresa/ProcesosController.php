@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Empresa;
 use App\Http\Controllers\Controller;
 use App\Models\DatosEmpresa;
 use App\Models\Interacciones;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProcesosController extends Controller
@@ -27,5 +28,28 @@ class ProcesosController extends Controller
         ];
 
         return view('empresa.procesos', compact('procesos', 'totales'));
+    }
+
+    public function antecedentes(Request $request)
+    {
+        $empresa = DatosEmpresa::where('user_id', Auth::id())->firstOrFail();
+
+        $antecedentes = Interacciones::where('datos_empresa_id', $empresa->id)
+            ->where('notas', 'Enviado por el equipo ProviEmplea.')
+            ->with([
+                'talento.user',
+                'talento.antecedentesEducacionales',
+                'talento.antecedentesLaborales',
+                'talento.competenciasTecnicas',
+                'talento.idiomas',
+            ])
+            ->when($request->filled('estado'), fn ($q) =>
+                $q->where('estado', $request->estado)
+            )
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('empresa.antecedentes', compact('antecedentes'));
     }
 }

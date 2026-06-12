@@ -44,6 +44,10 @@
                     class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('empresa.talentos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Talentos
                 </a>
+                <a href="/empresa/antecedentes" @click="sidebarOpen = false"
+                    class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('empresa.antecedentes') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
+                    Antecedentes
+                </a>
                 <a href="/empresa/procesos" @click="sidebarOpen = false"
                     class="block px-4 py-3 rounded-xl transition {{ request()->routeIs('empresa.procesos') ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-white' }}">
                     Procesos

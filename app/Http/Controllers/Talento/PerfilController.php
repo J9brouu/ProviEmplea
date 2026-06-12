@@ -51,7 +51,6 @@ class PerfilController extends Controller
             'resumen' => 'nullable|string|max:1000',
             'renta_desde' => 'nullable|numeric|min:0',
             'renta_hasta' => 'nullable|numeric|min:0',
-            'discapacidad' => 'nullable|boolean',
             'condicion_jornada' => 'nullable|in:Full-Time,Part-Time,Freelance',
             'condicion_modalidad' => 'nullable|in:Presencial,Híbrido,Remoto',
         ]);
@@ -84,7 +83,6 @@ class PerfilController extends Controller
             'renta_hasta' => $request->renta_hasta ?? 0,
             'condicion_jornada' => $request->condicion_jornada,
             'condicion_modalidad' => $request->condicion_modalidad,
-            'discapacidad' => $request->has('discapacidad') ? 1 : 0,
         ]);
 
         return redirect()

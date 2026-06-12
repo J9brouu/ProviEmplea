@@ -96,9 +96,17 @@
 
             <div>
                 <label for="telefono" class="block text-sm font-semibold text-gray-700 mb-1.5">Teléfono</label>
-                <input type="tel" id="telefono" name="telefono" value="{{ old('telefono') }}"
-                    placeholder="+56 9 1234 5678" autocomplete="tel"
-                    class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
+                <div class="flex rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+                    <span class="inline-flex items-center px-4 py-3 bg-gray-50 text-gray-500 text-sm font-medium select-none border-r border-gray-300 shrink-0">+569</span>
+                    <input type="tel" id="telefono" name="telefono"
+                        value="{{ old('telefono') }}"
+                        placeholder="12345678"
+                        maxlength="8"
+                        autocomplete="tel"
+                        oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)"
+                        class="flex-1 px-4 py-3 outline-none text-sm bg-white">
+                </div>
+                <p class="text-xs text-gray-400 mt-1">Ingresa los 8 dígitos de tu número celular</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

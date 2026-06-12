@@ -602,17 +602,29 @@
                             </select>
                         </div>
 
-                        <!-- LEY 21.015 -->
+                        <!-- LEY 21.015 (solo lectura — validada por el admin) -->
                         <div class="md:col-span-2">
-                            <label class="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-2xl cursor-pointer hover:bg-blue-100 transition">
-                                <input type="checkbox" name="discapacidad" value="1"
-                                    {{ $talento->discapacidad ? 'checked' : '' }}
-                                    class="w-5 h-5 rounded text-blue-600">
-                                <div>
-                                    <p class="font-semibold text-gray-800">♿ Persona con discapacidad</p>
-                                    <p class="text-sm text-gray-500">Ley 21.015 — Inclusión Laboral de Personas con Discapacidad</p>
+                            @if($talento->discapacidad)
+                                <div class="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-2xl">
+                                    <span class="text-2xl">♿</span>
+                                    <div>
+                                        <p class="font-semibold text-blue-800">Ley 21.015 — Certificado validado</p>
+                                        <p class="text-sm text-blue-600">Tu certificado de discapacidad fue aprobado por el equipo ProviEmplea.</p>
+                                    </div>
+                                    <span class="ml-auto bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Validado</span>
                                 </div>
-                            </label>
+                            @else
+                                <div class="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-2xl">
+                                    <span class="text-2xl">♿</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-700">Ley 21.015 — Sin certificado validado</p>
+                                        <p class="text-sm text-gray-500">Para acreditar esta condición, sube tu certificado en la sección
+                                            <a href="{{ route('talento.documentos') }}" class="text-blue-600 hover:underline font-medium">Documentos</a>.
+                                            El equipo ProviEmplea lo revisará.
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
 
                     </div>

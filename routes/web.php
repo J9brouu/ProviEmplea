@@ -54,6 +54,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('admin/empresas/{id}', [EmpresasController::class, 'update'])->name('admin.empresas.update');
     Route::get('admin/configuracion', function () { return view('admin.configuracion'); })->name('admin.configuracion');
     Route::get('admin/talentos', [TalentosController::class, 'index'])->name('admin.talentos');
+    Route::get('admin/vitrina', [AdminVitrinaController::class, 'index'])->name('admin.vitrina');
+    Route::post('admin/vitrina/enviar', [AdminVitrinaController::class, 'enviar'])->name('admin.vitrina.enviar');
     Route::put('/admin/talentos/{id}', [TalentosController::class, 'update'])->name('admin.talentos.update');
     Route::get('admin/validaciones', [ValidacionesController::class, 'index'])->name('admin.validaciones');
     Route::put('admin/validaciones/talento/{id}/aprobar', [ValidacionesController::class, 'aprobarTalento'])->name('admin.validaciones.talento.aprobar');
@@ -73,8 +75,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('admin/solicitudes/{id}/seleccionado', [SolicitudesController::class, 'seleccionado'])->name('admin.solicitudes.seleccionado');
     Route::put('admin/solicitudes/{id}/contratar', [SolicitudesController::class, 'contratar'])->name('admin.solicitudes.contratar');
     Route::get('admin/solicitudes/pdf', [SolicitudesController::class, 'pdf'])->name('admin.solicitudes.pdf');
-    Route::get('admin/vitrina', [AdminVitrinaController::class, 'index'])->name('admin.vitrina');
-    Route::post('admin/vitrina/enviar', [AdminVitrinaController::class, 'enviar'])->name('admin.vitrina.enviar');
 });
 
 // Rutas para el Talento
@@ -98,6 +98,7 @@ Route::middleware(['auth', 'role:talento'])->group(function () {
     Route::get('talento/documentos', [DocumentosController::class, 'index'])->name('talento.documentos');
     Route::post('talento/documentos', [DocumentosController::class, 'store'])->name('talento.documentos.store');
     Route::delete('talento/documentos/{id}', [DocumentosController::class, 'destroy'])->name('talento.documentos.destroy');
+    Route::get('talento/archivos/{id}', [DocumentosController::class, 'ver'])->name('archivos.talento');
     Route::get('talento/procesos', [ProcesosController::class, 'index'])->name('talento.procesos');
 });
 
@@ -110,6 +111,7 @@ Route::middleware(['auth', 'role:empresa'])->group(function () {
     Route::get('empresa/talentos', [EmpresaTalentosController::class, 'index'])->name('empresa.talentos');
     Route::post('empresa/talentos/solicitar', [EmpresaTalentosController::class, 'solicitar'])->name('empresa.talentos.solicitar');
     Route::get('empresa/procesos', [EmpresaProcesosController::class, 'index'])->name('empresa.procesos');
+    Route::get('empresa/antecedentes', [EmpresaProcesosController::class, 'antecedentes'])->name('empresa.antecedentes');
     Route::get('empresa/usuarios', [EmpresaUsuariosController::class, 'index'])->name('empresa.usuarios');
     Route::post('empresa/usuarios', [EmpresaUsuariosController::class, 'store'])->name('empresa.usuarios.store');
     Route::delete('empresa/usuarios/{id}', [EmpresaUsuariosController::class, 'destroy'])->name('empresa.usuarios.destroy');

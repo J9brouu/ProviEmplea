@@ -65,6 +65,15 @@ class DocumentosController extends Controller
         return back()->with('success', 'Documento subido. Quedará en revisión hasta que el admin lo apruebe.');
     }
 
+    public function ver($id)
+    {
+        $talento   = Talento::where('user_id', Auth::id())->firstOrFail();
+        $documento = TalentoArchivo::where('id', $id)
+            ->where('talento_id', $talento->id)->firstOrFail();
+
+        return Storage::disk('public')->response($documento->url_archivo, $documento->nombre_archivo);
+    }
+
     public function destroy($id)
     {
         $talento   = Talento::where('user_id', Auth::id())->firstOrFail();

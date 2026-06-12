@@ -26,7 +26,7 @@ class PerfilController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255',
         ]);
-        
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -41,16 +41,23 @@ class PerfilController extends Controller
     // CAMBIAR PASSWORD
     public function password(Request $request)
     {
+        
         /** @var User $user */
         $user = Auth::user();
 
         $request->validate([
-            'password' => 'required|min:6|confirmed',
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
         ]);
-        
-        $user->update([
-            'password' => Hash::make($request->password),
-        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors([
+                'current_password' => 'La contraseña actual es incorrecta.'
+            ]);
+        }
+
+        $user->password = $request->password;
+        $user->save();
 
         return back()->with(
             'success',

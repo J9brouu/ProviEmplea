@@ -14,11 +14,14 @@ class SolicitudesController extends Controller
         $buscar = $request->buscar;
 
         $solicitudes = Interacciones::with(['talento.user', 'datosEmpresa.user'])
-            ->when($buscar, function ($query) use ($buscar) {
-                $query->whereHas('datosEmpresa.user', fn($q) => $q->where('name', 'LIKE', "%{$buscar}%"));
-            })
+            ->when($buscar, fn ($q) =>
+                $q->whereHas('datosEmpresa.user', fn($s) => $s->where('name', 'LIKE', "%{$buscar}%"))
+                  ->orWhereHas('talento.user', fn($s) => $s->where('name', 'LIKE', "%{$buscar}%"))
+            )
+            ->when($request->filled('estado'), fn ($q) => $q->where('estado', $request->estado))
             ->latest()
-            ->paginate(5);
+            ->paginate(10)
+            ->withQueryString();
 
         $totales = [
             'pendiente'    => Interacciones::where('estado', 'pendiente')->count(),
