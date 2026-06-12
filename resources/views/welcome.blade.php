@@ -177,10 +177,6 @@
                 <a class="text-primary font-bold border-b-2 border-primary font-body-md text-body-md transition-colors"
                     href="#">Soluciones</a>
                 <a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors"
-                    href="#">Para Talentos</a>
-                <a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors"
-                    href="#">Para Empresas</a>
-                <a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors"
                     href="#">Nosotros</a>
             </div>
             <div class="flex items-center gap-4">
